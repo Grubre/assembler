@@ -5,6 +5,7 @@ pub enum TokenType {
     Mnemonic,
     Register,
     Number,
+    MemAddress, //TODO
     Label,
     LabelRef,
     Comment,
@@ -22,13 +23,13 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
 
     patterns.push((
         TokenType::Mnemonic,
-        Regex::new(r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)").unwrap()),
-    );
+        Regex::new(r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)").unwrap(),
+    ));
     patterns.push((TokenType::Register, Regex::new(r"^(A|B)").unwrap()));
     patterns.push((
         TokenType::Number,
-        Regex::new(r"^(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)$").unwrap()),
-    );
+        Regex::new(r"^(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)$").unwrap(),
+    ));
     patterns.push((
         TokenType::Label,
         Regex::new(r"^([a-zA-Z_][a-zA-Z0-9_]*):").unwrap(),
@@ -42,11 +43,12 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
     patterns
 }
 
-pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Vec<Token> {
+pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Vec<Vec<Token>> {
     let mut tokens = Vec::new();
 
     for (i, line) in input.lines().enumerate() {
         let mut line_ref = line.trim();
+        let mut line_tokens = Vec::new();
 
         while !line_ref.is_empty() {
             let mut matched = false;
@@ -54,7 +56,7 @@ pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Vec<Token> {
             for (token_type, pattern) in patterns {
                 if let Some(word) = pattern.find(line_ref) {
                     let content = word.as_str();
-                    tokens.push(Token {
+                    line_tokens.push(Token {
                         token_type: token_type.clone(),
                         content: content.to_string(),
                         line_nr: i,
@@ -69,6 +71,10 @@ pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Vec<Token> {
                 println!("ERROR: Unknown token on line {}", i + 1);
                 std::process::exit(1);
             }
+        }
+
+        if !line_tokens.is_empty() {
+            tokens.push(line_tokens)
         }
     }
     tokens
