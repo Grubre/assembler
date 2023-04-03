@@ -3,22 +3,11 @@ use crate::config::{ArgDef, Config, InstructionDef};
 use super::lexer::{Token, TokenType};
 use std::collections::HashMap;
 
-pub fn parse_number(str: &str) -> Result<i64, std::num::ParseIntError> {
-    if let Some(num) = str.strip_prefix("0x") {
-        i64::from_str_radix(num, 16)
-    } else if let Some(num) = str.strip_prefix("0b") {
-        i64::from_str_radix(num, 2)
-    } else if let Some(num) = str.strip_prefix("0o") {
-        i64::from_str_radix(num, 8)
-    } else {
-        str.parse::<i64>()
-    }
-}
-
 #[derive(Debug)]
 pub enum Register {
     A,
     B,
+    F,
 }
 
 #[derive(Debug)]
@@ -34,28 +23,41 @@ pub enum Arg {
     MemAddress(Value),
 }
 
+#[derive(Debug)]
+pub struct Instruction {
+    mnem: String,
+    args: Vec<Arg>,
+}
+
+#[derive(Debug)]
+pub struct Labels(pub HashMap<String,usize>);
+
+///MATCHING
+
 impl Arg {
     pub fn matches_def(&self, def: &ArgDef) -> bool {
         match self {
             Arg::Register(Register::A) => *def == ArgDef::A,
             Arg::Register(Register::B) => *def == ArgDef::B,
+            Arg::Register(Register::F) => *def == ArgDef::F,
             Arg::ImmediateValue(_) => *def == ArgDef::Const,
             Arg::MemAddress(_) => *def == ArgDef::Mem,
         }
     }
+}
 
-    pub fn to_unresolved_binary(&self) -> Option<Unresolved> {
-        match self {
-            Arg::Register(_) => None,
-            //TODO: how to convert to binary
-            Arg::ImmediateValue(Value::Num(num)) => Some(Unresolved::Value(num.to_string())),
-            //TODO: how to convert to binary
-            Arg::MemAddress(Value::Num(num)) => Some(Unresolved::Value(num.to_string())),
-            Arg::ImmediateValue(Value::LabelRef(label)) => {
-                Some(Unresolved::LabelRef(label.clone()))
-            }
-            Arg::MemAddress(Value::LabelRef(label)) => Some(Unresolved::LabelRef(label.clone())),
-        }
+impl Instruction {
+    fn matches_def(&self, def: &InstructionDef) -> bool {
+        self.mnem == def.mnem
+            && self
+                .args
+                .iter()
+                .zip(def.args_def.iter())
+                .fold(true, |acc, (arg, def)| acc && arg.matches_def(def))
+    }
+
+    fn find_match<'a>(&self, config: &'a Config) -> Option<&'a InstructionDef> {
+        config.0.iter().find(|&def| self.matches_def(def))
     }
 }
 
@@ -88,30 +90,37 @@ impl TryFrom<&Token> for Arg {
 }
 
 #[derive(Debug)]
-pub struct Instruction {
-    mnem: String,
-    args: Vec<Arg>,
-}
-
-impl Instruction {
-    fn matches_def(&self, def: &InstructionDef) -> bool {
-        self.mnem == def.mnem
-            && self
-                .args
-                .iter()
-                .zip(def.args_def.iter())
-                .fold(true, |acc, (arg, def)| acc && arg.matches_def(def))
-    }
-
-    fn find_match<'a>(&self, config: &'a Config) -> Option<&'a InstructionDef> {
-        config.0.iter().find(|&def| self.matches_def(def))
-    }
-}
-
-#[derive(Debug)]
 pub enum Unresolved {
     LabelRef(String),
     Value(String),
+}
+
+impl Arg {
+    pub fn to_unresolved_binary(&self) -> Option<Unresolved> {
+        match self {
+            Arg::Register(_) => None,
+            //TODO: how to convert to binary
+            Arg::ImmediateValue(Value::Num(num)) => Some(Unresolved::Value(num.to_string())),
+            //TODO: how to convert to binary
+            Arg::MemAddress(Value::Num(num)) => Some(Unresolved::Value(num.to_string())),
+            Arg::ImmediateValue(Value::LabelRef(label)) => {
+                Some(Unresolved::LabelRef(label.clone()))
+            }
+            Arg::MemAddress(Value::LabelRef(label)) => Some(Unresolved::LabelRef(label.clone())),
+        }
+    }
+}
+
+pub fn parse_number(str: &str) -> Result<i64, std::num::ParseIntError> {
+    if let Some(num) = str.strip_prefix("0x") {
+        i64::from_str_radix(num, 16)
+    } else if let Some(num) = str.strip_prefix("0b") {
+        i64::from_str_radix(num, 2)
+    } else if let Some(num) = str.strip_prefix("0o") {
+        i64::from_str_radix(num, 8)
+    } else {
+        str.parse::<i64>()
+    }
 }
 
 fn parse_line(
@@ -156,35 +165,17 @@ fn parse_line(
     ret
 }
 
-pub fn resolve_label(labels: &HashMap<String, usize>, unresolved: &Unresolved) -> String {
-    match unresolved {
-        //TODO: convert to binary
-        Unresolved::LabelRef(label) => labels.get(label).unwrap().to_string(),
-        Unresolved::Value(bin) => bin.clone(),
-    }
-}
-
-pub fn resolve_all_labels(
-    labels: &HashMap<String, usize>,
-    unresolved: Vec<Unresolved>,
-) -> Vec<String> {
-    unresolved
-        .iter()
-        .map(|unr| resolve_label(labels, unr))
-        .collect()
-}
-
-pub fn final_parse(lines: &[impl AsRef<[Token]>], config: &Config) -> Vec<String> {
+pub fn parse_all(lines: &[impl AsRef<[Token]>], config: &Config) -> (Vec<Unresolved>, Labels) {
     let mut unresolved = Vec::new();
-    let mut labels = HashMap::new();
+    let mut labels = Labels(HashMap::new());
 
     let mut curr_line = 0;
     for line in lines {
-        let mut ret = parse_line(&mut labels, &mut curr_line, line.as_ref(), config);
+        let mut ret = parse_line(&mut labels.0, &mut curr_line, line.as_ref(), config);
         unresolved.append(&mut ret);
     }
 
-    resolve_all_labels(&labels, unresolved)
+    (unresolved, labels)
 }
 
 #[cfg(test)]
