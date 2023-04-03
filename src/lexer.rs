@@ -5,7 +5,7 @@ pub enum TokenType {
     Mnemonic,
     Register,
     Number,
-    MemAddress, //TODO
+    MemAddress,
     Label,
     LabelRef,
     LabelAddressRef,
@@ -53,7 +53,12 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
     patterns
 }
 
-pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Vec<Vec<Token>> {
+#[derive(Debug, PartialEq, Eq)]
+pub enum TokenizeError {
+    UnknownToken(usize, usize)
+}
+
+pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Result<Vec<Vec<Token>>, TokenizeError> {
     let mut tokens = Vec::new();
 
     for (i, line) in input.lines().enumerate() {
@@ -78,8 +83,7 @@ pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Vec<Vec<Toke
             }
 
             if !matched {
-                println!("ERROR: Unknown token on line {}", i + 1);
-                std::process::exit(1);
+                return Err(TokenizeError::UnknownToken(i + 1, 0));
             }
         }
 
@@ -87,5 +91,5 @@ pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Vec<Vec<Toke
             tokens.push(line_tokens)
         }
     }
-    tokens
+    Ok(tokens)
 }

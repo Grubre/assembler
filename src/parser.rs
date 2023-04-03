@@ -30,7 +30,7 @@ pub struct Instruction {
 }
 
 #[derive(Debug)]
-pub struct Labels(pub HashMap<String,usize>);
+pub struct Labels(pub HashMap<String, usize>);
 
 ///MATCHING
 
@@ -99,10 +99,8 @@ impl Arg {
     pub fn to_unresolved_binary(&self) -> Option<Unresolved> {
         match self {
             Arg::Register(_) => None,
-            //TODO: how to convert to binary
-            Arg::ImmediateValue(Value::Num(num)) => Some(Unresolved::Value(num.to_string())),
-            //TODO: how to convert to binary
-            Arg::MemAddress(Value::Num(num)) => Some(Unresolved::Value(num.to_string())),
+            Arg::ImmediateValue(Value::Num(num)) => Some(Unresolved::Value(format!("{:08b}", num))),
+            Arg::MemAddress(Value::Num(num)) => Some(Unresolved::Value(format!("{:08b}", num))),
             Arg::ImmediateValue(Value::LabelRef(label)) => {
                 Some(Unresolved::LabelRef(label.clone()))
             }
