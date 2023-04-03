@@ -55,7 +55,7 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum TokenizeError {
-    UnknownToken(usize, usize)
+    UnknownToken(usize, usize, String)
 }
 
 pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Result<Vec<Vec<Token>>, TokenizeError> {
@@ -83,7 +83,7 @@ pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Result<Vec<V
             }
 
             if !matched {
-                return Err(TokenizeError::UnknownToken(i + 1, 0));
+                return Err(TokenizeError::UnknownToken(i + 1, 0, String::from("")));
             }
         }
 

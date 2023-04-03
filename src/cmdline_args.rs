@@ -1,4 +1,5 @@
 use clap::Parser;
+use owo_colors::OwoColorize;
 use std::path::{Path, PathBuf};
 
 #[derive(Parser, Debug)]
@@ -16,7 +17,10 @@ pub fn get_io_files(args: &Args) -> (PathBuf, PathBuf) {
     let input_file = match args.input_file.clone() {
         Some(name) => name,
         // TODO: Error handling rather than panic
-        None => panic!(),
+        None => {
+            eprintln!("{} You need to provide the input file", "Error:".red().bold());
+            panic!();
+        },
     };
 
     let output_path = args.output_file.clone().unwrap_or(PathBuf::from("a.out"));
