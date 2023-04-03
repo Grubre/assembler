@@ -8,6 +8,7 @@ pub enum TokenType {
     MemAddress, //TODO
     Label,
     LabelRef,
+    LabelAddressRef,
     Comment,
 }
 
@@ -19,26 +20,35 @@ pub struct Token {
 }
 
 pub fn create_patterns() -> Vec<(TokenType, Regex)> {
-    let mut patterns = Vec::new();
-
-    patterns.push((
-        TokenType::Mnemonic,
-        Regex::new(r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)").unwrap(),
-    ));
-    patterns.push((TokenType::Register, Regex::new(r"^(A|B)").unwrap()));
-    patterns.push((
-        TokenType::Number,
-        Regex::new(r"^(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)$").unwrap(),
-    ));
-    patterns.push((
-        TokenType::Label,
-        Regex::new(r"^([a-zA-Z_][a-zA-Z0-9_]*):").unwrap(),
-    ));
-    patterns.push((
-        TokenType::LabelRef,
-        Regex::new(r"^#([a-zA-Z_][a-zA-Z0-9_]*)").unwrap(),
-    ));
-    patterns.push((TokenType::Comment, Regex::new(r"^;.*").unwrap()));
+    let patterns = vec![
+        (
+            TokenType::Mnemonic,
+            Regex::new(r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)")
+                .unwrap(),
+        ),
+        (TokenType::Register, Regex::new(r"^(A|B)").unwrap()),
+        (
+            TokenType::Number,
+            Regex::new(r"^(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)").unwrap(),
+        ),
+        (
+            TokenType::MemAddress,
+            Regex::new(r"^\[(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)\]").unwrap(),
+        ),
+        (
+            TokenType::Label,
+            Regex::new(r"^([a-zA-Z_][a-zA-Z0-9_]*):").unwrap(),
+        ),
+        (
+            TokenType::LabelRef,
+            Regex::new(r"^#([a-zA-Z_][a-zA-Z0-9_]*)").unwrap(),
+        ),
+        (
+            TokenType::LabelAddressRef,
+            Regex::new(r"^\[#([a-zA-Z_][a-zA-Z0-9_]*)\]").unwrap(),
+        ),
+        (TokenType::Comment, Regex::new(r"^;.*").unwrap()),
+    ];
 
     patterns
 }
@@ -54,14 +64,14 @@ pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Vec<Vec<Toke
             let mut matched = false;
 
             for (token_type, pattern) in patterns {
-                if let Some(word) = pattern.find(line_ref) {
-                    let content = word.as_str();
+                if let Some(word) = pattern.captures(line_ref) {
+                    let content = word.get(1).unwrap().as_str();
                     line_tokens.push(Token {
                         token_type: token_type.clone(),
                         content: content.to_string(),
                         line_nr: i,
                     });
-                    line_ref = line_ref[word.end()..].trim_start();
+                    line_ref = line_ref[word.get(0).unwrap().end()..].trim_start();
                     matched = true;
                     break;
                 }

@@ -1,4 +1,9 @@
-use std::{fs::read_to_string, io, path::Path, str::FromStr};
+use std::{
+    fs::read_to_string,
+    io,
+    path::Path,
+    str::FromStr,
+};
 
 #[derive(Debug)]
 pub enum ConfigParseKind {
@@ -92,7 +97,7 @@ impl FromStr for InstructionDef {
 }
 
 #[derive(Debug)]
-pub struct Config(Vec<InstructionDef>);
+pub struct Config(pub Vec<InstructionDef>);
 
 impl Config {
     pub fn read_from_file(file_path: impl AsRef<Path>) -> Result<Self, ConfigParseError> {
@@ -109,8 +114,17 @@ impl Config {
         Ok(Self(defs))
     }
 
-    pub fn create_mnem_regex() {
-        
+    pub fn create_mnem_regex(&self) -> String {
+        //Example: r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)"
+
+        let mnems = self
+            .0
+            .iter()
+            .map(|instr| instr.mnem.as_str())
+            .collect::<Vec<_>>()
+            .join("|");
+
+        format!(r"(?i)^({})", mnems)
     }
 }
 
@@ -132,5 +146,25 @@ mod test {
                 binary: "c0001000".to_string()
             }
         )
+    }
+
+    #[test]
+    fn test_regex_instr() {
+        let test = Config(vec![
+            InstructionDef {
+                mnem: "MOV".to_string(),
+                args_def: vec![ArgDef::Mem, ArgDef::B],
+                mnem_full: "MOVABSB".to_string(),
+                binary: "c0001000".to_string(),
+            },
+            InstructionDef {
+                mnem: "NOP".to_string(),
+                args_def: Vec::new(),
+                mnem_full: "NOP".to_string(),
+                binary: "c0000000".to_string(),
+            },
+        ]);
+
+        assert_eq!(test.create_mnem_regex(), r"(?i)^(MOV|NOP)")
     }
 }

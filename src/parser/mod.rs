@@ -1,164 +1,218 @@
+use crate::config::{ArgDef, Config, InstructionDef};
+
 use super::lexer::{Token, TokenType};
 use std::collections::HashMap;
 
 pub fn parse_number(str: &str) -> Result<i64, std::num::ParseIntError> {
-    if str.starts_with("0x") {
-        return i64::from_str_radix(&str[2..], 16);
+    if let Some(num) = str.strip_prefix("0x") {
+        i64::from_str_radix(num, 16)
+    } else if let Some(num) = str.strip_prefix("0b") {
+        i64::from_str_radix(num, 2)
+    } else if let Some(num) = str.strip_prefix("0o") {
+        i64::from_str_radix(num, 8)
+    } else {
+        str.parse::<i64>()
     }
-    if str.starts_with("0b") {
-        return i64::from_str_radix(&str[2..], 2);
-    }
-    if str.starts_with("0") {
-        return i64::from_str_radix(str, 8);
-    }
-
-    return i64::from_str_radix(str, 10);
 }
 
-pub fn parse_mem_address(str: &str) -> Result<i64, std::num::ParseIntError> {
-    todo!()
+#[derive(Debug)]
+pub enum Register {
+    A,
+    B,
 }
 
-pub enum Arg<'a> {
-    Register(&'a str),
-    ImmediateValue(i64),
-    MemAddress(i64),
+#[derive(Debug)]
+pub enum Value {
+    Num(i64),
     LabelRef(String),
+}
+
+#[derive(Debug)]
+pub enum Arg {
+    Register(Register),
+    ImmediateValue(Value),
+    MemAddress(Value),
+}
+
+impl Arg {
+    pub fn matches_def(&self, def: &ArgDef) -> bool {
+        match self {
+            Arg::Register(Register::A) => *def == ArgDef::A,
+            Arg::Register(Register::B) => *def == ArgDef::B,
+            Arg::ImmediateValue(_) => *def == ArgDef::Const,
+            Arg::MemAddress(_) => *def == ArgDef::Mem,
+        }
+    }
+
+    pub fn to_unresolved_binary(&self) -> Option<Unresolved> {
+        match self {
+            Arg::Register(_) => None,
+            //TODO: how to convert to binary
+            Arg::ImmediateValue(Value::Num(num)) => Some(Unresolved::Value(num.to_string())),
+            //TODO: how to convert to binary
+            Arg::MemAddress(Value::Num(num)) => Some(Unresolved::Value(num.to_string())),
+            Arg::ImmediateValue(Value::LabelRef(label)) => {
+                Some(Unresolved::LabelRef(label.clone()))
+            }
+            Arg::MemAddress(Value::LabelRef(label)) => Some(Unresolved::LabelRef(label.clone())),
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct TokenToArgError;
 
-impl<'a> TryFrom<&'a Token> for Arg<'a> {
+impl TryFrom<&Token> for Arg {
     type Error = TokenToArgError;
 
-    fn try_from(token: &'a Token) -> Result<Self, Self::Error> {
+    fn try_from(token: &Token) -> Result<Self, Self::Error> {
         match &token.token_type {
-            TokenType::Register => Ok(Arg::Register(&token.content)),
-            TokenType::Number => Ok(Arg::ImmediateValue(parse_number(&token.content).unwrap())),
-            TokenType::MemAddress => {
-                todo!();
-                Ok(Arg::MemAddress(parse_mem_address(&token.content).unwrap()))
+            TokenType::Register => match token.content.as_str() {
+                "A" => Ok(Arg::Register(Register::A)),
+                "B" => Ok(Arg::Register(Register::B)),
+                _ => unreachable!(),
+            },
+            TokenType::Number => Ok(Arg::ImmediateValue(Value::Num(
+                parse_number(&token.content).unwrap(),
+            ))),
+            TokenType::LabelRef => Ok(Arg::ImmediateValue(Value::LabelRef(token.content.clone()))),
+            TokenType::MemAddress => Ok(Arg::MemAddress(Value::Num(
+                parse_number(&token.content).unwrap(),
+            ))),
+            TokenType::LabelAddressRef => {
+                Ok(Arg::MemAddress(Value::LabelRef(token.content.clone())))
             }
             _ => Err(TokenToArgError {}),
         }
     }
 }
 
-pub enum Instruction<'a> {
-    Nop,
-    Mov(Arg<'a>, Arg<'a>),
-    Push(Arg<'a>),
-    Pop(Arg<'a>),
-    Jmp(Arg<'a>),
-    Add(Arg<'a>),
-    Sub(Arg<'a>, Arg<'a>, Arg<'a>),
-    Or(Arg<'a>),
-    And(Arg<'a>),
-    Neg(Arg<'a>, Arg<'a>),
-    Inv(Arg<'a>, Arg<'a>),
-    Shr(Arg<'a>, Arg<'a>),
-    Shl(Arg<'a>, Arg<'a>),
-    Cmp(Arg<'a>, Arg<'a>),
-    Halt,
+#[derive(Debug)]
+pub struct Instruction {
+    mnem: String,
+    args: Vec<Arg>,
 }
 
-fn populate_labels<'a>(lines: &[&'a [Token]]) -> HashMap<&'a str, usize> {
+impl Instruction {
+    fn matches_def(&self, def: &InstructionDef) -> bool {
+        self.mnem == def.mnem
+            && self
+                .args
+                .iter()
+                .zip(def.args_def.iter())
+                .fold(true, |acc, (arg, def)| acc && arg.matches_def(def))
+    }
+
+    fn find_match<'a>(&self, config: &'a Config) -> Option<&'a InstructionDef> {
+        config.0.iter().find(|&def| self.matches_def(def))
+    }
+}
+
+#[derive(Debug)]
+pub enum Unresolved {
+    LabelRef(String),
+    Value(String),
+}
+
+fn parse_line(
+    labels: &mut HashMap<String, usize>,
+    curr_line: &mut usize,
+    tokens: &[Token],
+    config: &Config,
+) -> Vec<Unresolved> {
+    let mut iter = tokens.iter().skip_while(|token| {
+        if token.token_type == TokenType::Label {
+            labels.insert(token.content.to_owned(), *curr_line);
+            true
+        } else {
+            false
+        }
+    });
+
+    let mnem = iter.next().unwrap();
+    assert_eq!(mnem.token_type, TokenType::Mnemonic);
+    let mnem = mnem.content.clone();
+
+    let args: Vec<_> = iter.map(|token| token.try_into().unwrap()).collect();
+
+    let instr = Instruction { mnem, args };
+
+    println!("{instr:?}");
+
+    let def = instr.find_match(config).unwrap();
+
+    let mut ret = Vec::new();
+
+    ret.push(Unresolved::Value(def.binary.clone()));
+
+    for arg in &instr.args {
+        if let Some(unres) = arg.to_unresolved_binary() {
+            ret.push(unres);
+        }
+    }
+
+    *curr_line += ret.len();
+
+    ret
+}
+
+pub fn resolve_label(labels: &HashMap<String, usize>, unresolved: &Unresolved) -> String {
+    match unresolved {
+        //TODO: convert to binary
+        Unresolved::LabelRef(label) => labels.get(label).unwrap().to_string(),
+        Unresolved::Value(bin) => bin.clone(),
+    }
+}
+
+pub fn resolve_all_labels(
+    labels: &HashMap<String, usize>,
+    unresolved: Vec<Unresolved>,
+) -> Vec<String> {
+    unresolved
+        .iter()
+        .map(|unr| resolve_label(labels, unr))
+        .collect()
+}
+
+pub fn final_parse(lines: &[impl AsRef<[Token]>], config: &Config) -> Vec<String> {
+    let mut unresolved = Vec::new();
     let mut labels = HashMap::new();
+
+    let mut curr_line = 0;
     for line in lines {
-        if let Some(token) = line.first() {
-            if token.token_type == TokenType::Label {
-                let label = token.content.trim_end_matches(':');
-                labels.insert(label, token.line_nr);
-            }
-        }
+        let mut ret = parse_line(&mut labels, &mut curr_line, line.as_ref(), config);
+        unresolved.append(&mut ret);
     }
-    labels
+
+    resolve_all_labels(&labels, unresolved)
 }
 
-fn parse_instruction(instruction: Instruction) -> String {
-    use Arg::*;
-    use Instruction::*;
-    match instruction {
-        Nop => todo!(),
-        Mov(Register(dest), Register(src)) => todo!(),
-        Mov(Register(dest), ImmediateValue(val)) => todo!(),
-        Mov(Register(dest), MemAddress(mem)) => todo!(),
-        Mov(MemAddress(mem), Register(src)) => todo!(),
-        Push(Register(reg)) => todo!(),
-        Push(ImmediateValue(val)) => todo!(),
-        Push(MemAddress(mem)) => todo!(),
-        Pop(Register(reg)) => todo!(),
-        Pop(MemAddress(reg)) => todo!(),
-        Jmp(_) => todo!(),
-        Add(MemAddress(reg)) => todo!(),
-        Sub(Register(op1), Register(op2), Register(dest)) => todo!(),
-        Sub(Register(op1), Register(op2), MemAddress(dest)) => todo!(),
-        Or(Register(dest)) => todo!(),
-        Or(MemAddress(dest)) => todo!(),
-        And(Register(dest)) => todo!(),
-        And(MemAddress(dest)) => todo!(),
-        Neg(Register(op), Register(dest)) => todo!(),
-        Neg(Register(op), MemAddress(dest)) => todo!(),
-        Inv(Register(op), Register(dest)) => todo!(),
-        Inv(Register(op), MemAddress(dest)) => todo!(),
-        Shr(Register(op), Register(dest)) => todo!(),
-        Shr(Register(op), MemAddress(dest)) => todo!(),
-        Shl(Register(op), Register(dest)) => todo!(),
-        Shl(Register(op), MemAddress(dest)) => todo!(),
-        Cmp(Register(reg1), Register(reg2)) => todo!(),
-        Halt => todo!(),
-        _ => panic!(),
-    }
-}
+#[cfg(test)]
+mod test {
+    use super::*;
 
-fn parse_line<'a>(labels: &HashMap<&str, usize>, tokens: &[Token]) -> String {
-    use Instruction::*;
+    #[test]
+    fn test() {
+        let instr = Instruction {
+            mnem: "SUB".to_string(),
+            args: vec![
+                Arg::MemAddress(Value::Num(5)),
+                Arg::Register(Register::A),
+                Arg::Register(Register::B),
+            ],
+        };
+        let def = InstructionDef {
+            mnem: "SUB".to_string(),
+            args_def: vec![ArgDef::Mem, ArgDef::A, ArgDef::B],
+            mnem_full: "SUBABMEM".to_string(),
+            binary: "c0011011".to_string(),
+        };
 
-    let mut iter = tokens.iter();
-
-    let mut mnemonic = iter.next().unwrap();
-    if tokens.first().unwrap().token_type == TokenType::Label {
-        mnemonic = iter.next().unwrap();
+        assert!(instr.matches_def(&def));
     }
 
-    let arg1 = Arg::try_from(iter.next().unwrap());
-    let arg2 = Arg::try_from(iter.next().unwrap());
-    let arg3 = Arg::try_from(iter.next().unwrap());
-
-    match mnemonic.content.as_str() {
-        "nop" => parse_instruction(Nop),
-        "mov" => parse_instruction(Instruction::Mov(arg2.unwrap(), arg1.unwrap())),
-        "push" => parse_instruction(Instruction::Push(arg1.unwrap())),
-        "pop" => parse_instruction(Instruction::Pop(arg1.unwrap())),
-        "jmp" => parse_instruction(Instruction::Jmp(arg1.unwrap())),
-        "add" => parse_instruction(Instruction::Add(arg1.unwrap())),
-        "sub" => parse_instruction(Instruction::Sub(
-            arg1.unwrap(),
-            arg2.unwrap(),
-            arg3.unwrap(),
-        )),
-        "or" => parse_instruction(Instruction::Or(arg1.unwrap())),
-        "and" => parse_instruction(Instruction::And(arg1.unwrap())),
-        "neg" => parse_instruction(Instruction::Neg(arg1.unwrap(), arg2.unwrap())),
-        "inv" => parse_instruction(Instruction::Inv(arg1.unwrap(), arg2.unwrap())),
-        "shr" => parse_instruction(Instruction::Shr(arg1.unwrap(), arg2.unwrap())),
-        "shl" => parse_instruction(Instruction::Shl(arg1.unwrap(), arg2.unwrap())),
-        "cmp" => parse_instruction(Instruction::Cmp(arg1.unwrap(), arg2.unwrap())),
-        "halt" => parse_instruction(Instruction::Halt {}),
-        _ => {
-            unreachable!()
-        }
+    #[test]
+    fn t_test() {
+        assert!(Arg::MemAddress(Value::Num(5)).matches_def(&ArgDef::Mem));
     }
-}
-
-pub fn parse(lines: &[&[Token]]) -> Vec<String> {
-    let mut output = Vec::new();
-    let labels = populate_labels(&lines);
-
-    for line in lines {
-        let str = parse_line(&labels, line);
-        output.push(str);
-    }
-    output
 }
