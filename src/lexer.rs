@@ -56,7 +56,7 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
 #[derive(Debug, PartialEq, Eq)]
 pub struct TokenizeError<'a> {
     pub line_nr: usize,
-    pub char_nr: usize,
+    pub char_index: usize,
     pub token: &'a str,
     pub line: &'a str,
 }
@@ -71,6 +71,9 @@ pub fn tokenize<'a>(
         let mut line_ref = line.trim();
         let mut line_tokens = Vec::new();
 
+        let mut char_index_accumulator = 1;
+
+        println!("line: {}", line);
         while !line_ref.is_empty() {
             let mut matched = false;
 
@@ -82,7 +85,12 @@ pub fn tokenize<'a>(
                         content: content.to_string(),
                         line_nr: i,
                     });
-                    line_ref = line_ref[word.get(0).unwrap().end()..].trim_start();
+                    let word_len = word.get(0).unwrap().end();
+                    let next_line_ref = &line_ref[word_len..];
+                    let next_line_ref_trimmed = &line_ref[word_len..].trim_start();
+                    let whitespace_len = next_line_ref.len() - next_line_ref_trimmed.len();
+                    char_index_accumulator += word_len + whitespace_len;
+                    line_ref = next_line_ref_trimmed;
                     matched = true;
                     break;
                 }
@@ -91,8 +99,7 @@ pub fn tokenize<'a>(
             if !matched {
                 return Err(TokenizeError {
                     line_nr: i + 1,
-                    // TODO: properly find char_nr
-                    char_nr: 0,
+                    char_index: char_index_accumulator,
                     token: line_ref.split_once(' ').unwrap_or((line_ref,line_ref)).0,
                     line: &line,
                 });

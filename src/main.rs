@@ -23,7 +23,7 @@ fn main() {
 
     let config = Config::read_from_file(config_file).unwrap();
 
-    println!("{config:#?}");
+    // println!("{config:#?}");
 
     let contents = read_to_string(&mut input).unwrap();
     let patterns = create_patterns();
@@ -35,7 +35,7 @@ fn main() {
             throw_error(Error {
                 input_file: args.input_file.unwrap().as_path(),
                 line_nr: err.line_nr,
-                char_nr: err.char_nr,
+                char_index: err.char_index,
                 error_string: &err_msg,
             });
             unreachable!()
