@@ -114,6 +114,10 @@ impl Config {
         Ok(Self(defs))
     }
 
+    pub const fn const_read_from_file() -> &'static str {
+        include_str!("../config.cfg")
+    }
+
     pub fn create_mnem_regex(&self) -> String {
         //Example: r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)"
 

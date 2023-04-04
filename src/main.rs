@@ -1,9 +1,10 @@
+use std::io::read_to_string;
 use std::{fs, ops::Deref};
 use std::path::PathBuf;
 
 use assembler::{
     error_handler::Error,
-    cmdline_args::{get_io_files, Args},
+    cmdline_args::{get_read_write, Args},
     config::Config,
     lexer::{create_patterns, tokenize},
     parser::parse_all,
@@ -18,16 +19,13 @@ fn main() {
 
     let args = Args::parse();
 
-    let (input_file, output_file) = get_io_files(&args);
-
-    println!("Input  file: {}", input_file.display());
-    println!("Output file: {}", output_file.display());
+    let (mut input, mut output) = get_read_write(&args).unwrap();
 
     let config = Config::read_from_file(config_file).unwrap();
 
     println!("{config:#?}");
 
-    let contents = fs::read_to_string("./test.as").expect("Failed to read the file");
+    let contents = read_to_string(&mut input).unwrap();
     let patterns = create_patterns();
 
     let tokens = match tokenize(&patterns, &contents) {
@@ -35,7 +33,7 @@ fn main() {
         Err(err) => match err {
             assembler::lexer::TokenizeError::UnknownToken(line_nr, _char_nr, _token) => {
                 error(Error {
-                    input_file: input_file.as_path(),
+                    input_file: args.input_file.unwrap().as_path(),
                     line_nr,
                     error_string: "Unknown token"
                 });
@@ -48,10 +46,14 @@ fn main() {
 
     let (unresolved, labels) = parse_all(&tokens, &config);
 
-    // println!("{unresolved:#?}");
+    println!("{unresolved:#?}");
     // println!("{labels:#?}");
 
     let resolved = resolve_all_labels(&labels, unresolved);
 
-    println!("{resolved:#?}")
+    println!("{resolved:#?}");
+
+    for line in resolved {
+        writeln!(&mut output, "{}", line).unwrap();
+    }
 }

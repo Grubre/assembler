@@ -1,6 +1,9 @@
 use clap::Parser;
-use owo_colors::OwoColorize;
-use std::path::{Path, PathBuf};
+use std::{
+    fs::File,
+    io::{stdin, BufRead, BufReader, Write, BufWriter, stdout, self},
+    path::PathBuf,
+};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -13,17 +16,18 @@ pub struct Args {
     pub output_file: Option<PathBuf>,
 }
 
-pub fn get_io_files(args: &Args) -> (PathBuf, PathBuf) {
-    let input_file = match args.input_file.clone() {
-        Some(name) => name,
-        // TODO: Error handling rather than panic
-        None => {
-            eprintln!("{} You need to provide the input file", "Error:".red().bold());
-            panic!();
-        },
+pub type ReadWriteResult = Result<(Box<dyn BufRead>, Box<dyn Write>),io::Error>;
+
+pub fn get_read_write(args: &Args) -> ReadWriteResult {
+    let input: Box<dyn BufRead> = match args.input_file.as_ref() {
+        Some(name) => Box::new(BufReader::new(File::open(name)?)),
+        None => Box::new(BufReader::new(stdin())),
     };
 
-    let output_path = args.output_file.clone().unwrap_or(PathBuf::from("a.out"));
+    let output: Box<dyn Write> = match args.output_file.as_ref() {
+        Some(name) => Box::new(BufWriter::new(File::open(name)?)),
+        None => Box::new(BufWriter::new(stdout())),
+    };
 
-    (input_file, output_path)
+    Ok((input, output))
 }
