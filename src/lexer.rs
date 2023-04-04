@@ -54,11 +54,17 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub enum TokenizeError {
-    UnknownToken(usize, usize, String)
+pub struct TokenizeError<'a> {
+    pub line_nr: usize,
+    pub char_nr: usize,
+    pub token: &'a str,
+    pub line: &'a str,
 }
 
-pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Result<Vec<Vec<Token>>, TokenizeError> {
+pub fn tokenize<'a>(
+    patterns: &'a Vec<(TokenType, Regex)>,
+    input: &'a str,
+) -> Result<Vec<Vec<Token>>, TokenizeError<'a>> {
     let mut tokens = Vec::new();
 
     for (i, line) in input.lines().enumerate() {
@@ -83,7 +89,13 @@ pub fn tokenize(patterns: &Vec<(TokenType, Regex)>, input: &str) -> Result<Vec<V
             }
 
             if !matched {
-                return Err(TokenizeError::UnknownToken(i + 1, 0, String::from("")));
+                return Err(TokenizeError {
+                    line_nr: i + 1,
+                    // TODO: properly find char_nr
+                    char_nr: 0,
+                    token: line_ref.split_once(' ').unwrap().0,
+                    line: &line,
+                });
             }
         }
 

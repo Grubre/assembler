@@ -1,14 +1,13 @@
 use std::io::read_to_string;
-use std::{fs, ops::Deref};
-use std::path::PathBuf;
 
 use assembler::{
-    error_handler::Error,
     cmdline_args::{get_read_write, Args},
     config::Config,
+    error_handler::throw_error,
+    error_handler::Error,
     lexer::{create_patterns, tokenize},
     parser::parse_all,
-    resolver::resolve_all_labels, error_handler::error,
+    resolver::resolve_all_labels,
 };
 use clap::Parser;
 
@@ -30,16 +29,15 @@ fn main() {
 
     let tokens = match tokenize(&patterns, &contents) {
         Ok(tokens) => tokens,
-        Err(err) => match err {
-            assembler::lexer::TokenizeError::UnknownToken(line_nr, _char_nr, _token) => {
-                error(Error {
-                    input_file: args.input_file.unwrap().as_path(),
-                    line_nr,
-                    error_string: "Unknown token"
-                });
-                panic!()
-            },
-        },
+        Err(err) => {
+            throw_error(Error {
+                input_file: args.input_file.unwrap().as_path(),
+                line_nr: err.line_nr,
+                char_nr: err.char_nr,
+                error_string: "Unknown token",
+            });
+            unreachable!()
+        }
     };
 
     // println!("{tokens:#?}");
