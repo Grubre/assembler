@@ -93,7 +93,7 @@ pub fn tokenize<'a>(
                     line_nr: i + 1,
                     // TODO: properly find char_nr
                     char_nr: 0,
-                    token: line_ref.split_once(' ').unwrap().0,
+                    token: line_ref.split_once(' ').unwrap_or((line_ref,line_ref)).0,
                     line: &line,
                 });
             }

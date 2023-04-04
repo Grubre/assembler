@@ -10,6 +10,7 @@ use assembler::{
     resolver::resolve_all_labels,
 };
 use clap::Parser;
+use owo_colors::OwoColorize;
 
 fn main() {
     env_logger::init();
@@ -30,11 +31,12 @@ fn main() {
     let tokens = match tokenize(&patterns, &contents) {
         Ok(tokens) => tokens,
         Err(err) => {
+            let err_msg = format!("Unknown token: `{}`", err.token.bold());
             throw_error(Error {
                 input_file: args.input_file.unwrap().as_path(),
                 line_nr: err.line_nr,
                 char_nr: err.char_nr,
-                error_string: "Unknown token",
+                error_string: &err_msg,
             });
             unreachable!()
         }
