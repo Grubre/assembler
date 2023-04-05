@@ -1,4 +1,7 @@
 use regex::Regex;
+use thiserror::Error;
+
+use crate::error::*;
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub enum TokenType {
@@ -12,11 +15,17 @@ pub enum TokenType {
     Comment,
 }
 
-#[derive(Debug, PartialEq, Hash)]
+#[derive(Debug)]
 pub struct Token {
     pub token_type: TokenType,
     pub content: String,
-    pub line_nr: usize,
+    pub span: Span,
+}
+
+#[derive(Debug, Error)]
+pub enum LexerErr {
+    #[error("Unknown token")]
+    UnknownToken,
 }
 
 pub fn create_patterns() -> Vec<(TokenType, Regex)> {
@@ -47,47 +56,38 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
             TokenType::LabelAddressRef,
             Regex::new(r"^\[#([a-zA-Z_][a-zA-Z0-9_]*)\]").unwrap(),
         ),
-        (TokenType::Comment, Regex::new(r"^;.*").unwrap()),
+        (TokenType::Comment, Regex::new(r"^;(.*)$").unwrap()),
     ];
 
     patterns
 }
 
-#[derive(Debug, PartialEq, Eq)]
-pub struct TokenizeError<'a> {
-    pub line_nr: usize,
-    pub char_index: usize,
-    pub token: &'a str,
-    pub line: &'a str,
-}
-
 pub fn tokenize<'a>(
     patterns: &'a Vec<(TokenType, Regex)>,
     input: &'a str,
-) -> Result<Vec<Vec<Token>>, TokenizeError<'a>> {
+) -> Result<Vec<Vec<Token>>, Vec<Error>> {
     let mut tokens = Vec::new();
+    let mut errors: Vec<Error> = Vec::new();
 
     for (i, line) in input.lines().enumerate() {
         let mut line_ref = line.trim();
+        let mut char_index_accumulator = line.len() - line_ref.len();
         let mut line_tokens = Vec::new();
 
-        let mut char_index_accumulator = 1;
-
-        println!("line: {}", line);
         while !line_ref.is_empty() {
             let mut matched = false;
 
             for (token_type, pattern) in patterns {
                 if let Some(word) = pattern.captures(line_ref) {
                     let content = word.get(1).unwrap().as_str();
+                    let word_len = word.get(0).unwrap().end();
                     line_tokens.push(Token {
                         token_type: token_type.clone(),
                         content: content.to_string(),
-                        line_nr: i,
+                        span: Span::new(i, char_index_accumulator..(char_index_accumulator + word_len)),
                     });
-                    let word_len = word.get(0).unwrap().end();
                     let next_line_ref = &line_ref[word_len..];
-                    let next_line_ref_trimmed = &line_ref[word_len..].trim_start();
+                    let next_line_ref_trimmed = next_line_ref.trim_start();
                     let whitespace_len = next_line_ref.len() - next_line_ref_trimmed.len();
                     char_index_accumulator += word_len + whitespace_len;
                     line_ref = next_line_ref_trimmed;
@@ -97,18 +97,27 @@ pub fn tokenize<'a>(
             }
 
             if !matched {
-                return Err(TokenizeError {
-                    line_nr: i + 1,
-                    char_index: char_index_accumulator,
-                    token: line_ref.split_once(' ').unwrap_or((line_ref,line_ref)).0,
-                    line: &line,
-                });
+                let split = line_ref.split_once(' ').unwrap_or((line_ref, ""));
+                let tok = split.0;
+                line_ref = split.1;
+                errors.push(LexerErr::UnknownToken.with_span(Span::new(
+                    i,
+                    char_index_accumulator..(char_index_accumulator + tok.len()),
+                )));
+                char_index_accumulator += tok.len() + 1;
             }
         }
-
+        
+        let line_tokens : Vec<_> = line_tokens.into_iter().filter(|tok| tok.token_type != TokenType::Comment).collect();
+        
         if !line_tokens.is_empty() {
             tokens.push(line_tokens)
         }
     }
-    Ok(tokens)
+
+    if errors.is_empty() {
+        Ok(tokens)
+    } else {
+        Err(errors)
+    }
 }

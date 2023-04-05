@@ -3,14 +3,12 @@ use std::io::read_to_string;
 use assembler::{
     cmdline_args::{get_read_write, Args},
     config::Config,
-    error_handler::throw_error,
-    error_handler::Error,
+    error::{ErrorGroup, FileContext},
     lexer::{create_patterns, tokenize},
     parser::parse_all,
     resolver::resolve_all_labels,
 };
 use clap::Parser;
-use owo_colors::OwoColorize;
 
 fn main() {
     env_logger::init();
@@ -26,32 +24,29 @@ fn main() {
     // println!("{config:#?}");
 
     let contents = read_to_string(&mut input).unwrap();
+
+    let file_ctx = FileContext::new(args.input_file.as_deref(), &contents);
+
     let patterns = create_patterns();
 
-    let tokens = match tokenize(&patterns, &contents) {
-        Ok(tokens) => tokens,
-        Err(err) => {
-            let err_msg = format!("Unknown token: `{}`", err.token.bold());
-            throw_error(Error {
-                input_file: args.input_file.unwrap().as_path(),
-                line_nr: err.line_nr,
-                char_index: err.char_index,
-                error_string: &err_msg,
-            });
-            unreachable!()
-        }
-    };
+    let tokens = tokenize(&patterns, &contents)
+        .map_err(|err| err.throw_all_with_ctx(&file_ctx))
+        .unwrap();
 
     // println!("{tokens:#?}");
 
-    let (unresolved, labels) = parse_all(&tokens, &config);
+    let (unresolved, labels) = parse_all(tokens, &config)
+        .map_err(|err| err.throw_all_with_ctx(&file_ctx))
+        .unwrap();
 
-    println!("{unresolved:#?}");
+    //println!("{unresolved:#?}");
     // println!("{labels:#?}");
 
-    let resolved = resolve_all_labels(&labels, unresolved);
+    let resolved = resolve_all_labels(&labels, unresolved)
+        .map_err(|err| err.throw_all_with_ctx(&file_ctx))
+        .unwrap();
 
-    println!("{resolved:#?}");
+    //println!("{resolved:#?}");
 
     for line in resolved {
         writeln!(&mut output, "{}", line).unwrap();

@@ -1,7 +1,20 @@
-use crate::config::{ArgDef, Config, InstructionDef};
+use thiserror::Error;
+
+use crate::{
+    config::{ArgDef, Config, InstructionDef},
+    error::{Error, Span, WithSpan},
+};
 
 use super::lexer::{Token, TokenType};
 use std::collections::HashMap;
+
+#[derive(Debug, Error)]
+pub enum ParseErr {
+    #[error("Can't find mapping")]
+    NoMapping,
+    #[error("Isn't an argument for instruction")]
+    NotAnArg,
+}
 
 #[derive(Debug)]
 pub enum Register {
@@ -17,15 +30,28 @@ pub enum Value {
 }
 
 #[derive(Debug)]
-pub enum Arg {
+pub enum ArgKind {
     Register(Register),
     ImmediateValue(Value),
     MemAddress(Value),
 }
 
+impl ArgKind {
+    pub fn with_span(self, span : Span) -> Arg {
+        Arg { kind: self, span }
+    }
+}
+
+#[derive(Debug)]
+pub struct Arg {
+    kind: ArgKind,
+    span: Span,
+}
+
 #[derive(Debug)]
 pub struct Instruction {
     mnem: String,
+    span: Span,
     args: Vec<Arg>,
 }
 
@@ -36,12 +62,12 @@ pub struct Labels(pub HashMap<String, usize>);
 
 impl Arg {
     pub fn matches_def(&self, def: &ArgDef) -> bool {
-        match self {
-            Arg::Register(Register::A) => *def == ArgDef::A,
-            Arg::Register(Register::B) => *def == ArgDef::B,
-            Arg::Register(Register::F) => *def == ArgDef::F,
-            Arg::ImmediateValue(_) => *def == ArgDef::Const,
-            Arg::MemAddress(_) => *def == ArgDef::Mem,
+        match self.kind {
+            ArgKind::Register(Register::A) => *def == ArgDef::A,
+            ArgKind::Register(Register::B) => *def == ArgDef::B,
+            ArgKind::Register(Register::F) => *def == ArgDef::F,
+            ArgKind::ImmediateValue(_) => *def == ArgDef::Const,
+            ArgKind::MemAddress(_) => *def == ArgDef::Mem,
         }
     }
 }
@@ -49,6 +75,7 @@ impl Arg {
 impl Instruction {
     fn matches_def(&self, def: &InstructionDef) -> bool {
         self.mnem == def.mnem
+            && self.args.len() == def.args_def.len()
             && self
                 .args
                 .iter()
@@ -61,50 +88,47 @@ impl Instruction {
     }
 }
 
-#[derive(Debug, PartialEq, Eq)]
-pub struct TokenToArgError;
+impl TryFrom<Token> for Arg {
+    type Error = Error;
 
-impl TryFrom<&Token> for Arg {
-    type Error = TokenToArgError;
-
-    fn try_from(token: &Token) -> Result<Self, Self::Error> {
+    fn try_from(token: Token) -> Result<Self, Self::Error> {
         match &token.token_type {
             TokenType::Register => match token.content.as_str() {
-                "A" => Ok(Arg::Register(Register::A)),
-                "B" => Ok(Arg::Register(Register::B)),
+                "A" => Ok(ArgKind::Register(Register::A)),
+                "B" => Ok(ArgKind::Register(Register::B)),
                 _ => unreachable!(),
             },
-            TokenType::Number => Ok(Arg::ImmediateValue(Value::Num(
+            TokenType::Number => Ok(ArgKind::ImmediateValue(Value::Num(
                 parse_number(&token.content).unwrap(),
             ))),
-            TokenType::LabelRef => Ok(Arg::ImmediateValue(Value::LabelRef(token.content.clone()))),
-            TokenType::MemAddress => Ok(Arg::MemAddress(Value::Num(
+            TokenType::LabelRef => Ok(ArgKind::ImmediateValue(Value::LabelRef(token.content.clone()))),
+            TokenType::MemAddress => Ok(ArgKind::MemAddress(Value::Num(
                 parse_number(&token.content).unwrap(),
             ))),
             TokenType::LabelAddressRef => {
-                Ok(Arg::MemAddress(Value::LabelRef(token.content.clone())))
+                Ok(ArgKind::MemAddress(Value::LabelRef(token.content.clone())))
             }
-            _ => Err(TokenToArgError {}),
-        }
+            _ => Err(ParseErr::NotAnArg.with_span(token.span.clone())),
+        }.map(|kind| kind.with_span(token.span))
     }
 }
 
 #[derive(Debug)]
 pub enum Unresolved {
-    LabelRef(String),
+    LabelRef(String, Span),
     Value(String),
 }
 
 impl Arg {
-    pub fn to_unresolved_binary(&self) -> Option<Unresolved> {
-        match self {
-            Arg::Register(_) => None,
-            Arg::ImmediateValue(Value::Num(num)) => Some(Unresolved::Value(format!("{:08b}", num))),
-            Arg::MemAddress(Value::Num(num)) => Some(Unresolved::Value(format!("{:08b}", num))),
-            Arg::ImmediateValue(Value::LabelRef(label)) => {
-                Some(Unresolved::LabelRef(label.clone()))
+    pub fn to_unresolved_binary(self) -> Option<Unresolved> {
+        match self.kind {
+            ArgKind::Register(_) => None,
+            ArgKind::ImmediateValue(Value::Num(num)) => Some(Unresolved::Value(format!("{:08b}", num))),
+            ArgKind::MemAddress(Value::Num(num)) => Some(Unresolved::Value(format!("{:08b}", num))),
+            ArgKind::ImmediateValue(Value::LabelRef(label)) => {
+                Some(Unresolved::LabelRef(label.clone(), self.span))
             }
-            Arg::MemAddress(Value::LabelRef(label)) => Some(Unresolved::LabelRef(label.clone())),
+            ArgKind::MemAddress(Value::LabelRef(label)) => Some(Unresolved::LabelRef(label.clone(), self.span)),
         }
     }
 }
@@ -124,10 +148,15 @@ pub fn parse_number(str: &str) -> Result<i64, std::num::ParseIntError> {
 fn parse_line(
     labels: &mut HashMap<String, usize>,
     curr_line: &mut usize,
-    tokens: &[Token],
+    tokens: Vec<Token>,
     config: &Config,
-) -> Vec<Unresolved> {
-    let mut iter = tokens.iter().skip_while(|token| {
+) -> Result<Vec<Unresolved>, Vec<Error>> {
+    let line_span = tokens
+        .iter()
+        .map(|tok| tok.span.clone())
+        .fold(Span::new(0, 0..0), |a, b| a + b);
+
+    let mut iter = tokens.into_iter().skip_while(|token| {
         if token.token_type == TokenType::Label {
             labels.insert(token.content.to_owned(), *curr_line);
             true
@@ -138,21 +167,31 @@ fn parse_line(
 
     let mnem = iter.next().unwrap();
     assert_eq!(mnem.token_type, TokenType::Mnemonic);
-    let mnem = mnem.content.clone();
+    let mnem = mnem.content;
 
-    let args: Vec<_> = iter.map(|token| token.try_into().unwrap()).collect();
+    let (args_ok, args_err): (Vec<Result<_, _>>, Vec<Result<_, _>>) =
+        iter.map(|token| token.try_into()).partition(Result::is_ok);
 
-    let instr = Instruction { mnem, args };
+    if !args_err.is_empty() {
+        let err = args_err.into_iter().map(|arg| arg.unwrap_err()).collect();
+        return Err(err);
+    }
 
-    println!("{instr:?}");
+    let args = args_ok.into_iter().map(|arg| arg.unwrap()).collect();
 
-    let def = instr.find_match(config).unwrap();
+    let instr = Instruction { mnem, args , span : line_span};
+
+    //println!("{instr:?}");
+
+    let def = instr
+        .find_match(config)
+        .ok_or(vec![ParseErr::NoMapping.with_span(instr.span)])?;
 
     let mut ret = Vec::new();
 
     ret.push(Unresolved::Value(def.binary.clone()));
 
-    for arg in &instr.args {
+    for arg in instr.args {
         if let Some(unres) = arg.to_unresolved_binary() {
             ret.push(unres);
         }
@@ -160,20 +199,32 @@ fn parse_line(
 
     *curr_line += ret.len();
 
-    ret
+    Ok(ret)
 }
 
-pub fn parse_all(lines: &[impl AsRef<[Token]>], config: &Config) -> (Vec<Unresolved>, Labels) {
+pub fn parse_all(
+    lines: Vec<Vec<Token>>,
+    config: &Config,
+) -> Result<(Vec<Unresolved>, Labels), Vec<Error>> {
     let mut unresolved = Vec::new();
+    let mut errors = Vec::new();
+
     let mut labels = Labels(HashMap::new());
 
     let mut curr_line = 0;
     for line in lines {
-        let mut ret = parse_line(&mut labels.0, &mut curr_line, line.as_ref(), config);
-        unresolved.append(&mut ret);
+        let ret = parse_line(&mut labels.0, &mut curr_line, line, config);
+        match ret {
+            Ok(mut unr) => unresolved.append(&mut unr),
+            Err(mut err) => errors.append(&mut err),
+        }
     }
 
-    (unresolved, labels)
+    if errors.is_empty() {
+        Ok((unresolved, labels))
+    } else {
+        Err(errors)
+    }
 }
 
 #[cfg(test)]
@@ -182,13 +233,16 @@ mod test {
 
     #[test]
     fn test() {
+        let dummy_span = Span::new(0, 0..0);
+
         let instr = Instruction {
             mnem: "SUB".to_string(),
             args: vec![
-                Arg::MemAddress(Value::Num(5)),
-                Arg::Register(Register::A),
-                Arg::Register(Register::B),
+                ArgKind::MemAddress(Value::Num(5)).with_span(dummy_span.clone()),
+                ArgKind::Register(Register::A).with_span(dummy_span.clone()),
+                ArgKind::Register(Register::B).with_span(dummy_span.clone()),
             ],
+            span : dummy_span.clone()
         };
         let def = InstructionDef {
             mnem: "SUB".to_string(),
@@ -202,6 +256,6 @@ mod test {
 
     #[test]
     fn t_test() {
-        assert!(Arg::MemAddress(Value::Num(5)).matches_def(&ArgDef::Mem));
+        assert!(ArgKind::MemAddress(Value::Num(5)).with_span(Span::new(0, 0..0)).matches_def(&ArgDef::Mem));
     }
 }
