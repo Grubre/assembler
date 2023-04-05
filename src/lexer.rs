@@ -13,6 +13,7 @@ pub enum TokenType {
     LabelRef,
     LabelAddressRef,
     Comment,
+    Byte,
 }
 
 #[derive(Debug)]
@@ -35,7 +36,7 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
             Regex::new(r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)")
                 .unwrap(),
         ),
-        (TokenType::Register, Regex::new(r"^(A|B)").unwrap()),
+        (TokenType::Register, Regex::new(r"^(A|B|F)").unwrap()),
         (
             TokenType::Number,
             Regex::new(r"^(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)").unwrap(),
@@ -57,6 +58,7 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
             Regex::new(r"^\[#([a-zA-Z_][a-zA-Z0-9_]*)\]").unwrap(),
         ),
         (TokenType::Comment, Regex::new(r"^;(.*)$").unwrap()),
+        (TokenType::Byte, Regex::new(r"^(byte)").unwrap()),
     ];
 
     patterns
@@ -84,7 +86,10 @@ pub fn tokenize<'a>(
                     line_tokens.push(Token {
                         token_type: token_type.clone(),
                         content: content.to_string(),
-                        span: Span::new(i, char_index_accumulator..(char_index_accumulator + word_len)),
+                        span: Span::new(
+                            i,
+                            char_index_accumulator..(char_index_accumulator + word_len),
+                        ),
                     });
                     let next_line_ref = &line_ref[word_len..];
                     let next_line_ref_trimmed = next_line_ref.trim_start();
@@ -107,9 +112,12 @@ pub fn tokenize<'a>(
                 char_index_accumulator += tok.len() + 1;
             }
         }
-        
-        let line_tokens : Vec<_> = line_tokens.into_iter().filter(|tok| tok.token_type != TokenType::Comment).collect();
-        
+
+        let line_tokens: Vec<_> = line_tokens
+            .into_iter()
+            .filter(|tok| tok.token_type != TokenType::Comment)
+            .collect();
+
         if !line_tokens.is_empty() {
             tokens.push(line_tokens)
         }

@@ -37,7 +37,7 @@ pub enum ArgKind {
 }
 
 impl ArgKind {
-    pub fn with_span(self, span : Span) -> Arg {
+    pub fn with_span(self, span: Span) -> Arg {
         Arg { kind: self, span }
     }
 }
@@ -101,7 +101,9 @@ impl TryFrom<Token> for Arg {
             TokenType::Number => Ok(ArgKind::ImmediateValue(Value::Num(
                 parse_number(&token.content).unwrap(),
             ))),
-            TokenType::LabelRef => Ok(ArgKind::ImmediateValue(Value::LabelRef(token.content.clone()))),
+            TokenType::LabelRef => Ok(ArgKind::ImmediateValue(Value::LabelRef(
+                token.content.clone(),
+            ))),
             TokenType::MemAddress => Ok(ArgKind::MemAddress(Value::Num(
                 parse_number(&token.content).unwrap(),
             ))),
@@ -109,7 +111,8 @@ impl TryFrom<Token> for Arg {
                 Ok(ArgKind::MemAddress(Value::LabelRef(token.content.clone())))
             }
             _ => Err(ParseErr::NotAnArg.with_span(token.span.clone())),
-        }.map(|kind| kind.with_span(token.span))
+        }
+        .map(|kind| kind.with_span(token.span))
     }
 }
 
@@ -123,12 +126,16 @@ impl Arg {
     pub fn to_unresolved_binary(self) -> Option<Unresolved> {
         match self.kind {
             ArgKind::Register(_) => None,
-            ArgKind::ImmediateValue(Value::Num(num)) => Some(Unresolved::Value(format!("{:08b}", num))),
+            ArgKind::ImmediateValue(Value::Num(num)) => {
+                Some(Unresolved::Value(format!("{:08b}", num)))
+            }
             ArgKind::MemAddress(Value::Num(num)) => Some(Unresolved::Value(format!("{:08b}", num))),
             ArgKind::ImmediateValue(Value::LabelRef(label)) => {
                 Some(Unresolved::LabelRef(label.clone(), self.span))
             }
-            ArgKind::MemAddress(Value::LabelRef(label)) => Some(Unresolved::LabelRef(label.clone(), self.span)),
+            ArgKind::MemAddress(Value::LabelRef(label)) => {
+                Some(Unresolved::LabelRef(label.clone(), self.span))
+            }
         }
     }
 }
@@ -165,37 +172,52 @@ fn parse_line(
         }
     });
 
-    let mnem = iter.next().unwrap();
-    assert_eq!(mnem.token_type, TokenType::Mnemonic);
-    let mnem = mnem.content;
-
-    let (args_ok, args_err): (Vec<Result<_, _>>, Vec<Result<_, _>>) =
-        iter.map(|token| token.try_into()).partition(Result::is_ok);
-
-    if !args_err.is_empty() {
-        let err = args_err.into_iter().map(|arg| arg.unwrap_err()).collect();
-        return Err(err);
-    }
-
-    let args = args_ok.into_iter().map(|arg| arg.unwrap()).collect();
-
-    let instr = Instruction { mnem, args , span : line_span};
-
-    //println!("{instr:?}");
-
-    let def = instr
-        .find_match(config)
-        .ok_or(vec![ParseErr::NoMapping.with_span(instr.span)])?;
-
+    let first_token = iter.next().unwrap();
     let mut ret = Vec::new();
 
-    ret.push(Unresolved::Value(def.binary.clone()));
+    match first_token.token_type {
+        TokenType::Mnemonic => {
+            let content = first_token.content;
 
-    for arg in instr.args {
-        if let Some(unres) = arg.to_unresolved_binary() {
-            ret.push(unres);
+            let (args_ok, args_err): (Vec<Result<_, _>>, Vec<Result<_, _>>) =
+                iter.map(|token| token.try_into()).partition(Result::is_ok);
+
+            if !args_err.is_empty() {
+                let err = args_err.into_iter().map(|arg| arg.unwrap_err()).collect();
+                return Err(err);
+            }
+
+            let args = args_ok.into_iter().map(|arg| arg.unwrap()).collect();
+
+            let instr = Instruction {
+                mnem: content,
+                args,
+                span: line_span,
+            };
+
+            let def = instr
+                .find_match(config)
+                .ok_or(vec![ParseErr::NoMapping.with_span(instr.span)])?;
+
+            ret.push(Unresolved::Value(def.binary.clone()));
+
+            for arg in instr.args {
+                if let Some(unres) = arg.to_unresolved_binary() {
+                    ret.push(unres);
+                }
+            }
         }
-    }
+        TokenType::Byte => {
+            let value = iter.next().unwrap();
+            ret.push(Unresolved::Value(format!(
+                "{:08b}",
+                parse_number(&value.content).unwrap()
+            )));
+        }
+        _ => {
+            panic!();
+        }
+    };
 
     *curr_line += ret.len();
 
@@ -242,7 +264,7 @@ mod test {
                 ArgKind::Register(Register::A).with_span(dummy_span.clone()),
                 ArgKind::Register(Register::B).with_span(dummy_span.clone()),
             ],
-            span : dummy_span.clone()
+            span: dummy_span.clone(),
         };
         let def = InstructionDef {
             mnem: "SUB".to_string(),
@@ -256,6 +278,8 @@ mod test {
 
     #[test]
     fn t_test() {
-        assert!(ArgKind::MemAddress(Value::Num(5)).with_span(Span::new(0, 0..0)).matches_def(&ArgDef::Mem));
+        assert!(ArgKind::MemAddress(Value::Num(5))
+            .with_span(Span::new(0, 0..0))
+            .matches_def(&ArgDef::Mem));
     }
 }
