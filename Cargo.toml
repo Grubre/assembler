@@ -12,3 +12,4 @@ regex = "1.7.3"
 clap = { version = "4.2.1", features = ["derive"] }
 owo-colors = "3"
 thiserror = "1.0.40"
+tempfile = "3.5.0"
