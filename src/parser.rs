@@ -282,4 +282,53 @@ mod test {
             .with_span(Span::new(0, 0..0))
             .matches_def(&ArgDef::Mem));
     }
+    use super::parse_number;
+
+    #[test]
+    fn test_parse_decimal() {
+        assert_eq!(parse_number("42").unwrap(), 42);
+        assert_eq!(parse_number("-42").unwrap(), -42);
+        assert_eq!(parse_number("0").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_parse_hexadecimal() {
+        assert_eq!(parse_number("0x2A").unwrap(), 42);
+        assert_eq!(parse_number("0x2a").unwrap(), 42);
+        assert_eq!(parse_number("-0x2A").unwrap(), -42);
+        assert_eq!(parse_number("0x0").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_parse_binary() {
+        assert_eq!(parse_number("0b101010").unwrap(), 42);
+        assert_eq!(parse_number("0b0").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_parse_octal() {
+        assert_eq!(parse_number("0o52").unwrap(), 42);
+        assert_eq!(parse_number("-0o52").unwrap(), -42);
+        assert_eq!(parse_number("0o0").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_parse_invalid_input() {
+        assert!(parse_number("invalid").is_err());
+        assert!(parse_number("0xG").is_err());
+        assert!(parse_number("0b3").is_err());
+        assert!(parse_number("0o9").is_err());
+    }
+
+    #[test]
+    fn test_parse_overflow() {
+        assert!(parse_number("9223372036854775808").is_err());
+        assert!(parse_number("-9223372036854775809").is_err());
+        assert!(parse_number("0x8000000000000000").is_err());
+        assert!(
+            parse_number("0b1000000000000000000000000000000000000000000000000000000000000000")
+                .is_err()
+        );
+        assert!(parse_number("0o1000000000000000000000").is_err());
+    }
 }
