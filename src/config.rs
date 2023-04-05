@@ -1,9 +1,4 @@
-use std::{
-    fs::read_to_string,
-    io,
-    path::Path,
-    str::FromStr,
-};
+use std::{fs::read_to_string, io, path::Path, str::FromStr};
 
 #[derive(Debug)]
 pub enum ConfigParseKind {
