@@ -39,7 +39,7 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
         (TokenType::Register, Regex::new(r"^(A|B|F)").unwrap()),
         (
             TokenType::Number,
-            Regex::new(r"^(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)").unwrap(),
+            Regex::new(r"^(-?0x[0-9A-Fa-f]+|0b[01]+|-?0o[0-7]+|-?[0-9]+)").unwrap(),
         ),
         (
             TokenType::MemAddress,

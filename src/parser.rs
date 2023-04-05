@@ -285,14 +285,14 @@ mod test {
     use super::parse_number;
 
     #[test]
-    fn test_parse_decimal() {
+    fn test_parse_number_decimal() {
         assert_eq!(parse_number("42").unwrap(), 42);
         assert_eq!(parse_number("-42").unwrap(), -42);
         assert_eq!(parse_number("0").unwrap(), 0);
     }
 
     #[test]
-    fn test_parse_hexadecimal() {
+    fn test_parse_number_hexadecimal() {
         assert_eq!(parse_number("0x2A").unwrap(), 42);
         assert_eq!(parse_number("0x2a").unwrap(), 42);
         assert_eq!(parse_number("-0x2A").unwrap(), -42);
@@ -300,20 +300,20 @@ mod test {
     }
 
     #[test]
-    fn test_parse_binary() {
+    fn test_parse_number_binary() {
         assert_eq!(parse_number("0b101010").unwrap(), 42);
         assert_eq!(parse_number("0b0").unwrap(), 0);
     }
 
     #[test]
-    fn test_parse_octal() {
+    fn test_parse_number_octal() {
         assert_eq!(parse_number("0o52").unwrap(), 42);
         assert_eq!(parse_number("-0o52").unwrap(), -42);
         assert_eq!(parse_number("0o0").unwrap(), 0);
     }
 
     #[test]
-    fn test_parse_invalid_input() {
+    fn test_parse_number_invalid_input() {
         assert!(parse_number("invalid").is_err());
         assert!(parse_number("0xG").is_err());
         assert!(parse_number("0b3").is_err());
@@ -321,7 +321,7 @@ mod test {
     }
 
     #[test]
-    fn test_parse_overflow() {
+    fn test_parse_number_overflow() {
         assert!(parse_number("9223372036854775808").is_err());
         assert!(parse_number("-9223372036854775809").is_err());
         assert!(parse_number("0x8000000000000000").is_err());
