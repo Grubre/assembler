@@ -3,4 +3,4 @@ JMP #test
 JMP #a
 ADD A ; f
 a: SUB [0b101] A B
-byte 0x01 0x02 ADD
+byte -0x01 0x02

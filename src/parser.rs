@@ -31,7 +31,7 @@ pub enum Register {
 
 #[derive(Debug)]
 pub enum Value {
-    Num(i64),
+    Num(i8),
     LabelRef(String),
 }
 
@@ -94,16 +94,25 @@ impl Instruction {
     }
 }
 
-pub fn parse_number(str: &str) -> Result<i64, ParseErr> {
-    if let Some(num) = str.strip_prefix("0x") {
-        i64::from_str_radix(num, 16)
+
+pub fn parse_number(str: &str) -> Result<i8, ParseErr> {
+    let is_negative = str.starts_with('-');
+    let str = if is_negative { &str[1..] } else { str };
+
+    let result = if let Some(num) = str.strip_prefix("0x") {
+        i8::from_str_radix(num, 16)
     } else if let Some(num) = str.strip_prefix("0b") {
-        i64::from_str_radix(num, 2)
+        i8::from_str_radix(num, 2)
     } else if let Some(num) = str.strip_prefix("0o") {
-        i64::from_str_radix(num, 8)
+        i8::from_str_radix(num, 8)
     } else {
-        str.parse::<i64>()
-    }.map_err(|err| err.into())
+        str.parse::<i8>()
+    }.map_err(|err| err.into());
+
+    match result {
+        Ok(num) if is_negative => Ok(-num),
+        _ => result,
+    }
 }
 
 impl TryFrom<Token> for Arg {
