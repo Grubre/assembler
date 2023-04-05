@@ -94,7 +94,6 @@ impl Instruction {
     }
 }
 
-
 pub fn parse_number(str: &str) -> Result<i8, ParseErr> {
     let is_negative = str.starts_with('-');
     let str = if is_negative { &str[1..] } else { str };
@@ -107,7 +106,8 @@ pub fn parse_number(str: &str) -> Result<i8, ParseErr> {
         i8::from_str_radix(num, 8)
     } else {
         str.parse::<i8>()
-    }.map_err(|err| err.into());
+    }
+    .map_err(|err| err.into());
 
     match result {
         Ok(num) if is_negative => Ok(-num),
@@ -188,7 +188,9 @@ fn parse_line(
         }
     });
 
-    let first_token = iter.next().ok_or(vec![ParseErr::EmptyLine.with_span(line_span.clone())])?;
+    let first_token = iter
+        .next()
+        .ok_or(vec![ParseErr::EmptyLine.with_span(line_span.clone())])?;
     let mut ret = Vec::new();
 
     match first_token.token_type {
@@ -219,7 +221,8 @@ fn parse_line(
             for tok in iter {
                 ret.push(Unresolved::Value(format!(
                     "{:08b}",
-                    parse_number(&tok.content).map_err(|err| vec![err.with_span(tok.span.clone())])?
+                    parse_number(&tok.content)
+                        .map_err(|err| vec![err.with_span(tok.span.clone())])?
                 )));
             }
         }
@@ -228,7 +231,6 @@ fn parse_line(
         }
     };
     *curr_line += ret.len();
-
 
     Ok(ret)
 }
@@ -339,5 +341,127 @@ mod test {
                 .is_err()
         );
         assert!(parse_number("0o1000000000000000000000").is_err());
+    }
+
+    #[test]
+    fn test_instruction_find_match() {
+        let dummy_span = Span::new(0, 0..0);
+        let config = Config(vec![InstructionDef {
+            mnem: "SUB".to_string(),
+            args_def: vec![ArgDef::Mem, ArgDef::A, ArgDef::B],
+            mnem_full: "SUBABMEM".to_string(),
+            binary: "c0011011".to_string(),
+        }]);
+
+        let instr = Instruction {
+            mnem: "SUB".to_string(),
+            args: vec![
+                ArgKind::MemAddress(Value::Num(5)).with_span(dummy_span.clone()),
+                ArgKind::Register(Register::A).with_span(dummy_span.clone()),
+                ArgKind::Register(Register::B).with_span(dummy_span.clone()),
+            ],
+            span: dummy_span,
+        };
+
+        assert!(instr.find_match(&config).is_some());
+    }
+
+    #[test]
+    fn test_arg_try_from_invalid_token() {
+        let invalid_token = Token {
+            token_type: TokenType::Label,
+            content: "label".to_string(),
+            span: Span::new(0, 0..5),
+        };
+
+        assert!(Arg::try_from(invalid_token).is_err());
+    }
+
+    #[test]
+    fn test_parse_all_success() {
+        let lines = vec![
+            vec![
+                Token {
+                    token_type: TokenType::Mnemonic,
+                    content: "ADD".to_string(),
+                    span: Span::new(0, 0..3),
+                },
+                Token {
+                    token_type: TokenType::Register,
+                    content: "A".to_string(),
+                    span: Span::new(0, 4..5),
+                },
+                Token {
+                    token_type: TokenType::Number,
+                    content: "5".to_string(),
+                    span: Span::new(0, 6..7),
+                },
+            ],
+            vec![
+                Token {
+                    token_type: TokenType::Byte,
+                    content: ".byte".to_string(),
+                    span: Span::new(1, 0..5),
+                },
+                Token {
+                    token_type: TokenType::Number,
+                    content: "42".to_string(),
+                    span: Span::new(1, 6..8),
+                },
+            ],
+        ];
+        let config = Config(vec![InstructionDef {
+            mnem: "ADD".to_string(),
+            args_def: vec![ArgDef::A, ArgDef::Const],
+            mnem_full: "ADDA".to_string(),
+            binary: "c0001010".to_string(),
+        }]);
+
+        assert!(parse_all(lines, &config).is_ok());
+    }
+
+    #[test]
+    fn test_parse_all_errors() {
+        let lines = vec![
+            vec![
+                Token {
+                    token_type: TokenType::Mnemonic,
+                    content: "INVALID".to_string(),
+                    span: Span::new(0, 0..7),
+                },
+                Token {
+                    token_type: TokenType::Register,
+                    content: "A".to_string(),
+                    span: Span::new(0, 8..9),
+                },
+                Token {
+                    token_type: TokenType::Number,
+                    content: "5".to_string(),
+                    span: Span::new(0, 10..11),
+                },
+            ],
+            vec![
+                Token {
+                    token_type: TokenType::Byte,
+                    content: ".byte".to_string(),
+                    span: Span::new(1, 0..5),
+                },
+                Token {
+                    token_type: TokenType::Number,
+                    content: "42".to_string(),
+                    span: Span::new(1, 6..8),
+                },
+            ],
+        ];
+        let config = Config(vec![InstructionDef {
+            mnem: "ADD".to_string(),
+            args_def: vec![ArgDef::A, ArgDef::Const],
+            mnem_full: "ADDA".to_string(),
+            binary: "c0001010".to_string(),
+        }]);
+
+        let result = parse_all(lines, &config);
+        assert!(result.is_err());
+        assert!(!result.unwrap_err().is_empty());
     }
 }
