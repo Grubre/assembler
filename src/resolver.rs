@@ -1,7 +1,7 @@
 use thiserror::Error;
 
 use crate::{
-    error::{Error, WithSpan},
+    error::{Error, WithSpan, ResultSplit},
     parser::{Labels, Unresolved},
 };
 
@@ -17,22 +17,17 @@ pub fn resolve_label(labels: &Labels, unresolved: Unresolved) -> Result<String, 
         Unresolved::LabelRef(label, span) => labels
             .0
             .get(&label)
-            .ok_or(ResolveErr::UnknownLabel.with_span(span))
-            .map(|value| format!("{:08b}", value)),
-        Unresolved::Value(bin) => Ok(bin.clone()),
+            .map(|value| format!("{:08b}", value))
+            .ok_or(ResolveErr::UnknownLabel.with_span(span)),
+        Unresolved::Value(bin) => Ok(bin),
     }
 }
 
 pub fn resolve_all_labels(labels: &Labels, unresolved: Vec<Unresolved>) -> Result<Vec<String>,Vec<Error>> {
-    let (ok,err) : (Vec<_>, Vec<_>) = unresolved
+    let ok = unresolved
         .into_iter()
         .map(|unr| resolve_label(labels, unr))
-        .partition(Result::is_ok);
+        .result_split()?;
 
-    if !err.is_empty() {
-        let err = err.into_iter().map(|arg| arg.unwrap_err()).collect();
-        return Err(err);
-    }
-
-    Ok(ok.into_iter().map(|arg| arg.unwrap()).collect())  
+    Ok(ok)  
 }
