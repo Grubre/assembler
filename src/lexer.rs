@@ -18,6 +18,8 @@ pub enum TokenType {
     Byte,
 }
 
+// TODO: Remove manual Eq and PartialEq implementation
+// TODO: But then the tests don't pass and I don't feel like fixing it now
 #[derive(Debug)]
 pub struct Token {
     pub token_type: TokenType,

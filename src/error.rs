@@ -1,4 +1,10 @@
-use std::{fmt::Display, ops::{Range, Add}, path::Path, process, cmp::{min, max}};
+use std::{
+    cmp::{max, min},
+    fmt::Display,
+    ops::{Add, Range},
+    path::Path,
+    process,
+};
 use thiserror::Error;
 
 use crate::{lexer::LexerErr, parser::ParseErr, resolver::ResolveErr};
@@ -57,7 +63,7 @@ impl Error {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Span {
     line: usize,
     chars: Range<usize>,
@@ -117,18 +123,17 @@ impl ErrorGroup for Vec<Error> {
 }
 
 pub trait ResultSplit<T> {
-   fn result_split(self) -> Result<Vec<T>,Vec<Error>>; 
+    fn result_split(self) -> Result<Vec<T>, Vec<Error>>;
 }
 
-impl<T,I : Iterator<Item = Result<T, Error>>> ResultSplit<T> for I {
-    fn result_split(self) -> Result<Vec<T>,Vec<Error>> {
-        let (ok,err) : (Vec<_>, Vec<_>) = self.partition(Result::is_ok);
+impl<T, I: Iterator<Item = Result<T, Error>>> ResultSplit<T> for I {
+    fn result_split(self) -> Result<Vec<T>, Vec<Error>> {
+        let (ok, err): (Vec<_>, Vec<_>) = self.partition(Result::is_ok);
 
         if err.is_empty() {
             let ok = ok.into_iter().map(|t| t.ok().unwrap()).collect();
             Ok(ok)
-        }
-        else {
+        } else {
             let err = err.into_iter().map(|t| t.err().unwrap()).collect();
             Err(err)
         }
