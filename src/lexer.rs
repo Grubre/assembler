@@ -33,17 +33,17 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
     let patterns = vec![
         (
             TokenType::Mnemonic,
-            Regex::new(r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)")
+            Regex::new(r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)(\s|\n|$)")
                 .unwrap(),
         ),
-        (TokenType::Register, Regex::new(r"^(A|B|F)").unwrap()),
+        (TokenType::Register, Regex::new(r"^(A|B|F)(\s|\n|$)").unwrap()),
         (
             TokenType::Number,
-            Regex::new(r"^(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)").unwrap(),
+            Regex::new(r"^(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)(\s|\n|$)").unwrap(),
         ),
         (
             TokenType::MemAddress,
-            Regex::new(r"^\[(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)\]").unwrap(),
+            Regex::new(r"^\[(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|[0-9]+)\](\s|\n|$)").unwrap(),
         ),
         (
             TokenType::Label,
@@ -51,14 +51,14 @@ pub fn create_patterns() -> Vec<(TokenType, Regex)> {
         ),
         (
             TokenType::LabelRef,
-            Regex::new(r"^#([a-zA-Z_][a-zA-Z0-9_]*)").unwrap(),
+            Regex::new(r"^#([a-zA-Z_][a-zA-Z0-9_]*)(\s|\n|$)").unwrap(),
         ),
         (
             TokenType::LabelAddressRef,
-            Regex::new(r"^\[#([a-zA-Z_][a-zA-Z0-9_]*)\]").unwrap(),
+            Regex::new(r"^\[#([a-zA-Z_][a-zA-Z0-9_]*)\](\s|\n|$)").unwrap(),
         ),
         (TokenType::Comment, Regex::new(r"^;(.*)$").unwrap()),
-        (TokenType::Byte, Regex::new(r"^(byte)").unwrap()),
+        (TokenType::Byte, Regex::new(r"^(byte)(\s|\n|$)").unwrap()),
     ];
 
     patterns
@@ -69,11 +69,12 @@ pub fn tokenize<'a>(
     input: &'a str,
 ) -> Result<Vec<Vec<Token>>, Vec<Error>> {
     let mut tokens = Vec::new();
-    let mut errors: Vec<Error> = Vec::new();
+    let mut errors = Vec::new();
 
     for (i, line) in input.lines().enumerate() {
-        let mut line_ref = line.trim();
+        let line_ref = line.trim_start();
         let mut char_index_accumulator = line.len() - line_ref.len();
+        let mut line_ref = line_ref.trim_end();
         let mut line_tokens = Vec::new();
 
         while !line_ref.is_empty() {

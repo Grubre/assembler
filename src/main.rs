@@ -11,8 +11,6 @@ use assembler::{
 use clap::Parser;
 
 fn main() {
-    env_logger::init();
-
     let config_file = "config.cfg";
 
     let args = Args::parse();
@@ -33,13 +31,13 @@ fn main() {
         .map_err(|err| err.throw_all_with_ctx(&file_ctx))
         .unwrap();
 
-    // println!("{tokens:#?}");
+    println!("{tokens:#?}");
 
     let (unresolved, labels) = parse_all(tokens, &config)
         .map_err(|err| err.throw_all_with_ctx(&file_ctx))
         .unwrap();
 
-    //println!("{unresolved:#?}");
+    println!("{unresolved:#?}");
     // println!("{labels:#?}");
 
     let resolved = resolve_all_labels(&labels, unresolved)

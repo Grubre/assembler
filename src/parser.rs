@@ -2,11 +2,11 @@ use thiserror::Error;
 
 use crate::{
     config::{ArgDef, Config, InstructionDef},
-    error::{Error, Span, WithSpan},
+    error::{Error, ResultSplit, Span, WithSpan},
 };
 
 use super::lexer::{Token, TokenType};
-use std::collections::HashMap;
+use std::{collections::HashMap, num::ParseIntError};
 
 #[derive(Debug, Error)]
 pub enum ParseErr {
@@ -14,6 +14,12 @@ pub enum ParseErr {
     NoMapping,
     #[error("Isn't an argument for instruction")]
     NotAnArg,
+    #[error("Line has to start with a mnemonic or a byte declaration")]
+    WrongFirst,
+    #[error("Not a number: {0}")]
+    NotANumber(#[from] ParseIntError),
+    #[error("EmptyLine")]
+    EmptyLine,
 }
 
 #[derive(Debug)]
@@ -88,6 +94,18 @@ impl Instruction {
     }
 }
 
+pub fn parse_number(str: &str) -> Result<i64, ParseErr> {
+    if let Some(num) = str.strip_prefix("0x") {
+        i64::from_str_radix(num, 16)
+    } else if let Some(num) = str.strip_prefix("0b") {
+        i64::from_str_radix(num, 2)
+    } else if let Some(num) = str.strip_prefix("0o") {
+        i64::from_str_radix(num, 8)
+    } else {
+        str.parse::<i64>()
+    }.map_err(|err| err.into())
+}
+
 impl TryFrom<Token> for Arg {
     type Error = Error;
 
@@ -96,16 +114,17 @@ impl TryFrom<Token> for Arg {
             TokenType::Register => match token.content.as_str() {
                 "A" => Ok(ArgKind::Register(Register::A)),
                 "B" => Ok(ArgKind::Register(Register::B)),
+                "F" => Ok(ArgKind::Register(Register::F)),
                 _ => unreachable!(),
             },
             TokenType::Number => Ok(ArgKind::ImmediateValue(Value::Num(
-                parse_number(&token.content).unwrap(),
+                parse_number(&token.content).map_err(|err| err.with_span(token.span.clone()))?,
             ))),
             TokenType::LabelRef => Ok(ArgKind::ImmediateValue(Value::LabelRef(
                 token.content.clone(),
             ))),
             TokenType::MemAddress => Ok(ArgKind::MemAddress(Value::Num(
-                parse_number(&token.content).unwrap(),
+                parse_number(&token.content).map_err(|err| err.with_span(token.span.clone()))?,
             ))),
             TokenType::LabelAddressRef => {
                 Ok(ArgKind::MemAddress(Value::LabelRef(token.content.clone())))
@@ -131,24 +150,12 @@ impl Arg {
             }
             ArgKind::MemAddress(Value::Num(num)) => Some(Unresolved::Value(format!("{:08b}", num))),
             ArgKind::ImmediateValue(Value::LabelRef(label)) => {
-                Some(Unresolved::LabelRef(label.clone(), self.span))
+                Some(Unresolved::LabelRef(label, self.span))
             }
             ArgKind::MemAddress(Value::LabelRef(label)) => {
-                Some(Unresolved::LabelRef(label.clone(), self.span))
+                Some(Unresolved::LabelRef(label, self.span))
             }
         }
-    }
-}
-
-pub fn parse_number(str: &str) -> Result<i64, std::num::ParseIntError> {
-    if let Some(num) = str.strip_prefix("0x") {
-        i64::from_str_radix(num, 16)
-    } else if let Some(num) = str.strip_prefix("0b") {
-        i64::from_str_radix(num, 2)
-    } else if let Some(num) = str.strip_prefix("0o") {
-        i64::from_str_radix(num, 8)
-    } else {
-        str.parse::<i64>()
     }
 }
 
@@ -172,22 +179,14 @@ fn parse_line(
         }
     });
 
-    let first_token = iter.next().unwrap();
+    let first_token = iter.next().ok_or(vec![ParseErr::EmptyLine.with_span(line_span.clone())])?;
     let mut ret = Vec::new();
 
     match first_token.token_type {
         TokenType::Mnemonic => {
             let content = first_token.content;
 
-            let (args_ok, args_err): (Vec<Result<_, _>>, Vec<Result<_, _>>) =
-                iter.map(|token| token.try_into()).partition(Result::is_ok);
-
-            if !args_err.is_empty() {
-                let err = args_err.into_iter().map(|arg| arg.unwrap_err()).collect();
-                return Err(err);
-            }
-
-            let args = args_ok.into_iter().map(|arg| arg.unwrap()).collect();
+            let args = iter.map(|token| token.try_into()).result_split()?;
 
             let instr = Instruction {
                 mnem: content,
@@ -208,18 +207,19 @@ fn parse_line(
             }
         }
         TokenType::Byte => {
-            let value = iter.next().unwrap();
-            ret.push(Unresolved::Value(format!(
-                "{:08b}",
-                parse_number(&value.content).unwrap()
-            )));
+            for tok in iter {
+                ret.push(Unresolved::Value(format!(
+                    "{:08b}",
+                    parse_number(&tok.content).map_err(|err| vec![err.with_span(tok.span.clone())])?
+                )));
+            }
         }
         _ => {
-            panic!();
+            return Err(vec![ParseErr::WrongFirst.with_span(first_token.span)]);
         }
     };
-
     *curr_line += ret.len();
+
 
     Ok(ret)
 }
@@ -264,7 +264,7 @@ mod test {
                 ArgKind::Register(Register::A).with_span(dummy_span.clone()),
                 ArgKind::Register(Register::B).with_span(dummy_span.clone()),
             ],
-            span: dummy_span.clone(),
+            span: dummy_span,
         };
         let def = InstructionDef {
             mnem: "SUB".to_string(),

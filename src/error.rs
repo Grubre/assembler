@@ -124,7 +124,7 @@ impl<T,I : Iterator<Item = Result<T, Error>>> ResultSplit<T> for I {
     fn result_split(self) -> Result<Vec<T>,Vec<Error>> {
         let (ok,err) : (Vec<_>, Vec<_>) = self.partition(Result::is_ok);
 
-        if !err.is_empty() {
+        if err.is_empty() {
             let ok = ok.into_iter().map(|t| t.ok().unwrap()).collect();
             Ok(ok)
         }
