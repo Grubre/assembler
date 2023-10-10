@@ -37,8 +37,9 @@ pub fn resolve_all_labels(
 
 #[cfg(test)]
 mod tests {
+    use crate::token::Span;
+
     use super::*;
-    use crate::error::Span;
     use std::collections::HashMap;
 
     fn create_test_labels() -> Labels {

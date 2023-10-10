@@ -2,10 +2,8 @@ use thiserror::Error;
 
 use crate::{
     config::{ArgDef, Config, InstructionDef},
-    error::{Error, ResultSplit, Span, WithSpan},
+    error::{Error, ResultSplit, WithSpan}, token::{Span, Token, TokenType},
 };
-
-use super::lexer::{Token, TokenType};
 use std::{collections::HashMap, num::ParseIntError};
 
 #[derive(Debug, Error)]

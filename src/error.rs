@@ -1,13 +1,7 @@
-use std::{
-    cmp::{max, min},
-    fmt::Display,
-    ops::{Add, Range},
-    path::Path,
-    process,
-};
+use std::{fmt::Display, path::Path, process};
 use thiserror::Error;
 
-use crate::{lexer::LexerErr, parser::ParseErr, resolver::ResolveErr};
+use crate::{lexer::LexerErr, parser::ParseErr, resolver::ResolveErr, token::Span};
 
 #[derive(Debug, Error)]
 pub struct ContextError<'a> {
@@ -60,28 +54,6 @@ impl Error {
     pub fn throw_with_ctx(self, context: &FileContext) -> ! {
         let ctx_err = self.with_ctx(context);
         ctx_err.throw()
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Span {
-    line: usize,
-    chars: Range<usize>,
-}
-
-impl Span {
-    pub fn new(line: usize, chars: Range<usize>) -> Self {
-        Span { line, chars }
-    }
-}
-
-impl Add for Span {
-    type Output = Span;
-
-    fn add(self, rhs: Self) -> Self::Output {
-        let start = min(self.chars.start, rhs.chars.start);
-        let end = max(self.chars.end, rhs.chars.end);
-        Span::new(rhs.line, start..end)
     }
 }
 

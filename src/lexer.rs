@@ -1,46 +1,8 @@
-use std::ops::Range;
-
 use regex::Regex;
 use thiserror::Error;
 
-use crate::error::*;
+use crate::{error::*, token::{Span, Token, TokenType}};
 
-#[derive(Debug, PartialEq, Eq, Hash, Clone)]
-pub enum TokenType {
-    Mnemonic,
-    Register,
-    Number,
-    MemAddress,
-    Label,
-    LabelRef,
-    LabelAddressRef,
-    Comment,
-    Byte,
-}
-
-// TODO: Remove manual Eq and PartialEq implementation
-// TODO: But then the tests don't pass and I don't feel like fixing it now
-#[derive(Debug)]
-pub struct Token {
-    pub token_type: TokenType,
-    pub content: String,
-    pub span: Span,
-}
-impl PartialEq for Token {
-    fn eq(&self, other: &Self) -> bool {
-        self.token_type == other.token_type && self.content == other.content
-    }
-}
-impl Eq for Token {}
-impl Token {
-    pub fn new(token_type: TokenType, content: &str, line: usize, range: Range<usize>) -> Self {
-        Token {
-            token_type,
-            content: content.to_string(),
-            span: Span::new(line, range),
-        }
-    }
-}
 #[derive(PartialEq, Eq, Debug, Error)]
 pub enum LexerErr {
     #[error("Unknown token")]

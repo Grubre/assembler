@@ -4,3 +4,4 @@ pub mod parser;
 pub mod resolver;
 pub mod cmdline_args;
 pub mod error;
+pub mod token;
