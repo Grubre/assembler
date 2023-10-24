@@ -1,169 +1,112 @@
-use std::{fs::read_to_string, io, path::Path, str::FromStr};
+use std::{collections::HashMap, fs::read_to_string, hash::Hash, io, path::Path, str::FromStr};
 
-#[derive(Debug)]
-pub enum ConfigParseKind {
-    OpenFile(io::Error),
-    ParseArg(String),
-    Split,
+use thiserror::Error;
+
+use crate::specs::{Mnemonic, Operand};
+
+fn get_config_parse_prefix(line_nr: usize) -> String {
+    format!("Failed to parse config on line {}: ", line_nr + 1)
 }
 
-impl ConfigParseKind {
-    pub fn complete(self, line_num: usize) -> ConfigParseError {
-        ConfigParseError {
-            kind: self,
-            line_num,
+#[derive(Error, Debug)]
+pub enum ConfigError {
+    #[error("{0}.")]
+    ReadFileError(io::Error),
+    #[error("{}Each the row of config should have three comma separated values.", get_config_parse_prefix(*.0))]
+    NotEnoughColumns(usize),
+    #[error("{}{}", get_config_parse_prefix(*.0), .1)]
+    ParseInstructionError(usize, String),
+}
+
+fn print_config_helper(prefix: String, node: &ConfigNode) {
+    match node {
+        ConfigNode::Leaf(code) => println!("{}{code}", prefix),
+        ConfigNode::Branch(branch) => {
+            for (key, val) in branch {
+                let mut prefix = prefix.clone();
+                prefix.push_str(&format!("({:?}) -> ", key));
+                print_config_helper(prefix, val);
+            }
         }
     }
 }
 
-#[derive(Debug)]
-pub struct ConfigParseError {
-    pub kind: ConfigParseKind,
-    pub line_num: usize,
+pub fn print_config(config: &Config) {
+    for (key, value) in &config.automaton {
+        print_config_helper(format!("({:?}) -> ", key), value);
+    }
 }
 
-impl From<io::Error> for ConfigParseError {
-    fn from(value: io::Error) -> Self {
-        ConfigParseError {
-            kind: ConfigParseKind::OpenFile(value),
-            line_num: 0,
-        }
-    }
+#[derive(Debug, PartialEq, Eq, Hash)]
+pub enum NodeType {
+    Mnemonic(Mnemonic),
+    Operand(Operand),
+    MachineCode,
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub enum ArgDef {
-    Mem,
-    Const,
-    A,
-    B,
-    F,
+pub enum ConfigNode {
+    Leaf(String),
+    Branch(HashMap<NodeType, ConfigNode>),
 }
 
-impl FromStr for ArgDef {
-    type Err = ConfigParseKind;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "MEM" => Ok(ArgDef::Mem),
-            "CONST" => Ok(ArgDef::Const),
-            "A" => Ok(ArgDef::A),
-            "B" => Ok(ArgDef::B),
-            "F" => Ok(ArgDef::F),
-            s => Err(ConfigParseKind::ParseArg(s.to_string())),
-        }
-    }
+pub struct Config {
+    pub automaton: HashMap<NodeType, ConfigNode>,
 }
-
-#[derive(Debug, PartialEq, Eq)]
-pub struct InstructionDef {
-    pub mnem: String,
-    pub args_def: Vec<ArgDef>,
-    pub mnem_full: String,
-    pub binary: String,
-}
-
-impl FromStr for InstructionDef {
-    type Err = ConfigParseKind;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let split: Vec<_> = s.split(',').collect();
-        let [instr,mnem_full,binary] = &split[..] else { return Err(ConfigParseKind::Split);};
-
-        let instr_split: Vec<_> = instr.split_whitespace().collect();
-        let [mnem, args @ ..] = &instr_split[..] else {return Err(ConfigParseKind::Split);};
-
-        let args_def: Vec<_> = args
-            .iter()
-            .map(|str| str.trim().parse::<ArgDef>())
-            .collect::<Result<_, _>>()?;
-
-        let mnem_full = mnem_full.trim().to_string();
-        let binary = binary.trim().to_string();
-        let mnem = mnem.to_string();
-
-        Ok(InstructionDef {
-            mnem,
-            args_def,
-            mnem_full,
-            binary,
-        })
-    }
-}
-
-#[derive(Debug)]
-pub struct Config(pub Vec<InstructionDef>);
 
 impl Config {
-    pub fn read_from_file(file_path: impl AsRef<Path>) -> Result<Self, ConfigParseError> {
-        let content = read_to_string(file_path)?;
-        let defs = content
+    fn parse_instruction(instruction: &str) -> Result<Vec<NodeType>, String> {
+        let mut iter = instruction.split_whitespace();
+        let mut nodes: Vec<NodeType> = vec![];
+
+        let mnemonic = iter.next().ok_or("Empty instruction.")?;
+        let mnemonic = Mnemonic::from_str(mnemonic)
+            .map_err(|_| format!("Unknown mnemonic '{}'.", mnemonic))?;
+
+        nodes.push(NodeType::Mnemonic(mnemonic));
+
+        for operand in iter {
+            let operand = Operand::from_str(operand)
+                .map_err(|_| format!("Unknown operand '{}'.", operand))?;
+            nodes.push(NodeType::Operand(operand));
+        }
+
+        Ok(nodes)
+    }
+
+    pub fn read_from_file(file_path: impl AsRef<Path>) -> Result<Self, ConfigError> {
+        let mut automaton = HashMap::new();
+
+        let content = read_to_string(file_path).map_err(ConfigError::ReadFileError)?;
+        let lines = content
             .lines()
-            .enumerate()
-            .map(|(line, str)| {
-                str.parse::<InstructionDef>()
-                    .map_err(|err| err.complete(line + 1))
-            })
-            .collect::<Result<_, _>>()?;
+            .map(|line| line.split(',').map(|str| str.trim()).collect::<Vec<&str>>());
 
-        Ok(Self(defs))
-    }
+        for (i, line) in lines.enumerate() {
+            let instruction = *line.first().ok_or(ConfigError::NotEnoughColumns(i))?;
+            let alternative = *line.get(1).ok_or(ConfigError::NotEnoughColumns(i))?;
+            let machine_code = *line.get(2).ok_or(ConfigError::NotEnoughColumns(i))?;
 
-    pub const fn const_read_from_file() -> &'static str {
-        include_str!("../config.cfg")
-    }
+            let instruction = Config::parse_instruction(instruction)
+                .map_err(|message| ConfigError::ParseInstructionError(i, message))?;
 
-    pub fn create_mnem_regex(&self) -> String {
-        //Example: r"(?i)^(NOP|MOV|PUSH|POP|JMP|ADD|SUB|OR|AND|NEG|INV|SHR|SHL|CMP|HALT)"
-
-        let mnems = self
-            .0
-            .iter()
-            .map(|instr| instr.mnem.as_str())
-            .collect::<Vec<_>>()
-            .join("|");
-
-        format!(r"(?i)^({})", mnems)
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_single_instr() {
-        let test = "MOV MEM B,      MOVABSB	    ,c0001000";
-        let parsed: InstructionDef = test.parse().unwrap();
-
-        assert_eq!(
-            parsed,
-            InstructionDef {
-                mnem: "MOV".to_string(),
-                args_def: vec![ArgDef::Mem, ArgDef::B],
-                mnem_full: "MOVABSB".to_string(),
-                binary: "c0001000".to_string()
+            let mut current = &mut automaton;
+            for part in instruction {
+                current = match current
+                    .entry(part)
+                    .or_insert_with(|| ConfigNode::Branch(HashMap::new()))
+                {
+                    ConfigNode::Leaf(_) => unreachable!(),
+                    ConfigNode::Branch(next) => next,
+                }
             }
-        )
-    }
 
-    #[test]
-    fn test_regex_instr() {
-        let test = Config(vec![
-            InstructionDef {
-                mnem: "MOV".to_string(),
-                args_def: vec![ArgDef::Mem, ArgDef::B],
-                mnem_full: "MOVABSB".to_string(),
-                binary: "c0001000".to_string(),
-            },
-            InstructionDef {
-                mnem: "NOP".to_string(),
-                args_def: Vec::new(),
-                mnem_full: "NOP".to_string(),
-                binary: "c0000000".to_string(),
-            },
-        ]);
+            current.insert(
+                NodeType::MachineCode,
+                ConfigNode::Leaf(String::from(machine_code)),
+            );
+        }
 
-        assert_eq!(test.create_mnem_regex(), r"(?i)^(MOV|NOP)")
+        Ok(Self { automaton })
     }
 }

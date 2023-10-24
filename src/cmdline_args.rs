@@ -18,18 +18,20 @@ pub struct Args {
 
 pub type ReadWriteResult = Result<(Box<dyn BufRead>, Box<dyn Write>), io::Error>;
 
-pub fn get_read_write(args: &Args) -> ReadWriteResult {
-    let input: Box<dyn BufRead> = match args.input_file.as_ref() {
-        Some(name) => Box::new(BufReader::new(File::open(name)?)),
-        None => Box::new(BufReader::new(stdin())),
-    };
+impl Args {
+    pub fn get_read_write(args: &Args) -> ReadWriteResult {
+        let input: Box<dyn BufRead> = match args.input_file.as_ref() {
+            Some(name) => Box::new(BufReader::new(File::open(name)?)),
+            None => Box::new(BufReader::new(stdin())),
+        };
 
-    let output: Box<dyn Write> = match args.output_file.as_ref() {
-        Some(name) => Box::new(BufWriter::new(File::open(name)?)),
-        None => Box::new(BufWriter::new(stdout())),
-    };
+        let output: Box<dyn Write> = match args.output_file.as_ref() {
+            Some(name) => Box::new(BufWriter::new(File::open(name)?)),
+            None => Box::new(BufWriter::new(stdout())),
+        };
 
-    Ok((input, output))
+        Ok((input, output))
+    }
 }
 
 #[cfg(test)]

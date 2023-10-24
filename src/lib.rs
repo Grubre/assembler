@@ -1,7 +1,3 @@
-pub mod config;
-pub mod lexer;
-pub mod parser;
-pub mod resolver;
 pub mod cmdline_args;
-pub mod error;
-pub mod token;
+pub mod config;
+pub mod specs;

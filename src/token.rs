@@ -29,13 +29,13 @@ impl Add for Span {
 pub enum TokenType {
     Mnemonic,
     Register,
-    Number,
-    MemAddress,
+    Number(i64),
+    MemAddress(i64),
     Label,
     LabelRef,
     LabelAddressRef,
     Comment,
-    Byte,
+    Byte(i8),
 }
 
 // TODO: Remove manual Eq and PartialEq implementation

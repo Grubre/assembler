@@ -2,7 +2,7 @@ use thiserror::Error;
 
 use crate::{
     config::{ArgDef, Config, InstructionDef},
-    error::{Error, ResultSplit, WithSpan}, token::{Span, Token, TokenType},
+    error::{Error, ResultSplit, WithSpan}, token::{Span, Token, TokenType}, specs::Register,
 };
 use std::{collections::HashMap, num::ParseIntError};
 
@@ -18,13 +18,6 @@ pub enum ParseErr {
     NotANumber(#[from] ParseIntError),
     #[error("EmptyLine")]
     EmptyLine,
-}
-
-#[derive(Debug)]
-pub enum Register {
-    A,
-    B,
-    F,
 }
 
 #[derive(Debug)]
