@@ -7,12 +7,21 @@ use crate::{
     token::{Token, TokenType},
 };
 
+use phf::phf_map;
+
+static KEYWORDS: phf::Map<&'static str, TokenType> = phf_map! {
+    "byte" => TokenType::Byte,
+};
+
+// #TODO: Add number lines and character ranges to the error output
 #[derive(PartialEq, Eq, Debug, Error)]
 pub enum LexerErr {
     #[error("Unknown token '{0}'.")]
     UnknownToken(String),
     #[error("Couldn't parse number '{0}'.")]
     NumberParseError(String),
+    #[error("Label '{0}:' should be at the beginning of the line.")]
+    LabelParseError(String),
 }
 
 // TODO: See if String can be used instead of [char], (possible utf-8 support(?))
@@ -44,7 +53,6 @@ impl<'a> Lexer<'a> {
             return false;
         }
 
-        // TODO: Find a better way to compare it
         pattern
             .chars()
             .zip(self.content.iter())
@@ -76,8 +84,9 @@ impl<'a> Lexer<'a> {
         while !self.content.is_empty() && predicate(&self.content[0]) {
             if self.content[0] == '\n' {
                 self.current_char = 0;
+                self.current_line += 1;
             }
-            self.current_char += 1;
+            // self.current_char += 1;
             self.content = &self.content[1..]
         }
     }
@@ -95,7 +104,7 @@ impl<'a> Lexer<'a> {
             (String::new(), 10)
         };
 
-        let str = self.chop_while(|x| !x.is_whitespace());
+        let str = self.chop_while(|x| x.is_ascii_hexdigit());
         let number = i64::from_str_radix(&str, radix);
 
         let Ok(number) = number else {
@@ -110,12 +119,31 @@ impl<'a> Lexer<'a> {
         ))
     }
 
+    fn parse_label(&mut self, start: usize, str: String) -> Result<Token, LexerErr> {
+        self.chop(1);
+
+        if start != 0 {
+            return Err(LexerErr::LabelParseError(str));
+        }
+
+        Ok(Token::new(
+            TokenType::Label(str.clone()),
+            str,
+            self.current_line,
+            start..self.current_char,
+        ))
+    }
+
     pub fn next_token(&mut self) -> Option<Result<Token, LexerErr>> {
         self.trim_while(|x| x.is_whitespace());
+
+        let start = self.current_char;
 
         if self.content.is_empty() {
             return None;
         }
+
+        let initial_character = self.content[0];
 
         if self.content[0].is_ascii_digit() {
             let number = self.parse_number();
@@ -123,8 +151,16 @@ impl<'a> Lexer<'a> {
         }
 
         if self.content[0].is_alphabetic() {
-            let start = self.current_char;
             let str = self.chop_while(|x| x.is_alphabetic());
+
+            if let Some(keyword) = KEYWORDS.get(&str).cloned() {
+                return Some(Ok(Token::new(keyword, str, self.current_line, start..self.current_char)));
+            }
+
+            if let Some(':') = self.peek(0) {
+                return Some(self.parse_label(start, str));
+            }
+
             if let Ok(mnemonic) = Mnemonic::from_str(&str) {
                 return Some(Ok(Token::new(
                     TokenType::Mnemonic(mnemonic),
@@ -147,7 +183,16 @@ impl<'a> Lexer<'a> {
         let character = match self.content[0] {
             '[' => Some((self.chop(1), TokenType::LeftSquareBracket)),
             ']' => Some((self.chop(1), TokenType::RightSquareBracket)),
-            '#' => Some((self.chop(1), TokenType::Hash)),
+            '#' => {
+                self.chop(1);
+                let str = self.chop_while(|x| x.is_alphanumeric());
+                return Some(Ok(Token::new(
+                    TokenType::LabelRef(str.clone()),
+                    str,
+                    self.current_line,
+                    start..self.current_char,
+                )));
+            }
             _ => None,
         };
 
@@ -160,7 +205,7 @@ impl<'a> Lexer<'a> {
             )));
         };
 
-        Some(Err(LexerErr::UnknownToken(String::from(""))))
+        Some(Err(LexerErr::UnknownToken(String::from(initial_character))))
     }
 }
 

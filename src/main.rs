@@ -86,9 +86,9 @@ fn main() -> Result<(), ()> {
 
     let config = Config::read_from_file(config_file).consume_error();
 
-    // let contents = read_to_string(&mut input).unwrap();
+    let contents = read_to_string(&mut input).unwrap();
 
-    let contents = "0x32 0b10101 123 150 []";
+    // let contents = "0x32 0b10101 123 150 []";
 
     let chars = contents.chars().collect::<Vec<_>>();
 
