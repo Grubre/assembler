@@ -1,6 +1,6 @@
 use std::{error::Error, io::read_to_string, process::exit};
 
-use assembler::{cmdline_args::Args, config::Config, lexer::Lexer};
+use assembler::{cmdline_args::Args, config::Config, lexer::Lexer, resolver::resolve};
 use clap::Parser;
 use owo_colors::OwoColorize;
 
@@ -94,17 +94,11 @@ fn main() -> Result<(), ()> {
 
     let tokens = Lexer::new(&chars).collect::<Vec<_>>().consume_errors();
 
-    dbg!(tokens);
+    let labels = resolve(&tokens);
+
+    dbg!(labels);
 
     // let file_ctx = FileContext::new(args.input_file.as_deref(), &contents);
-    //
-    // let patterns = create_patterns();
-    //
-    // let tokens = tokenize(&patterns, &contents)
-    //     .map_err(|err| err.throw_all_with_ctx(&file_ctx))
-    //     .unwrap();
-    //
-    // println!("{tokens:#?}");
     //
     // let (unresolved, labels) = parse_all(tokens, &config)
     //     .map_err(|err| err.throw_all_with_ctx(&file_ctx))
