@@ -11,7 +11,7 @@ use crate::{
 pub enum LexerErr {
     #[error("Unknown token '{0}'.")]
     UnknownToken(String),
-    #[error("Couldn't parse number '{0}.")]
+    #[error("Couldn't parse number '{0}'.")]
     NumberParseError(String),
 }
 

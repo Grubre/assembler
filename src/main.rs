@@ -1,34 +1,61 @@
-use std::error::Error;
+use std::{error::Error, process::exit};
 
-use assembler::{
-    cmdline_args::Args,
-    config::Config,
-    lexer::{Lexer, LexerErr}, token::Token,
-};
+use assembler::{cmdline_args::Args, config::Config, lexer::Lexer};
 use clap::Parser;
 use owo_colors::OwoColorize;
 
-trait ConsumeErrorExt<T, E> {
-    fn consume_error(self) -> Result<T, ()>;
+trait ConsumeError<T, E> {
+    fn consume_error(self) -> T;
 }
 
-impl<T, E> ConsumeErrorExt<T, E> for Result<T, E>
+fn print_error<E: Error + std::fmt::Display>(error: E) {
+    eprintln!(
+        "{} {} {}",
+        "assembly:".bold(),
+        "fatal error:".red().bold(),
+        error
+    );
+}
+
+impl<T, E> ConsumeError<T, E> for Result<T, E>
 where
     E: Error + std::fmt::Display,
 {
-    fn consume_error(self) -> Result<T, ()> {
+    fn consume_error(self) -> T {
         match self {
-            Ok(value) => Ok(value),
+            Ok(value) => value,
             Err(err) => {
-                eprintln!(
-                    "{} {} {}",
-                    "assembly:".bold(),
-                    "fatal error:".red().bold(),
-                    err
-                );
-                Err(())
+                print_error(err);
+                exit(1);
             }
         }
+    }
+}
+
+trait ConsumeErrorVec<T, E> {
+    fn consume_errors(self) -> Vec<T>;
+}
+
+impl<T, E> ConsumeErrorVec<T, E> for Vec<Result<T, E>>
+where
+    E: Error + std::fmt::Display,
+{
+    fn consume_errors(self) -> Vec<T> {
+        let mut ts = Vec::new();
+        let mut found_error = false;
+        for result in self {
+            match result {
+                Ok(t) => ts.push(t),
+                Err(err) => {
+                    print_error(err);
+                    found_error = true;
+                }
+            }
+        }
+        if found_error {
+            exit(1);
+        }
+        ts
     }
 }
 
@@ -50,21 +77,22 @@ impl<T, E, I: Iterator<Item = Result<T, E>>> ResultSplit<T, E> for I {
     }
 }
 
-
 fn main() -> Result<(), ()> {
     let config_file = "config.cfg";
 
     let args = Args::parse();
 
-    let (mut input, mut output) = Args::get_read_write(&args).consume_error()?;
+    let (mut input, mut output) = Args::get_read_write(&args).consume_error();
 
-    let config = Config::read_from_file(config_file).consume_error()?;
+    let config = Config::read_from_file(config_file).consume_error();
 
     // let contents = read_to_string(&mut input).unwrap();
 
     let contents = "0x32 0b10101 123 150";
 
-    let tokens: Result<Vec<Token>, Vec<LexerErr>> = Lexer::new(&contents.chars().collect::<Vec<_>>()).result_split();
+    let chars = contents.chars().collect::<Vec<_>>();
+
+    let tokens = Lexer::new(&chars).collect::<Vec<_>>().consume_errors();
 
     dbg!(tokens);
 
