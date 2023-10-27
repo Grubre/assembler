@@ -2,7 +2,8 @@ use std::error::Error;
 
 use assembler::{
     cmdline_args::Args,
-    config::{print_config, Config},
+    config::Config,
+    lexer::{Lexer, LexerErr}, token::Token,
 };
 use clap::Parser;
 use owo_colors::OwoColorize;
@@ -31,6 +32,25 @@ where
     }
 }
 
+pub trait ResultSplit<T, E> {
+    fn result_split(self) -> Result<Vec<T>, Vec<E>>;
+}
+
+impl<T, E, I: Iterator<Item = Result<T, E>>> ResultSplit<T, E> for I {
+    fn result_split(self) -> Result<Vec<T>, Vec<E>> {
+        let (ok, err): (Vec<_>, Vec<_>) = self.partition(Result::is_ok);
+
+        if err.is_empty() {
+            let ok = ok.into_iter().map(|t| t.ok().unwrap()).collect();
+            Ok(ok)
+        } else {
+            let err = err.into_iter().map(|t| t.err().unwrap()).collect();
+            Err(err)
+        }
+    }
+}
+
+
 fn main() -> Result<(), ()> {
     let config_file = "config.cfg";
 
@@ -41,6 +61,12 @@ fn main() -> Result<(), ()> {
     let config = Config::read_from_file(config_file).consume_error()?;
 
     // let contents = read_to_string(&mut input).unwrap();
+
+    let contents = "0x32 0b10101 123 150";
+
+    let tokens: Result<Vec<Token>, Vec<LexerErr>> = Lexer::new(&contents.chars().collect::<Vec<_>>()).result_split();
+
+    dbg!(tokens);
 
     // let file_ctx = FileContext::new(args.input_file.as_deref(), &contents);
     //

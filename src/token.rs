@@ -3,6 +3,8 @@ use std::{
     ops::{Add, Range},
 };
 
+use crate::specs::{Mnemonic, Register};
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Span {
     pub line: usize,
@@ -27,8 +29,8 @@ impl Add for Span {
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub enum TokenType {
-    Mnemonic,
-    Register,
+    Mnemonic(Mnemonic),
+    Register(Register),
     Number(i64),
     MemAddress(i64),
     Label,
@@ -39,7 +41,10 @@ pub enum TokenType {
 }
 
 // TODO: Remove manual Eq and PartialEq implementation
-// TODO: But then the tests don't pass and I don't feel like fixing it now
+//       But then the tests don't pass and I don't feel like fixing it now
+
+// TODO: Figure out whether the content String is neccessary or if we can
+//       reconstruct the lexeme just from the token_type
 #[derive(Debug)]
 pub struct Token {
     pub token_type: TokenType,
@@ -53,10 +58,10 @@ impl PartialEq for Token {
 }
 impl Eq for Token {}
 impl Token {
-    pub fn new(token_type: TokenType, content: &str, line: usize, range: Range<usize>) -> Self {
+    pub fn new(token_type: TokenType, content: String, line: usize, range: Range<usize>) -> Self {
         Token {
             token_type,
-            content: content.to_string(),
+            content,
             span: Span::new(line, range),
         }
     }

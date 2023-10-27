@@ -7,14 +7,14 @@ pub enum Operand {
     Const,
 }
 
-#[derive(Debug, PartialEq, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub enum Register {
     A,
     B,
     F,
 }
 
-#[derive(Debug, PartialEq, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub enum Mnemonic {
     Mov,
     Push,
