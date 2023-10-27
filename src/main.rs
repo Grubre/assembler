@@ -1,4 +1,4 @@
-use std::{error::Error, process::exit};
+use std::{error::Error, io::read_to_string, process::exit};
 
 use assembler::{cmdline_args::Args, config::Config, lexer::Lexer};
 use clap::Parser;
@@ -88,7 +88,7 @@ fn main() -> Result<(), ()> {
 
     // let contents = read_to_string(&mut input).unwrap();
 
-    let contents = "0x32 0b10101 123 150";
+    let contents = "0x32 0b10101 123 150 []";
 
     let chars = contents.chars().collect::<Vec<_>>();
 

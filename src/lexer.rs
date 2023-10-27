@@ -82,6 +82,34 @@ impl<'a> Lexer<'a> {
         }
     }
 
+    fn parse_number(&mut self) -> Result<Token, LexerErr> {
+        let start = self.current_char;
+
+        let (prefix, radix) = if self.match_str(String::from("0x")) {
+            (self.chop(2), 16)
+        } else if self.match_str(String::from("0b")) {
+            (self.chop(2), 2)
+        } else if self.match_str(String::from("0")) {
+            (self.chop(1), 8)
+        } else {
+            (String::new(), 10)
+        };
+
+        let str = self.chop_while(|x| !x.is_whitespace());
+        let number = i64::from_str_radix(&str, radix);
+
+        let Ok(number) = number else {
+            return Err(LexerErr::NumberParseError(prefix + &str));
+        };
+
+        Ok(Token::new(
+            TokenType::Number(number),
+            prefix + &str,
+            self.current_line,
+            start..self.current_char,
+        ))
+    }
+
     pub fn next_token(&mut self) -> Option<Result<Token, LexerErr>> {
         self.trim_while(|x| x.is_whitespace());
 
@@ -90,31 +118,8 @@ impl<'a> Lexer<'a> {
         }
 
         if self.content[0].is_ascii_digit() {
-            let start = self.current_char;
-
-            let (prefix, radix) = if self.match_str(String::from("0x")) {
-                (self.chop(2), 16)
-            } else if self.match_str(String::from("0b")) {
-                (self.chop(2), 2)
-            } else if self.match_str(String::from("0")) {
-                (self.chop(1), 8)
-            } else {
-                (String::new(), 10)
-            };
-
-            let str = self.chop_while(|x| !x.is_whitespace());
-            let number = i64::from_str_radix(&str, radix);
-
-            let Ok(number) = number else {
-                return Some(Err(LexerErr::NumberParseError(prefix + &str)));
-            };
-
-            return Some(Ok(Token::new(
-                TokenType::Number(number),
-                prefix + &str,
-                self.current_line,
-                start..self.current_char,
-            )));
+            let number = self.parse_number();
+            return Some(number);
         }
 
         if self.content[0].is_alphabetic() {
@@ -138,6 +143,22 @@ impl<'a> Lexer<'a> {
                 )));
             }
         }
+
+        let character = match self.content[0] {
+            '[' => Some((self.chop(1), TokenType::LeftSquareBracket)),
+            ']' => Some((self.chop(1), TokenType::RightSquareBracket)),
+            '#' => Some((self.chop(1), TokenType::Hash)),
+            _ => None,
+        };
+
+        if let Some((str, token_type)) = character {
+            return Some(Ok(Token::new(
+                token_type,
+                str,
+                self.current_line,
+                self.current_char - 1..self.current_char,
+            )));
+        };
 
         Some(Err(LexerErr::UnknownToken(String::from(""))))
     }

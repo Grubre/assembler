@@ -32,12 +32,13 @@ pub enum TokenType {
     Mnemonic(Mnemonic),
     Register(Register),
     Number(i64),
-    MemAddress(i64),
     Label,
     LabelRef,
-    LabelAddressRef,
     Comment,
-    Byte(i8),
+    Byte,
+    LeftSquareBracket,
+    RightSquareBracket,
+    Hash,
 }
 
 // TODO: Remove manual Eq and PartialEq implementation
