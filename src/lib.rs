@@ -5,3 +5,4 @@ pub mod parser;
 pub mod resolver;
 pub mod specs;
 pub mod token;
+pub mod error;

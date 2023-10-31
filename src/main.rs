@@ -1,22 +1,26 @@
-use std::{error::Error, io::read_to_string, process::exit, collections::VecDeque};
+use std::{
+    error::Error,
+    io::read_to_string,
+    process::exit,
+    collections::VecDeque
+};
 
 use assembler::{
-    cmdline_args::Args, config::Config, lexer::Lexer, parser::parse, resolver::resolve,
+    cmdline_args::Args,
+    config::Config,
+    error::{CustomizeResult, MapError},
+    lexer::Lexer,
+    resolver::resolve,
+    parser::parse
 };
 use clap::Parser;
-use owo_colors::OwoColorize;
 
 trait ConsumeError<T, E> {
     fn consume_error(self) -> T;
 }
 
 fn print_error<E: Error + std::fmt::Display>(error: E) {
-    eprintln!(
-        "{} {} {}",
-        "assembly:".bold(),
-        "fatal error:".red().bold(),
-        error
-    );
+    eprintln!("{}", error);
 }
 
 impl<T, E> ConsumeError<T, E> for Result<T, E>
@@ -110,7 +114,16 @@ fn main() -> Result<(), ()> {
 
     let chars = contents.chars().collect::<Vec<_>>();
 
-    let tokens = Lexer::new(&chars).collect::<Vec<_>>().consume_errors();
+    let tokens = Lexer::new(&chars)
+        .map(|res| {
+            if let Some(p) = &args.input_file {
+                res.map_error().with_filename(p.clone())
+            } else {
+                res.map_error()
+            }
+        })
+        .collect::<Vec<_>>()
+        .consume_errors();
 
     let labels = resolve(&tokens);
 

@@ -5,6 +5,7 @@ use thiserror::Error;
 use crate::{
     specs::{Mnemonic, Register},
     token::{Token, TokenType},
+    error::SrcFileLoc
 };
 
 use phf::phf_map;
@@ -16,12 +17,12 @@ static KEYWORDS: phf::Map<&'static str, TokenType> = phf_map! {
 // TODO: Add number lines and character ranges to the error output
 #[derive(PartialEq, Eq, Debug, Error)]
 pub enum LexerErr {
-    #[error("Unknown token '{0}'.")]
-    UnknownToken(String),
-    #[error("Couldn't parse number '{0}'.")]
-    NumberParseError(String),
-    #[error("Label '{0}:' should be at the beginning of the line.")]
-    LabelParseError(String),
+    #[error("unknown token '{0}'")]
+    UnknownToken(String, SrcFileLoc),
+    #[error("couldn not parse '{0}' as number")]
+    NumberParseError(String, SrcFileLoc),
+    #[error("label '{0}:' must be at the beginning of the line")]
+    LabelParseError(String, SrcFileLoc),
 }
 
 // TODO: See if String can be used instead of [char], (possible utf-8 support(?))
@@ -29,6 +30,7 @@ pub struct Lexer<'a> {
     content: &'a [char],
     current_line: usize,
     current_char: usize,
+    current_column: usize, // TODO: See if current_column & current_char can't be merged
 }
 
 impl<'a> Lexer<'a> {
@@ -37,6 +39,7 @@ impl<'a> Lexer<'a> {
             content,
             current_line: 0,
             current_char: 0,
+            current_column: 0,
         }
     }
 
@@ -62,6 +65,7 @@ impl<'a> Lexer<'a> {
     fn chop(&mut self, len: usize) -> String {
         let lexeme = self.content[0..len].iter().collect();
         self.current_char += len;
+        self.current_column += len;
         self.content = &self.content[len..];
         lexeme
     }
@@ -87,6 +91,7 @@ impl<'a> Lexer<'a> {
                 self.current_line += 1;
             }
             // self.current_char += 1;
+            self.current_column += 1;
             self.content = &self.content[1..]
         }
     }
@@ -108,7 +113,7 @@ impl<'a> Lexer<'a> {
         let number = i64::from_str_radix(&str, radix);
 
         let Ok(number) = number else {
-            return Err(LexerErr::NumberParseError(prefix + &str));
+            return Err(LexerErr::NumberParseError(prefix + &str, SrcFileLoc::at(self.current_line, self.current_column)));
         };
 
         Ok(Token::new(
@@ -123,7 +128,7 @@ impl<'a> Lexer<'a> {
         self.chop(1);
 
         if start != 0 {
-            return Err(LexerErr::LabelParseError(str));
+            return Err(LexerErr::LabelParseError(str, SrcFileLoc::at(self.current_line, self.current_column)));
         }
 
         Ok(Token::new(
@@ -138,6 +143,7 @@ impl<'a> Lexer<'a> {
         self.trim_while(|x| x.is_whitespace());
 
         let start = self.current_char;
+        let content_start = self.content;
 
         if self.content.is_empty() {
             return None;
@@ -210,11 +216,9 @@ impl<'a> Lexer<'a> {
             )));
         };
 
-        // TODO: Instead of printing initial_character, find a way to fetch
-        //       the right string that actually caused trouble. For example
-        //       when you make a typo like "JMPx" instead of "JMP", then
-        //       the error printed will say "Unknown token 'J'" instead of "JMPx".
-        Some(Err(LexerErr::UnknownToken(String::from(initial_character))))
+        let error_span = &content_start[0..self.current_char];
+
+        Some(Err(LexerErr::UnknownToken(error_span.iter().collect(), SrcFileLoc::at(self.current_line, self.current_column))))
     }
 }
 
