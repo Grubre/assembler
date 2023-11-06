@@ -1,6 +1,8 @@
 use std::{error::Error, io::read_to_string, process::exit};
 
-use assembler::{cmdline_args::Args, config::Config, lexer::Lexer, resolver::resolve};
+use assembler::{
+    cmdline_args::Args, config::Config, lexer::Lexer, parser::parse, resolver::resolve,
+};
 use clap::Parser;
 use owo_colors::OwoColorize;
 
@@ -96,7 +98,8 @@ fn main() -> Result<(), ()> {
 
     let labels = resolve(&tokens);
 
-    dbg!(labels);
+    let ast = parse(&tokens);
+    dbg!(ast);
 
     // let file_ctx = FileContext::new(args.input_file.as_deref(), &contents);
     //

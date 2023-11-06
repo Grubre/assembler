@@ -13,7 +13,7 @@ static KEYWORDS: phf::Map<&'static str, TokenType> = phf_map! {
     "byte" => TokenType::Byte,
 };
 
-// #TODO: Add number lines and character ranges to the error output
+// TODO: Add number lines and character ranges to the error output
 #[derive(PartialEq, Eq, Debug, Error)]
 pub enum LexerErr {
     #[error("Unknown token '{0}'.")]
@@ -154,7 +154,12 @@ impl<'a> Lexer<'a> {
             let str = self.chop_while(|x| x.is_alphabetic());
 
             if let Some(keyword) = KEYWORDS.get(&str).cloned() {
-                return Some(Ok(Token::new(keyword, str, self.current_line, start..self.current_char)));
+                return Some(Ok(Token::new(
+                    keyword,
+                    str,
+                    self.current_line,
+                    start..self.current_char,
+                )));
             }
 
             if let Some(':') = self.peek(0) {
@@ -205,6 +210,10 @@ impl<'a> Lexer<'a> {
             )));
         };
 
+        // TODO: Instead of printing initial_character, find a way to fetch
+        //       the right string that actually caused trouble. For example
+        //       when you make a typo like "JMPx" instead of "JMP", then
+        //       the error printed will say "Unknown token 'J'" instead of "JMPx".
         Some(Err(LexerErr::UnknownToken(String::from(initial_character))))
     }
 }
