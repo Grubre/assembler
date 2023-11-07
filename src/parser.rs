@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-use crate::token::{Token, TokenType};
+use crate::{token::{Token, TokenType}, specs::Operand};
 
 // TODO: Add spans and line numbers to errors
 #[derive(PartialEq, Eq, Debug, Error)]
@@ -18,14 +18,12 @@ struct Parser<'a> {
     tokens: &'a [Token],
 }
 
-// FIXME: operands is a vec of tokens, because of that you can't differentiate
-//        between a number and a memref.
 #[derive(Debug)]
 pub enum Line {
     Byte(Vec<Token>),
     Instruction {
         mnemonic: Token,
-        operands: Vec<Token>,
+        operands: Vec<(Operand, Token)>,
     },
 }
 
@@ -116,7 +114,7 @@ impl<'a> Parser<'a> {
         let mut numbers = vec![];
         while let Some(token) = self.peek() {
             match token.token_type {
-                TokenType::Number(_) => numbers.push(self.number()?),
+                TokenType::Number(_) => numbers.push(self.number()?.1),
                 _ => break,
             }
         }
@@ -138,7 +136,7 @@ impl<'a> Parser<'a> {
     }
 
     // TODO: Remove code duplication for these three functions
-    fn number(&mut self) -> Result<Token, ParserErr> {
+    fn number(&mut self) -> Result<(Operand, Token), ParserErr> {
         let token = self.chop().ok_or(ParserErr::EOF("Number".to_string()))?;
         match token.token_type {
             TokenType::Number(_) => {}
@@ -149,13 +147,13 @@ impl<'a> Parser<'a> {
                 ))
             }
         };
-        Ok(token)
+        Ok((Operand::Const, token))
     }
 
-    fn register(&mut self) -> Result<Token, ParserErr> {
+    fn register(&mut self) -> Result<(Operand, Token), ParserErr> {
         let token = self.chop().ok_or(ParserErr::EOF("Register".to_string()))?;
-        match token.token_type {
-            TokenType::Register(_) => {}
+        let reg = match &token.token_type {
+            TokenType::Register(reg) => {reg.clone()}
             _ => {
                 return Err(ParserErr::UnexpectedToken(
                     "Register".to_string(),
@@ -163,10 +161,10 @@ impl<'a> Parser<'a> {
                 ))
             }
         };
-        Ok(token)
+        Ok((Operand::Register(reg), token))
     }
 
-    fn labelref(&mut self) -> Result<Token, ParserErr> {
+    fn labelref(&mut self) -> Result<(Operand, Token), ParserErr> {
         let token = self.chop().ok_or(ParserErr::EOF("LabelRef".to_string()))?;
         match token.token_type {
             TokenType::LabelRef(_) => {}
@@ -177,10 +175,10 @@ impl<'a> Parser<'a> {
                 ))
             }
         };
-        Ok(token)
+        Ok((Operand::Const, token))
     }
 
-    fn operand(&mut self) -> Option<Result<Token, ParserErr>> {
+    fn operand(&mut self) -> Option<Result<(Operand, Token), ParserErr>> {
         let token = self.peek()?;
         match token.token_type {
             TokenType::Register(_) => Some(self.register()),
@@ -191,7 +189,7 @@ impl<'a> Parser<'a> {
         }
     }
 
-    fn memref(&mut self) -> Result<Token, ParserErr> {
+    fn memref(&mut self) -> Result<(Operand, Token), ParserErr> {
         let _left_bracket = self.chop().ok_or(ParserErr::EOF("[".to_string()))?; // chops the '['
 
         let token = self
@@ -209,7 +207,7 @@ impl<'a> Parser<'a> {
 
         let right_bracket = self.chop().ok_or(ParserErr::EOF("]".to_string()))?;
         match right_bracket.token_type {
-            TokenType::RightSquareBracket => Ok(token),
+            TokenType::RightSquareBracket => Ok((Operand::Mem, token)),
             _ => Err(ParserErr::UnexpectedToken("]".to_string(), right_bracket.content)),
         }
     }
