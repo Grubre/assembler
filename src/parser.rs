@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 use thiserror::Error;
 
 use crate::{token::{Token, TokenType}, specs::Operand};
@@ -13,9 +15,8 @@ pub enum ParserErr {
     EOF(String),
 }
 
-// TODO: Make the tokens be an iterator, maybe(?)
-struct Parser<'a> {
-    tokens: &'a [Token],
+struct Parser {
+    tokens: VecDeque<Token>,
 }
 
 #[derive(Debug)]
@@ -29,26 +30,25 @@ pub enum Line {
 
 /*
 Grammar:
-line -> instruction | byte;
+line -> (label)? instruction | byte;
 
 label -> STRING ":";
+
 instruction -> mnemonic (operand)*;
 byte -> "byte" (NUMBER)+;
-*/
 
-impl<'a> Parser<'a> {
-    fn new(tokens: &'a [Token]) -> Self {
+operand -> register | NUMBER | labelref | memref;
+register -> "A" | "B" | "F";
+labelref -> '#' STRING;
+memref -> '[' (labelref | NUMBER) ']';*/
+
+impl Parser {
+    fn new(tokens: VecDeque<Token>) -> Self {
         Self { tokens }
     }
 
     fn chop(&mut self) -> Option<Token> {
-        if self.tokens.is_empty() {
-            return None;
-        }
-        let token = &self.tokens[0];
-        self.tokens = &self.tokens[1..];
-        // TODO: remove the clone
-        Some(token.clone())
+        self.tokens.pop_front()
     }
 
     fn peek(&self) -> Option<&Token> {
@@ -214,7 +214,7 @@ impl<'a> Parser<'a> {
     }
 }
 
-pub fn parse(tokens: &[Token]) -> Result<Vec<Line>, Vec<ParserErr>> {
+pub fn parse(tokens: VecDeque<Token>) -> Result<Vec<Line>, Vec<ParserErr>> {
     let mut parser = Parser::new(tokens);
     parser.parse()
 }

@@ -1,4 +1,4 @@
-use std::{error::Error, io::read_to_string, process::exit};
+use std::{error::Error, io::read_to_string, process::exit, collections::VecDeque};
 
 use assembler::{
     cmdline_args::Args, config::Config, lexer::Lexer, parser::parse, resolver::resolve,
@@ -114,7 +114,7 @@ fn main() -> Result<(), ()> {
 
     let labels = resolve(&tokens);
 
-    let ast = parse(&tokens).consume_errors();
+    let ast = parse(tokens.into()).consume_errors();
     dbg!(ast);
 
     // let file_ctx = FileContext::new(args.input_file.as_deref(), &contents);
