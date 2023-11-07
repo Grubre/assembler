@@ -70,6 +70,7 @@ impl<'a> Parser<'a> {
             };
             match token.token_type {
                 TokenType::Mnemonic(_) => {
+                    error_recovery = false;
                     let line = self.instruction();
                     match line {
                         Ok(line) => lines.push(line),
@@ -80,6 +81,7 @@ impl<'a> Parser<'a> {
                     };
                 }
                 TokenType::Byte => {
+                    error_recovery = false;
                     let line = self.byte();
                     match line {
                         Ok(line) => lines.push(line),
@@ -95,7 +97,6 @@ impl<'a> Parser<'a> {
                 _ => {
                     if !error_recovery {
                         errors.push(ParserErr::UnexpectedLineBeginning(token.content.clone()));
-                        error_recovery = false;
                     }
                     self.chop();
                 }
