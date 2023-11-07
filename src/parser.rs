@@ -7,7 +7,7 @@ use crate::token::{Token, TokenType};
 pub enum ParserErr {
     #[error("Expected: \"{0}\", found \"{1}\".")]
     UnexpectedToken(String, String),
-    #[error("Line should begin with Mnemonic, 'byte' or a label, instead found \"{0}\"")]
+    #[error("Line should begin with a Mnemonic, 'byte' or a label, instead found \"{0}\".")]
     UnexpectedLineBeginning(String),
     #[error("Expected: \"{0}\", instead hit EOF.")]
     EOF(String),
@@ -18,6 +18,8 @@ struct Parser<'a> {
     tokens: &'a [Token],
 }
 
+// FIXME: operands is a vec of tokens, because of that you can't differentiate
+//        between a number and a memref.
 #[derive(Debug)]
 pub enum Line {
     Byte(Vec<Token>),
@@ -46,7 +48,6 @@ impl<'a> Parser<'a> {
             return None;
         }
         let token = &self.tokens[0];
-        println!("Chopping {}", token.content);
         self.tokens = &self.tokens[1..];
         // TODO: remove the clone
         Some(token.clone())
@@ -63,6 +64,8 @@ impl<'a> Parser<'a> {
     fn parse(&mut self) -> Result<Vec<Line>, Vec<ParserErr>> {
         let mut lines = vec![];
         let mut errors = vec![];
+
+        let mut error_recovery = false;
         while !self.tokens.is_empty() {
             let Some(token) = &self.peek() else {
                 break;
@@ -70,20 +73,34 @@ impl<'a> Parser<'a> {
             match token.token_type {
                 TokenType::Mnemonic(_) => {
                     let line = self.instruction();
-                    if let Ok(line) = line {
-                        lines.push(line);
+                    match line {
+                        Ok(line) => lines.push(line),
+                        Err(err) => {
+                            error_recovery = true;
+                            errors.push(err)
+                        }
                     };
                 }
                 TokenType::Byte => {
                     let line = self.byte();
-                    if let Ok(line) = line {
-                        lines.push(line);
+                    match line {
+                        Ok(line) => lines.push(line),
+                        Err(err) => {
+                            error_recovery = true;
+                            errors.push(err)
+                        }
                     };
                 }
                 TokenType::Label(_) => {
                     self.chop();
                 }
-                _ => errors.push(ParserErr::UnexpectedLineBeginning(token.content.clone())),
+                _ => {
+                    if !error_recovery {
+                        errors.push(ParserErr::UnexpectedLineBeginning(token.content.clone()));
+                        error_recovery = false;
+                    }
+                    self.chop();
+                }
             }
         }
 
