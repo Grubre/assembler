@@ -137,6 +137,7 @@ impl<'a> Parser<'a> {
         Ok(Line::Instruction { mnemonic, operands })
     }
 
+    // TODO: Remove code duplication for these three functions
     fn number(&mut self) -> Result<Token, ParserErr> {
         let token = self.chop().ok_or(ParserErr::EOF("Number".to_string()))?;
         match token.token_type {
@@ -191,7 +192,7 @@ impl<'a> Parser<'a> {
     }
 
     fn memref(&mut self) -> Result<Token, ParserErr> {
-        let _left_bracket = self.chop().ok_or(ParserErr::EOF("'['".to_string()))?; // chops the '['
+        let _left_bracket = self.chop().ok_or(ParserErr::EOF("[".to_string()))?; // chops the '['
 
         let token = self
             .chop()
@@ -206,10 +207,10 @@ impl<'a> Parser<'a> {
             }
         };
 
-        let right_bracket = self.chop().ok_or(ParserErr::EOF("']'".to_string()))?;
+        let right_bracket = self.chop().ok_or(ParserErr::EOF("]".to_string()))?;
         match right_bracket.token_type {
             TokenType::RightSquareBracket => Ok(token),
-            _ => Err(ParserErr::UnexpectedToken("']".to_string(), token.content)),
+            _ => Err(ParserErr::UnexpectedToken("]".to_string(), right_bracket.content)),
         }
     }
 }
