@@ -38,6 +38,22 @@ trait ConsumeErrorVec<T, E> {
     fn consume_errors(self) -> Vec<T>;
 }
 
+impl<T, E> ConsumeErrorVec<T, E> for Result<Vec<T>, Vec<E>>
+where
+    E: Error + std::fmt::Display,
+{
+    fn consume_errors(self) -> Vec<T> {
+        let errors = match self {
+            Ok(lines) => return lines,
+            Err(errs) => errs,
+        };
+        for err in errors {
+            print_error(err);
+        }
+        exit(1);
+    }
+}
+
 impl<T, E> ConsumeErrorVec<T, E> for Vec<Result<T, E>>
 where
     E: Error + std::fmt::Display,
@@ -98,7 +114,7 @@ fn main() -> Result<(), ()> {
 
     let labels = resolve(&tokens);
 
-    let ast = parse(&tokens);
+    let ast = parse(&tokens).consume_errors();
     dbg!(ast);
 
     // let file_ctx = FileContext::new(args.input_file.as_deref(), &contents);
