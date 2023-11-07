@@ -5,13 +5,15 @@ use crate::token::{Token, TokenType};
 // TODO: Add spans and line numbers to errors
 #[derive(PartialEq, Eq, Debug, Error)]
 pub enum ParserErr {
-    #[error("a")]
-    TempVal,
     #[error("Expected: \"{0}\", found \"{1}\".")]
     UnexpectedToken(String, String),
+    #[error("Line should begin with Mnemonic, 'byte' or a label, instead found \"{0}\"")]
+    UnexpectedLineBeginning(String),
+    #[error("Expected: \"{0}\", instead hit EOF.")]
+    EOF(String),
 }
 
-// TODO: Make the tokens be an iterator
+// TODO: Make the tokens be an iterator, maybe(?)
 struct Parser<'a> {
     tokens: &'a [Token],
 }
@@ -44,12 +46,13 @@ impl<'a> Parser<'a> {
             return None;
         }
         let token = &self.tokens[0];
+        println!("Chopping {}", token.content);
         self.tokens = &self.tokens[1..];
         // TODO: remove the clone
         Some(token.clone())
     }
 
-    fn peek(&mut self) -> Option<&Token> {
+    fn peek(&self) -> Option<&Token> {
         if self.tokens.is_empty() {
             return None;
         }
@@ -60,25 +63,28 @@ impl<'a> Parser<'a> {
     fn parse(&mut self) -> Result<Vec<Line>, Vec<ParserErr>> {
         let mut lines = vec![];
         let mut errors = vec![];
-        for token in self.tokens {
-            let token_type = &token.token_type;
-            match token_type {
+        while !self.tokens.is_empty() {
+            let Some(token) = &self.peek() else {
+                break;
+            };
+            match token.token_type {
                 TokenType::Mnemonic(_) => {
-                    let line = self.line();
+                    let line = self.instruction();
                     if let Ok(line) = line {
                         lines.push(line);
                     };
                 }
                 TokenType::Byte => {
-                    let byte = self.byte();
-                    if let Ok(byte) = byte {
-                        lines.push(byte);
+                    let line = self.byte();
+                    if let Ok(line) = line {
+                        lines.push(line);
                     };
                 }
-                TokenType::Label(_) => continue,
-                _ => errors.push(ParserErr::TempVal),
+                TokenType::Label(_) => {
+                    self.chop();
+                }
+                _ => errors.push(ParserErr::UnexpectedLineBeginning(token.content.clone())),
             }
-            dbg!(token);
         }
 
         if errors.is_empty() {
@@ -87,18 +93,9 @@ impl<'a> Parser<'a> {
         Err(errors)
     }
 
-    fn line(&mut self) -> Result<Line, ParserErr> {
-        let token = self.peek().ok_or(ParserErr::TempVal)?;
-        match token.token_type {
-            TokenType::Mnemonic(_) => self.instruction(),
-            TokenType::Byte => self.byte(),
-            // TODO: Add proper error here
-            _ => Err(ParserErr::TempVal),
-        }
-    }
-
-    // TODO:
     fn byte(&mut self) -> Result<Line, ParserErr> {
+        let _byte = self.chop().unwrap();
+
         let mut numbers = vec![];
         while let Some(token) = self.peek() {
             match token.token_type {
@@ -124,19 +121,43 @@ impl<'a> Parser<'a> {
     }
 
     fn number(&mut self) -> Result<Token, ParserErr> {
-        let token = self.chop().ok_or(ParserErr::TempVal)?;
+        let token = self.chop().ok_or(ParserErr::EOF("Number".to_string()))?;
         match token.token_type {
             TokenType::Number(_) => {}
-            _ => return Err(ParserErr::TempVal), // TODO: Found unexpected token
+            _ => {
+                return Err(ParserErr::UnexpectedToken(
+                    "Number".to_string(),
+                    token.content,
+                ))
+            }
         };
         Ok(token)
     }
 
     fn register(&mut self) -> Result<Token, ParserErr> {
-        let token = self.chop().ok_or(ParserErr::TempVal)?;
+        let token = self.chop().ok_or(ParserErr::EOF("Register".to_string()))?;
         match token.token_type {
             TokenType::Register(_) => {}
-            _ => return Err(ParserErr::TempVal), // TODO: Found unexpected token
+            _ => {
+                return Err(ParserErr::UnexpectedToken(
+                    "Register".to_string(),
+                    token.content,
+                ))
+            }
+        };
+        Ok(token)
+    }
+
+    fn labelref(&mut self) -> Result<Token, ParserErr> {
+        let token = self.chop().ok_or(ParserErr::EOF("LabelRef".to_string()))?;
+        match token.token_type {
+            TokenType::LabelRef(_) => {}
+            _ => {
+                return Err(ParserErr::UnexpectedToken(
+                    "LabelRef".to_string(),
+                    token.content,
+                ))
+            }
         };
         Ok(token)
     }
@@ -146,25 +167,32 @@ impl<'a> Parser<'a> {
         match token.token_type {
             TokenType::Register(_) => Some(self.register()),
             TokenType::Number(_) => Some(self.number()),
-            TokenType::LabelRef(_) => todo!(),
+            TokenType::LabelRef(_) => Some(self.labelref()),
             TokenType::LeftSquareBracket => Some(self.memref()),
             _ => None,
         }
     }
 
     fn memref(&mut self) -> Result<Token, ParserErr> {
-        let _left_bracket = self.chop().ok_or(ParserErr::TempVal)?; // chops the '['
+        let _left_bracket = self.chop().ok_or(ParserErr::EOF("'['".to_string()))?; // chops the '['
 
-        let token = self.chop().ok_or(ParserErr::TempVal)?;
+        let token = self
+            .chop()
+            .ok_or(ParserErr::EOF("Number or LabelRef".to_string()))?;
         match token.token_type {
             TokenType::Number(_) | TokenType::LabelRef(_) => {}
-            _ => return Err(ParserErr::TempVal), // TODO: Found unexpected token
+            _ => {
+                return Err(ParserErr::UnexpectedToken(
+                    "Number or LabelRef".to_string(),
+                    token.content,
+                ))
+            }
         };
 
-        let right_bracket = self.chop().ok_or(ParserErr::TempVal)?;
+        let right_bracket = self.chop().ok_or(ParserErr::EOF("']'".to_string()))?;
         match right_bracket.token_type {
             TokenType::RightSquareBracket => Ok(token),
-            _ => Err(ParserErr::TempVal), // TODO: Found unexpected token
+            _ => Err(ParserErr::UnexpectedToken("']".to_string(), token.content)),
         }
     }
 }
