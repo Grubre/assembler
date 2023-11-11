@@ -6,7 +6,7 @@ use std::{
     path::PathBuf,
 };
 
-use crate::lexer::LexerErr;
+use crate::{lexer::LexerErr, token::Span};
 
 #[derive(Debug)]
 pub struct InnerError<E> {
@@ -60,12 +60,20 @@ fn space(info: &SrcFileInfo) -> &str {
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         return match &self {
-            Error::Io(inner) => {
-                f.write_fmt(format_args!("{}{}{}: I/O error: {}", inner.info, space(&inner.info), "error".red().bold(), inner.error))
-            },
-            Error::Lexer(inner) => {
-                f.write_fmt(format_args!("{}{}{}: {}", inner.info, space(&inner.info), "error".red().bold(), inner.error.white().bold()))
-            },
+            Error::Io(inner) => f.write_fmt(format_args!(
+                "{}{}{}: I/O error: {}",
+                inner.info,
+                space(&inner.info),
+                "error".red().bold(),
+                inner.error
+            )),
+            Error::Lexer(inner) => f.write_fmt(format_args!(
+                "{}{}{}: {}",
+                inner.info,
+                space(&inner.info),
+                "error".red().bold(),
+                inner.error.white().bold()
+            )),
         };
     }
 }
@@ -87,6 +95,15 @@ impl SrcFileLoc {
 impl Display for SrcFileLoc {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         f.write_fmt(format_args!("{}:{}", self.line, self.column))
+    }
+}
+
+impl From<Span> for SrcFileLoc {
+    fn from(span: Span) -> Self {
+        SrcFileLoc {
+            line: span.line,
+            column: span.column,
+        }
     }
 }
 

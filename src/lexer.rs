@@ -120,6 +120,7 @@ impl<'a> Lexer<'a> {
             TokenType::Number(number),
             prefix + &str,
             self.current_line,
+            self.current_column,
             start..self.current_char,
         ))
     }
@@ -135,6 +136,7 @@ impl<'a> Lexer<'a> {
             TokenType::Label(str.clone()),
             str,
             self.current_line,
+            self.current_column,
             start..self.current_char,
         ))
     }
@@ -164,6 +166,7 @@ impl<'a> Lexer<'a> {
                     keyword,
                     str,
                     self.current_line,
+                    self.current_column,
                     start..self.current_char,
                 )));
             }
@@ -177,6 +180,7 @@ impl<'a> Lexer<'a> {
                     TokenType::Mnemonic(mnemonic),
                     str,
                     self.current_line,
+                    self.current_column,
                     start..self.current_char,
                 )));
             }
@@ -186,6 +190,7 @@ impl<'a> Lexer<'a> {
                     TokenType::Register(register),
                     str,
                     self.current_line,
+                    self.current_column,
                     start..self.current_char,
                 )));
             }
@@ -201,6 +206,7 @@ impl<'a> Lexer<'a> {
                     TokenType::LabelRef(str.clone()),
                     str,
                     self.current_line,
+                    self.current_column,
                     start..self.current_char,
                 )));
             }
@@ -212,6 +218,7 @@ impl<'a> Lexer<'a> {
                 token_type,
                 str,
                 self.current_line,
+                self.current_column,
                 self.current_char - 1..self.current_char,
             )));
         };

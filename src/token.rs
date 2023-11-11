@@ -8,12 +8,13 @@ use crate::specs::{Mnemonic, Register};
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Span {
     pub line: usize,
+    pub column: usize,
     pub chars: Range<usize>,
 }
 
 impl Span {
-    pub fn new(line: usize, chars: Range<usize>) -> Self {
-        Span { line, chars }
+    pub fn new(line: usize, column: usize, chars: Range<usize>) -> Self {
+        Span { line, column, chars }
     }
 }
 
@@ -21,9 +22,10 @@ impl Add for Span {
     type Output = Span;
 
     fn add(self, rhs: Self) -> Self::Output {
+        let column = min(self.column, rhs.column);
         let start = min(self.chars.start, rhs.chars.start);
         let end = max(self.chars.end, rhs.chars.end);
-        Span::new(rhs.line, start..end)
+        Span::new(rhs.line, column, start..end)
     }
 }
 
@@ -57,11 +59,11 @@ impl PartialEq for Token {
 }
 impl Eq for Token {}
 impl Token {
-    pub fn new(token_type: TokenType, content: String, line: usize, range: Range<usize>) -> Self {
+    pub fn new(token_type: TokenType, content: String, line: usize, column: usize, range: Range<usize>) -> Self {
         Token {
             token_type,
             content,
-            span: Span::new(line, range),
+            span: Span::new(line, column, range),
         }
     }
 }
