@@ -37,9 +37,9 @@ impl<'a> Lexer<'a> {
     pub fn new(content: &'a [char]) -> Self {
         Self {
             content,
-            current_line: 0,
+            current_line: 1,
             current_char: 0,
-            current_column: 0,
+            current_column: 1,
         }
     }
 
@@ -88,6 +88,7 @@ impl<'a> Lexer<'a> {
         while !self.content.is_empty() && predicate(&self.content[0]) {
             if self.content[0] == '\n' {
                 self.current_char = 0;
+                self.current_column = 0;
                 self.current_line += 1;
             }
             // self.current_char += 1;
@@ -144,14 +145,13 @@ impl<'a> Lexer<'a> {
     pub fn next_token(&mut self) -> Option<Result<Token, LexerErr>> {
         self.trim_while(|x| x.is_whitespace());
 
+        let start_col = self.current_column;
         let start = self.current_char;
         let content_start = self.content;
 
         if self.content.is_empty() {
             return None;
         }
-
-        let initial_character = self.content[0];
 
         if self.content[0].is_ascii_digit() {
             let number = self.parse_number();
@@ -196,36 +196,38 @@ impl<'a> Lexer<'a> {
             }
         }
 
-        let character = match self.content[0] {
-            '[' => Some((self.chop(1), TokenType::LeftSquareBracket)),
-            ']' => Some((self.chop(1), TokenType::RightSquareBracket)),
-            '#' => {
-                self.chop(1);
-                let str = self.chop_while(|x| x.is_alphanumeric());
+        if !self.content.is_empty() {
+            let character = match self.content[0] {
+                '[' => Some((self.chop(1), TokenType::LeftSquareBracket)),
+                ']' => Some((self.chop(1), TokenType::RightSquareBracket)),
+                '#' => {
+                    self.chop(1);
+                    let str = self.chop_while(|x| x.is_alphanumeric());
+                    return Some(Ok(Token::new(
+                        TokenType::LabelRef(str.clone()),
+                        str,
+                        self.current_line,
+                        self.current_column,
+                        start..self.current_char,
+                    )));
+                }
+                _ => None,
+            };
+
+            if let Some((str, token_type)) = character {
                 return Some(Ok(Token::new(
-                    TokenType::LabelRef(str.clone()),
+                    token_type,
                     str,
                     self.current_line,
                     self.current_column,
-                    start..self.current_char,
+                    self.current_char - 1..self.current_char,
                 )));
-            }
-            _ => None,
-        };
+            };
+        }
 
-        if let Some((str, token_type)) = character {
-            return Some(Ok(Token::new(
-                token_type,
-                str,
-                self.current_line,
-                self.current_column,
-                self.current_char - 1..self.current_char,
-            )));
-        };
+        let error_span = &content_start[0..(self.current_char - start)];
 
-        let error_span = &content_start[0..self.current_char];
-
-        Some(Err(LexerErr::UnknownToken(error_span.iter().collect(), SrcFileLoc::at(self.current_line, self.current_column))))
+        Some(Err(LexerErr::UnknownToken(error_span.iter().collect(), SrcFileLoc::at(self.current_line, start_col))))
     }
 }
 
