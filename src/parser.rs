@@ -1,30 +1,31 @@
-use std::collections::VecDeque;
-
 use thiserror::Error;
 
-use crate::{token::{Token, TokenType}, specs::Operand};
+use crate::{
+    specs::Operand,
+    token::{Token, TokenType},
+};
 
 // TODO: Add spans and line numbers to errors
 #[derive(PartialEq, Eq, Debug, Error)]
-pub enum ParserErr {
+pub enum ParserErr<'a> {
     #[error("Expected: \"{0}\", found \"{1}\".")]
-    UnexpectedToken(String, String),
+    UnexpectedToken(&'a str, &'a str),
     #[error("Line should begin with a Mnemonic, 'byte' or a label, instead found \"{0}\".")]
-    UnexpectedLineBeginning(String),
+    UnexpectedLineBeginning(&'a str),
     #[error("Expected: \"{0}\", instead hit EOF.")]
     EOF(String),
 }
 
-struct Parser {
-    tokens: VecDeque<Token>,
+struct Parser<'a> {
+    tokens: &'a [Token],
 }
 
 #[derive(Debug)]
-pub enum Line {
-    Byte(Vec<Token>),
+pub enum Line<'a> {
+    Byte(Vec<&'a Token>),
     Instruction {
-        mnemonic: Token,
-        operands: Vec<(Operand, Token)>,
+        mnemonic: &'a Token,
+        operands: Vec<(Operand, &'a Token)>,
     },
 }
 
@@ -42,13 +43,15 @@ register -> "A" | "B" | "F";
 labelref -> '#' STRING;
 memref -> '[' (labelref | NUMBER) ']';*/
 
-impl Parser {
-    fn new(tokens: VecDeque<Token>) -> Self {
+impl<'a> Parser<'a> {
+    fn new(tokens: &'a [Token]) -> Self {
         Self { tokens }
     }
 
-    fn chop(&mut self) -> Option<Token> {
-        self.tokens.pop_front()
+    fn chop(&mut self) -> Option<&Token> {
+        let token = self.tokens.get(0)?;
+        self.tokens = &self.tokens[1..];
+        Some(token)
     }
 
     fn peek(&self) -> Option<&Token> {
@@ -96,7 +99,7 @@ impl Parser {
                 }
                 _ => {
                     if !error_recovery {
-                        errors.push(ParserErr::UnexpectedLineBeginning(token.content.clone()));
+                        errors.push(ParserErr::UnexpectedLineBeginning(&token.content));
                     }
                     self.chop();
                 }
@@ -137,60 +140,49 @@ impl Parser {
     }
 
     // TODO: Remove code duplication for these three functions
-    fn number(&mut self) -> Result<(Operand, Token), ParserErr> {
+    fn number(&mut self) -> Result<(Operand, &Token), ParserErr> {
         let token = self.chop().ok_or(ParserErr::EOF("Number".to_string()))?;
         match token.token_type {
             TokenType::Number(_) => {}
             _ => {
                 return Err(ParserErr::UnexpectedToken(
-                    "Number".to_string(),
-                    token.content,
+                    &"Number",
+                    &token.content,
                 ))
             }
         };
         Ok((Operand::Const, token))
     }
 
-    fn register(&mut self) -> Result<(Operand, Token), ParserErr> {
+    fn register(&mut self) -> Result<(Operand, &Token), ParserErr> {
         let token = self.chop().ok_or(ParserErr::EOF("Register".to_string()))?;
         let reg = match &token.token_type {
-            TokenType::Register(reg) => {reg.clone()}
+            TokenType::Register(reg) => reg.clone(),
             _ => {
                 return Err(ParserErr::UnexpectedToken(
-                    "Register".to_string(),
-                    token.content,
+                    "Register",
+                    &token.content,
                 ))
             }
         };
         Ok((Operand::Register(reg), token))
     }
 
-    fn labelref(&mut self) -> Result<(Operand, Token), ParserErr> {
+    fn labelref(&mut self) -> Result<(Operand, &Token), ParserErr> {
         let token = self.chop().ok_or(ParserErr::EOF("LabelRef".to_string()))?;
         match token.token_type {
             TokenType::LabelRef(_) => {}
             _ => {
                 return Err(ParserErr::UnexpectedToken(
-                    "LabelRef".to_string(),
-                    token.content,
+                    "LabelRef",
+                    &token.content,
                 ))
             }
         };
         Ok((Operand::Const, token))
     }
 
-    fn operand(&mut self) -> Option<Result<(Operand, Token), ParserErr>> {
-        let token = self.peek()?;
-        match token.token_type {
-            TokenType::Register(_) => Some(self.register()),
-            TokenType::Number(_) => Some(self.number()),
-            TokenType::LabelRef(_) => Some(self.labelref()),
-            TokenType::LeftSquareBracket => Some(self.memref()),
-            _ => None,
-        }
-    }
-
-    fn memref(&mut self) -> Result<(Operand, Token), ParserErr> {
+    fn memref(&mut self) -> Result<(Operand, &Token), ParserErr> {
         let _left_bracket = self.chop().ok_or(ParserErr::EOF("[".to_string()))?; // chops the '['
 
         let token = self
@@ -200,8 +192,8 @@ impl Parser {
             TokenType::Number(_) | TokenType::LabelRef(_) => {}
             _ => {
                 return Err(ParserErr::UnexpectedToken(
-                    "Number or LabelRef".to_string(),
-                    token.content,
+                    "Number or LabelRef",
+                    &token.content,
                 ))
             }
         };
@@ -209,12 +201,26 @@ impl Parser {
         let right_bracket = self.chop().ok_or(ParserErr::EOF("]".to_string()))?;
         match right_bracket.token_type {
             TokenType::RightSquareBracket => Ok((Operand::Mem, token)),
-            _ => Err(ParserErr::UnexpectedToken("]".to_string(), right_bracket.content)),
+            _ => Err(ParserErr::UnexpectedToken(
+                "]",
+                &right_bracket.content,
+            )),
+        }
+    }
+
+    fn operand(&mut self) -> Option<Result<(Operand, &Token), ParserErr>> {
+        let token = self.peek()?;
+        match token.token_type {
+            TokenType::Register(_) => Some(self.register()),
+            TokenType::Number(_) => Some(self.number()),
+            TokenType::LabelRef(_) => Some(self.labelref()),
+            TokenType::LeftSquareBracket => Some(self.memref()),
+            _ => None,
         }
     }
 }
 
-pub fn parse(tokens: VecDeque<Token>) -> Result<Vec<Line>, Vec<ParserErr>> {
+pub fn parse(tokens: &[Token]) -> Result<Vec<Line>, Vec<ParserErr>> {
     let mut parser = Parser::new(tokens);
     parser.parse()
 }

@@ -30,7 +30,7 @@ pub enum CheckedLineCode<'a> {
 }
 
 pub struct CheckedLine<'a> {
-    line: Line,
+    line: Line<'a>,
     code: CheckedLineCode<'a>,
 }
 
@@ -38,7 +38,7 @@ fn check_instruction<'a>(
     config: &'a Config,
     labels: &'a HashMap<&'a str, usize>,
     mnemonic: &Token,
-    operands: &Vec<(Operand, Token)>,
+    operands: &Vec<(Operand, &Token)>,
 ) -> Result<CheckedLineCode<'a>, WriterErr> {
     let mnemonic = match &mnemonic.token_type {
         TokenType::Mnemonic(mnemonic) => mnemonic,
@@ -109,7 +109,7 @@ fn parse_value<'a>(
 
 fn check_byte<'a>(
     labels: &'a HashMap<&'a str, usize>,
-    declared_values: &Vec<Token>,
+    declared_values: &Vec<&Token>,
 ) -> Result<CheckedLineCode<'a>, WriterErr> {
     let mut value_codes = vec![];
     for value in declared_values {
@@ -122,7 +122,7 @@ fn check_byte<'a>(
 }
 
 pub fn check_semantics<'a>(
-    lines: Vec<Line>,
+    lines: Vec<Line<'a>>,
     labels: &'a HashMap<&'a str, usize>,
     config: &'a Config,
 ) -> Result<Vec<CheckedLine<'a>>, WriterErr> {

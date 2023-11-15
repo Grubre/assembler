@@ -1,7 +1,8 @@
 use std::{error::Error, io::read_to_string, process::exit};
 
 use assembler::{
-    cmdline_args::Args, config::Config, lexer::Lexer, parser::parse, resolver::resolve, checker::check_semantics,
+    checker::check_semantics, cmdline_args::Args, config::Config, lexer::Lexer, parser::parse,
+    resolver::resolve,
 };
 use clap::Parser;
 use owo_colors::OwoColorize;
@@ -114,12 +115,10 @@ fn main() -> Result<(), ()> {
 
     let labels = resolve(&tokens);
 
-    // FIXME: Tokens shouldnt be moved
+    let lines = parse(&tokens).consume_errors();
 
-    let ast = parse(tokens.into()).consume_errors();
-
-    let checked_lines = check_semantics(ast, &labels, &config);
-    dbg!(ast);
+    let checked_lines = check_semantics(lines, &labels, &config);
+    dbg!(lines);
 
     // let file_ctx = FileContext::new(args.input_file.as_deref(), &contents);
     //
