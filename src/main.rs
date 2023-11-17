@@ -117,8 +117,8 @@ fn main() -> Result<(), ()> {
 
     let lines = parse(&tokens).consume_errors();
 
+    dbg!(&lines);
     let checked_lines = check_semantics(lines, &labels, &config);
-    dbg!(lines);
 
     // let file_ctx = FileContext::new(args.input_file.as_deref(), &contents);
     //

@@ -61,7 +61,7 @@ mod tests {
             output_file: Some(output_path),
         };
 
-        let (mut input, _) = get_read_write(&args).unwrap();
+        let (mut input, _) = Args::get_read_write(&args).unwrap();
         let mut input_content_result = String::new();
         input.read_to_string(&mut input_content_result)?;
 

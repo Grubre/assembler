@@ -48,13 +48,13 @@ impl<'a> Parser<'a> {
         Self { tokens }
     }
 
-    fn chop(&mut self) -> Option<&Token> {
+    fn chop(&mut self) -> Option<&'a Token> {
         let token = self.tokens.get(0)?;
         self.tokens = &self.tokens[1..];
         Some(token)
     }
 
-    fn peek(&self) -> Option<&Token> {
+    fn peek(&self) -> Option<&'a Token> {
         if self.tokens.is_empty() {
             return None;
         }
@@ -62,7 +62,7 @@ impl<'a> Parser<'a> {
         Some(token)
     }
 
-    fn parse(&mut self) -> Result<Vec<Line>, Vec<ParserErr>> {
+    fn parse(&mut self) -> Result<Vec<Line<'a>>, Vec<ParserErr<'a>>> {
         let mut lines = vec![];
         let mut errors = vec![];
 
@@ -112,7 +112,7 @@ impl<'a> Parser<'a> {
         Err(errors)
     }
 
-    fn byte(&mut self) -> Result<Line, ParserErr> {
+    fn byte(&mut self) -> Result<Line<'a>, ParserErr<'a>> {
         let _byte = self.chop().unwrap();
 
         let mut numbers = vec![];
@@ -125,7 +125,7 @@ impl<'a> Parser<'a> {
         Ok(Line::Byte(numbers))
     }
 
-    fn instruction(&mut self) -> Result<Line, ParserErr> {
+    fn instruction(&mut self) -> Result<Line<'a>, ParserErr<'a>> {
         let mnemonic = self.chop().unwrap();
         let mut operands = vec![];
 
@@ -140,7 +140,7 @@ impl<'a> Parser<'a> {
     }
 
     // TODO: Remove code duplication for these three functions
-    fn number(&mut self) -> Result<(Operand, &Token), ParserErr> {
+    fn number(&mut self) -> Result<(Operand, &'a Token), ParserErr<'a>> {
         let token = self.chop().ok_or(ParserErr::EOF("Number".to_string()))?;
         match token.token_type {
             TokenType::Number(_) => {}
@@ -154,7 +154,7 @@ impl<'a> Parser<'a> {
         Ok((Operand::Const, token))
     }
 
-    fn register(&mut self) -> Result<(Operand, &Token), ParserErr> {
+    fn register(&mut self) -> Result<(Operand, &'a Token), ParserErr<'a>> {
         let token = self.chop().ok_or(ParserErr::EOF("Register".to_string()))?;
         let reg = match &token.token_type {
             TokenType::Register(reg) => reg.clone(),
@@ -168,7 +168,7 @@ impl<'a> Parser<'a> {
         Ok((Operand::Register(reg), token))
     }
 
-    fn labelref(&mut self) -> Result<(Operand, &Token), ParserErr> {
+    fn labelref(&mut self) -> Result<(Operand, &'a Token), ParserErr<'a>> {
         let token = self.chop().ok_or(ParserErr::EOF("LabelRef".to_string()))?;
         match token.token_type {
             TokenType::LabelRef(_) => {}
@@ -182,7 +182,7 @@ impl<'a> Parser<'a> {
         Ok((Operand::Const, token))
     }
 
-    fn memref(&mut self) -> Result<(Operand, &Token), ParserErr> {
+    fn memref(&mut self) -> Result<(Operand, &'a Token), ParserErr<'a>> {
         let _left_bracket = self.chop().ok_or(ParserErr::EOF("[".to_string()))?; // chops the '['
 
         let token = self
@@ -208,7 +208,7 @@ impl<'a> Parser<'a> {
         }
     }
 
-    fn operand(&mut self) -> Option<Result<(Operand, &Token), ParserErr>> {
+    fn operand(&mut self) -> Option<Result<(Operand, &'a Token), ParserErr<'a>>> {
         let token = self.peek()?;
         match token.token_type {
             TokenType::Register(_) => Some(self.register()),
@@ -220,7 +220,7 @@ impl<'a> Parser<'a> {
     }
 }
 
-pub fn parse(tokens: &[Token]) -> Result<Vec<Line>, Vec<ParserErr>> {
+pub fn parse<'a>(tokens: &'a [Token]) -> Result<Vec<Line<'a>>, Vec<ParserErr<'a>>> {
     let mut parser = Parser::new(tokens);
     parser.parse()
 }
