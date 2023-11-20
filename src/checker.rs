@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use thiserror::Error;
 
 use crate::{
-    config::{Config, NodeType},
+    config::{Config, ConfigNode, NodeType},
     parser::Line,
     specs::Operand,
     token::{Token, TokenType},
@@ -21,6 +21,7 @@ pub enum WriterErr {
     UnknownLabel(String),
 }
 
+#[derive(Debug)]
 pub enum CheckedLineCode<'a> {
     Byte(Vec<String>),
     Instruction {
@@ -29,9 +30,10 @@ pub enum CheckedLineCode<'a> {
     },
 }
 
+#[derive(Debug)]
 pub struct CheckedLine<'a> {
-    line: Line<'a>,
-    code: CheckedLineCode<'a>,
+    pub line: Line<'a>,
+    pub code: CheckedLineCode<'a>,
 }
 
 fn check_instruction<'a>(
@@ -53,27 +55,39 @@ fn check_instruction<'a>(
     let mut operand_codes = vec![];
 
     for operand in operands {
-        let operand_code = parse_value(labels, &operand.1);
+        let operand_code = parse_value(labels, operand.1);
         if let Some(operand_code) = operand_code {
-            operand_codes.push(operand_code?)
+            let operand_code = operand_code?;
+            operand_codes.push(operand_code)
         };
         match current_node {
-            crate::config::ConfigNode::Leaf(mnemonic_code) => {
-                return Ok(CheckedLineCode::Instruction {
-                    mnemonic_code,
-                    operand_codes,
-                })
-            }
             crate::config::ConfigNode::Branch(children) => {
                 match children.get(&NodeType::Operand(operand.0)) {
                     Some(next) => current_node = next,
                     None => return Err(WriterErr::InvalidOperand(operand.1.content.clone())),
                 }
             }
+            _ => {
+                unreachable!();
+            }
         };
     }
 
-    unreachable!();
+    let ConfigNode::Branch(leaf) = current_node else {
+        unreachable!();
+    };
+
+    let Some(leaf) = leaf.get(&NodeType::MachineCode) else {
+        unreachable!();
+    };
+
+    match leaf {
+        ConfigNode::Leaf(mnemonic_code) => Ok(CheckedLineCode::Instruction {
+            mnemonic_code,
+            operand_codes,
+        }),
+        _ => unreachable!(),
+    }
 }
 
 fn parse_num(number: i64) -> Result<String, WriterErr> {
@@ -81,7 +95,7 @@ fn parse_num(number: i64) -> Result<String, WriterErr> {
         return Err(WriterErr::NumberOutOfRange(number));
     }
 
-    let binary = format!("{:b}", number);
+    let binary = format!("{:08b}", number);
     Ok(binary)
 }
 
@@ -92,7 +106,7 @@ fn parse_labelref<'a>(
     let label = labels
         .get(label)
         .ok_or(WriterErr::UnknownLabel(label.to_string()))?;
-    let binary = format!("{:b}", label);
+    let binary = format!("{:08b}", label);
     Ok(binary)
 }
 
