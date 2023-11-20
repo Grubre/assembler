@@ -50,6 +50,7 @@ pub enum ConfigNode {
     Branch(HashMap<NodeType, ConfigNode>),
 }
 
+#[derive(Debug)]
 pub struct Config {
     pub automaton: HashMap<NodeType, ConfigNode>,
 }

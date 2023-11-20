@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::token::{Token, TokenType};
 
-pub fn resolve(tokens: &[Token]) -> HashMap<&str, usize> {
+pub fn get_resolved_labels(tokens: &[Token]) -> HashMap<&str, usize> {
     let mut memory_pointer = 0;
     let mut labels: HashMap<&str, usize> = HashMap::new();
 

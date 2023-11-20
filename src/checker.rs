@@ -52,13 +52,13 @@ fn check_instruction<'a>(
         .get(&NodeType::Mnemonic(*mnemonic))
         .unwrap();
 
-    let mut operand_codes = vec![];
+    let mut operand_binary_codes = vec![];
 
     for operand in operands {
-        let operand_code = parse_value(labels, operand.1);
-        if let Some(operand_code) = operand_code {
+        let parsed_operand = parse_value(labels, operand.1);
+        if let Some(operand_code) = parsed_operand {
             let operand_code = operand_code?;
-            operand_codes.push(operand_code)
+            operand_binary_codes.push(operand_code)
         };
         match current_node {
             crate::config::ConfigNode::Branch(children) => {
@@ -84,7 +84,7 @@ fn check_instruction<'a>(
     match leaf {
         ConfigNode::Leaf(mnemonic_code) => Ok(CheckedLineCode::Instruction {
             mnemonic_code,
-            operand_codes,
+            operand_codes: operand_binary_codes,
         }),
         _ => unreachable!(),
     }
@@ -95,6 +95,7 @@ fn parse_num(number: i64) -> Result<String, WriterErr> {
         return Err(WriterErr::NumberOutOfRange(number));
     }
 
+    // TODO: Add a unified format for parse_num and parse_labelref (remove code dup)
     let binary = format!("{:08b}", number);
     Ok(binary)
 }
@@ -125,14 +126,14 @@ fn check_byte<'a>(
     labels: &'a HashMap<&'a str, usize>,
     declared_values: &Vec<&Token>,
 ) -> Result<CheckedLineCode<'a>, WriterErr> {
-    let mut value_codes = vec![];
+    let mut parsed_values = vec![];
     for value in declared_values {
-        let value = parse_value(labels, value);
-        if let Some(value_result) = value {
-            value_codes.push(value_result?)
+        let parsed_value = parse_value(labels, value);
+        if let Some(parsed_value_result) = parsed_value {
+            parsed_values.push(parsed_value_result?)
         };
     }
-    Ok(CheckedLineCode::Byte(value_codes))
+    Ok(CheckedLineCode::Byte(parsed_values))
 }
 
 pub fn check_semantics<'a>(

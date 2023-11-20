@@ -1,8 +1,8 @@
-use std::{error::Error, io::read_to_string, process::exit};
+use std::{error::Error, io::read_to_string, process::exit, io::Write};
 
 use assembler::{
-    checker::check_semantics, cmdline_args::Args, config::Config, lexer::Lexer, parser::parse,
-    resolver::resolve,
+    checker::{check_semantics, CheckedLine}, cmdline_args::Args, config::Config, lexer::Lexer, parser::parse,
+    resolver::get_resolved_labels,
 };
 use clap::Parser;
 use owo_colors::OwoColorize;
@@ -96,47 +96,50 @@ impl<T, E, I: Iterator<Item = Result<T, E>>> ResultSplit<T, E> for I {
     }
 }
 
+fn output_binary_code(checked_lines: &[CheckedLine], output: &mut Box<dyn Write>) {
+    for checked_line in checked_lines {
+        match &checked_line.code {
+            assembler::checker::CheckedLineCode::Byte(bytes) => {
+                for byte in bytes {
+                    output.write_all(byte.as_bytes()).unwrap();
+                    output.write_all(&[b'\n']).unwrap();
+                }
+            }
+            assembler::checker::CheckedLineCode::Instruction {
+                mnemonic_code,
+                operand_codes,
+            } => {
+                // TODO: Find a sane way to do that
+                output.write_all(mnemonic_code.as_bytes()).unwrap();
+                output.write_all(&[b'\n']).unwrap();
+                for operand_code in operand_codes {
+                    output.write_all(operand_code.as_bytes()).unwrap();
+                    output.write_all(&[b'\n']).unwrap();
+                }
+            }
+        }
+    }
+
+}
+
 fn main() -> Result<(), ()> {
     let config_file = "config.cfg";
 
     let args = Args::parse();
-
     let (mut input, mut output) = Args::get_read_write(&args).consume_error();
 
     let config = Config::read_from_file(config_file).consume_error();
 
     let contents = read_to_string(&mut input).unwrap();
-
-    // let contents = "0x32 0b10101 123 150 []";
-
     let chars = contents.chars().collect::<Vec<_>>();
 
     let tokens = Lexer::new(&chars).collect::<Vec<_>>().consume_errors();
-
-    let labels = resolve(&tokens);
+    let labels = get_resolved_labels(&tokens);
 
     let lines = parse(&tokens).consume_errors();
+    let checked_lines = check_semantics(lines, &labels, &config).consume_error();
 
-    dbg!(&lines);
-    let checked_lines = check_semantics(lines, &labels, &config);
+    output_binary_code(&checked_lines, &mut output);
 
-    // let file_ctx = FileContext::new(args.input_file.as_deref(), &contents);
-    //
-    // let (unresolved, labels) = parse_all(tokens, &config)
-    //     .map_err(|err| err.throw_all_with_ctx(&file_ctx))
-    //     .unwrap();
-    //
-    // println!("{unresolved:#?}");
-    // // println!("{labels:#?}");
-    //
-    // let resolved = resolve_all_labels(&labels, unresolved)
-    //     .map_err(|err| err.throw_all_with_ctx(&file_ctx))
-    //     .unwrap();
-    //
-    // //println!("{resolved:#?}");
-    //
-    // for line in resolved {
-    //     writeln!(&mut output, "{}", line).unwrap();
-    // }
     Ok(())
 }
