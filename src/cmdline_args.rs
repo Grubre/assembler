@@ -14,6 +14,10 @@ pub struct Args {
     /// Output file name
     #[arg(short, long, value_name = "output")]
     pub output_file: Option<PathBuf>,
+
+    /// Config file
+    #[arg(short, long, value_name = "config_file")]
+    pub config_file: Option<PathBuf>
 }
 
 pub type ReadWriteResult = Result<(Box<dyn BufRead>, Box<dyn Write>), io::Error>;
@@ -59,6 +63,7 @@ mod tests {
         let args = Args {
             input_file: Some(input_path),
             output_file: Some(output_path),
+            config_file: None,
         };
 
         let (mut input, _) = Args::get_read_write(&args).unwrap();

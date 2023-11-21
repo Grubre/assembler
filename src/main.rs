@@ -123,10 +123,9 @@ fn output_binary_code(checked_lines: &[CheckedLine], output: &mut Box<dyn Write>
 }
 
 fn main() -> Result<(), ()> {
-    let config_file = "config.cfg";
-
     let args = Args::parse();
     let (mut input, mut output) = Args::get_read_write(&args).consume_error();
+    let config_file = args.config_file.unwrap_or("config.cfg".into());
 
     let config = Config::read_from_file(config_file).consume_error();
 
