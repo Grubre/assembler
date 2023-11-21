@@ -146,7 +146,7 @@ impl<'a> Parser<'a> {
             TokenType::Number(_) => {}
             _ => {
                 return Err(ParserErr::UnexpectedToken(
-                    &"Number",
+                    "Number",
                     &token.content,
                 ))
             }
@@ -157,7 +157,7 @@ impl<'a> Parser<'a> {
     fn register(&mut self) -> Result<(Operand, &'a Token), ParserErr<'a>> {
         let token = self.chop().ok_or(ParserErr::EOF("Register".to_string()))?;
         let reg = match &token.token_type {
-            TokenType::Register(reg) => reg.clone(),
+            TokenType::Register(reg) => reg,
             _ => {
                 return Err(ParserErr::UnexpectedToken(
                     "Register",
@@ -165,7 +165,7 @@ impl<'a> Parser<'a> {
                 ))
             }
         };
-        Ok((Operand::Register(reg), token))
+        Ok((Operand::Register(*reg), token))
     }
 
     fn labelref(&mut self) -> Result<(Operand, &'a Token), ParserErr<'a>> {
@@ -220,7 +220,7 @@ impl<'a> Parser<'a> {
     }
 }
 
-pub fn parse<'a>(tokens: &'a [Token]) -> Result<Vec<Line<'a>>, Vec<ParserErr<'a>>> {
+pub fn parse(tokens: & [Token]) -> Result<Vec<Line>, Vec<ParserErr>> {
     let mut parser = Parser::new(tokens);
     parser.parse()
 }

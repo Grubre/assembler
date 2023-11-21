@@ -39,11 +39,6 @@ pub enum TokenType {
     RightSquareBracket,
 }
 
-// TODO: Remove manual Eq and PartialEq implementation
-//       But then the tests don't pass and I don't feel like fixing it now
-
-// TODO: Figure out whether the content String is neccessary or if we can
-//       reconstruct the lexeme just from the token_type
 #[derive(Debug, Clone)]
 pub struct Token {
     pub token_type: TokenType,

@@ -85,7 +85,7 @@ impl Config {
 
         for (i, line) in lines.enumerate() {
             let instruction = *line.first().ok_or(ConfigError::NotEnoughColumns(i))?;
-            let alternative = *line.get(1).ok_or(ConfigError::NotEnoughColumns(i))?;
+            let _alternative = *line.get(1).ok_or(ConfigError::NotEnoughColumns(i))?;
             let machine_code = *line.get(2).ok_or(ConfigError::NotEnoughColumns(i))?;
 
             let instruction = Config::parse_instruction(instruction)
