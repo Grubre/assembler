@@ -16,8 +16,12 @@ pub struct Args {
     pub output_file: Option<PathBuf>,
 
     /// Config file
-    #[arg(short, long, value_name = "config_file")]
-    pub config_file: Option<PathBuf>
+    #[arg(short, long, value_name = "config")]
+    pub config_file: Option<PathBuf>,
+
+    /// Output to binary file
+    #[arg(short, long, default_value_t = false)]
+    pub text: bool,
 }
 
 pub type ReadWriteResult = Result<(Box<dyn BufRead>, Box<dyn Write>), io::Error>;
@@ -30,7 +34,7 @@ impl Args {
         };
 
         let output: Box<dyn Write> = match args.output_file.as_ref() {
-            Some(name) => Box::new(BufWriter::new(File::open(name)?)),
+            Some(name) => Box::new(BufWriter::new(File::create(name)?)),
             None => Box::new(BufWriter::new(stdout())),
         };
 
@@ -64,6 +68,7 @@ mod tests {
             input_file: Some(input_path),
             output_file: Some(output_path),
             config_file: None,
+            text: true,
         };
 
         let (mut input, _) = Args::get_read_write(&args).unwrap();

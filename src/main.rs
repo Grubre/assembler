@@ -1,7 +1,7 @@
 use std::{error::Error, io::read_to_string, process::exit, io::Write};
 
 use assembler::{
-    checker::{check_semantics, CheckedLine}, cmdline_args::Args, config::Config, lexer::Lexer, parser::parse,
+    checker::{check_semantics, CheckedLine, CheckedLineCode}, cmdline_args::Args, config::Config, lexer::Lexer, parser::parse,
     resolver::get_resolved_labels,
 };
 use clap::Parser;
@@ -96,12 +96,12 @@ impl<T, E, I: Iterator<Item = Result<T, E>>> ResultSplit<T, E> for I {
     }
 }
 
-fn output_binary_code(checked_lines: &[CheckedLine], output: &mut Box<dyn Write>) {
+fn output_bytes_as_text(checked_lines: &[CheckedLine], output: &mut Box<dyn Write>) {
     for checked_line in checked_lines {
         match &checked_line.code {
             assembler::checker::CheckedLineCode::Byte(bytes) => {
                 for byte in bytes {
-                    output.write_all(byte.as_bytes()).unwrap();
+                    output.write_all(format!("{:08b}",byte).as_bytes()).unwrap();
                     output.write_all(&[b'\n']).unwrap();
                 }
             }
@@ -110,19 +110,41 @@ fn output_binary_code(checked_lines: &[CheckedLine], output: &mut Box<dyn Write>
                 operand_codes,
             } => {
                 // TODO: Find a sane way to do that
-                output.write_all(mnemonic_code.as_bytes()).unwrap();
+                output.write_all(format!("{:08b}", mnemonic_code).as_bytes()).unwrap();
                 output.write_all(&[b'\n']).unwrap();
                 for operand_code in operand_codes {
-                    output.write_all(operand_code.as_bytes()).unwrap();
+                    output.write_all(format!("{:08b}",operand_code).as_bytes()).unwrap();
                     output.write_all(&[b'\n']).unwrap();
                 }
             }
         }
     }
-
 }
 
-fn main() -> Result<(), ()> {
+fn output_to_binary(checked_lines: &[CheckedLine], output: &mut Box<dyn Write>) {
+    let mut output_string = String::new();
+
+    for checked_line in checked_lines {
+        match &checked_line.code {
+            CheckedLineCode::Byte(bytes) => {
+                for byte in bytes {
+                    output_string.push(*byte as char);
+                }
+            }
+            CheckedLineCode::Instruction {
+                mnemonic_code,
+                operand_codes,
+            } => {
+                output_string.push(*mnemonic_code as char);
+                for operand_code in operand_codes {
+                    output_string.push(*operand_code as char);
+                }
+            }
+        }
+    }
+
+    output.write_all(output_string.as_bytes()).unwrap();
+}fn main() -> Result<(), ()> {
     let args = Args::parse();
     let (mut input, mut output) = Args::get_read_write(&args).consume_error();
     let config_file = args.config_file.unwrap_or("config.cfg".into());
@@ -138,7 +160,11 @@ fn main() -> Result<(), ()> {
     let lines = parse(&tokens).consume_errors();
     let checked_lines = check_semantics(lines, &labels, &config).consume_error();
 
-    output_binary_code(&checked_lines, &mut output);
+    if args.text {
+        output_bytes_as_text(&checked_lines, &mut output);
+    } else {
+        output_to_binary(&checked_lines, &mut output);
+    }
 
     Ok(())
 }

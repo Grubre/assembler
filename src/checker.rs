@@ -22,18 +22,18 @@ pub enum WriterErr {
 }
 
 #[derive(Debug)]
-pub enum CheckedLineCode<'a> {
-    Byte(Vec<String>),
+pub enum CheckedLineCode {
+    Byte(Vec<u8>),
     Instruction {
-        mnemonic_code: &'a str,
-        operand_codes: Vec<String>,
+        mnemonic_code: u8,
+        operand_codes: Vec<u8>,
     },
 }
 
 #[derive(Debug)]
 pub struct CheckedLine<'a> {
     pub line: Line<'a>,
-    pub code: CheckedLineCode<'a>,
+    pub code: CheckedLineCode,
 }
 
 fn check_instruction<'a>(
@@ -41,7 +41,7 @@ fn check_instruction<'a>(
     labels: &'a HashMap<&'a str, usize>,
     mnemonic: &Token,
     operands: &Vec<(Operand, &Token)>,
-) -> Result<CheckedLineCode<'a>, WriterErr> {
+) -> Result<CheckedLineCode, WriterErr> {
     let mnemonic = match &mnemonic.token_type {
         TokenType::Mnemonic(mnemonic) => mnemonic,
         _ => return Err(WriterErr::UnknownMnemonic(mnemonic.content.clone())),
@@ -83,38 +83,47 @@ fn check_instruction<'a>(
 
     match leaf {
         ConfigNode::Leaf(mnemonic_code) => Ok(CheckedLineCode::Instruction {
-            mnemonic_code,
+            mnemonic_code: binary_str_to_byte(mnemonic_code),
             operand_codes: operand_binary_codes,
         }),
         _ => unreachable!(),
     }
 }
 
-fn parse_num(number: i64) -> Result<String, WriterErr> {
+// TODO: Check whether keeping the mnemonic_code as String is better than keeping it as u8
+//       (in terms of performance).
+fn binary_str_to_byte(binary_str: &str) -> u8 {
+    let mut byte = 0;
+    for (i, c) in binary_str.chars().rev().enumerate() {
+        if c == '1' {
+            byte |= 1 << i;
+        }
+    }
+    byte
+}
+
+fn parse_num(number: i64) -> Result<u8, WriterErr> {
     if !(-128..=255).contains(&number) {
         return Err(WriterErr::NumberOutOfRange(number));
     }
 
-    // TODO: Add a unified format for parse_num and parse_labelref (remove code dup)
-    let binary = format!("{:08b}", number);
-    Ok(binary)
+    Ok(number as u8)
 }
 
 fn parse_labelref<'a>(
     labels: &'a HashMap<&'a str, usize>,
     label: &str,
-) -> Result<String, WriterErr> {
+) -> Result<u8, WriterErr> {
     let label = labels
         .get(label)
         .ok_or(WriterErr::UnknownLabel(label.to_string()))?;
-    let binary = format!("{:08b}", label);
-    Ok(binary)
+    Ok(*label as u8)
 }
 
 fn parse_value<'a>(
     labels: &'a HashMap<&'a str, usize>,
     value: &Token,
-) -> Option<Result<String, WriterErr>> {
+) -> Option<Result<u8, WriterErr>> {
     match &value.token_type {
         TokenType::Number(number) => Some(parse_num(*number)),
         TokenType::LabelRef(label_ref) => Some(parse_labelref(labels, label_ref)),
@@ -125,7 +134,7 @@ fn parse_value<'a>(
 fn check_byte<'a>(
     labels: &'a HashMap<&'a str, usize>,
     declared_values: &Vec<&Token>,
-) -> Result<CheckedLineCode<'a>, WriterErr> {
+) -> Result<CheckedLineCode, WriterErr> {
     let mut parsed_values = vec![];
     for value in declared_values {
         let parsed_value = parse_value(labels, value);
