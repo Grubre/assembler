@@ -95,16 +95,6 @@ impl Config {
             .iter()
             .map(|(_, v)| serde_json::from_value(v.clone()).unwrap())
             .collect();
-        //
-        // let mut unique_mnemonics = HashMap::new();
-        // for instruction in &instructions {
-        //     unique_mnemonics.insert(instruction.mnemonic.clone(), instruction.mnemonic.clone());
-        // }
-        //
-        // // print keys
-        // for key in unique_mnemonics.keys() {
-        //     println!("{}", key);
-        // }
 
         for instruction in &instructions {
             let mnemonic = Mnemonic::from_str(&instruction.mnemonic)
@@ -119,39 +109,26 @@ impl Config {
                 })
                 .collect::<Result<Vec<Operand>, ConfigError>>()?;
 
-            println!("{:?} {:?}", mnemonic, operands);
+            let mut current = &mut automaton;
+
+            for part in vec![NodeType::Mnemonic(mnemonic)]
+                .into_iter()
+                .chain(operands.into_iter().map(NodeType::Operand))
+            {
+                current = match current
+                    .entry(part)
+                    .or_insert_with(|| ConfigNode::Branch(HashMap::new()))
+                {
+                    ConfigNode::Leaf(_) => unreachable!(),
+                    ConfigNode::Branch(next) => next,
+                }
+            }
+
+            current.insert(
+                NodeType::MachineCode,
+                ConfigNode::Leaf(instruction.opcode.clone()),
+            );
         }
-
-        // println!("{:?}", instructions);
-
-        // let lines = content
-        //     .lines()
-        //     .map(|line| line.split(',').map(|str| str.trim()).collect::<Vec<&str>>());
-        //
-        // for (i, line) in lines.enumerate() {
-        //     let instruction = *line.first().ok_or(ConfigError::NotEnoughColumns(i))?;
-        //     let _alternative = *line.get(1).ok_or(ConfigError::NotEnoughColumns(i))?;
-        //     let machine_code = *line.get(2).ok_or(ConfigError::NotEnoughColumns(i))?;
-        //
-        //     let instruction = Config::parse_instruction(instruction)
-        //         .map_err(|message| ConfigError::ParseInstructionError(i, message))?;
-        //
-        //     let mut current = &mut automaton;
-        //     for part in instruction {
-        //         current = match current
-        //             .entry(part)
-        //             .or_insert_with(|| ConfigNode::Branch(HashMap::new()))
-        //         {
-        //             ConfigNode::Leaf(_) => unreachable!(),
-        //             ConfigNode::Branch(next) => next,
-        //         }
-        //     }
-        //
-        //     current.insert(
-        //         NodeType::MachineCode,
-        //         ConfigNode::Leaf(String::from(machine_code)),
-        //     );
-        // }
 
         Ok(Self { automaton })
     }

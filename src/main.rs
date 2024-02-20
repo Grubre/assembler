@@ -3,7 +3,7 @@ use std::{error::Error, io::read_to_string, io::Write, process::exit};
 use assembler::{
     checker::{check_semantics, CheckedLine, CheckedLineCode},
     cmdline_args::Args,
-    config::Config,
+    config::{print_config, Config},
     lexer::Lexer,
     parser::parse,
     resolver::get_resolved_labels,
@@ -162,6 +162,8 @@ fn main() -> Result<(), ()> {
     let config_file = args.config_file.unwrap_or("config.cfg".into());
 
     let config = Config::read_from_file(config_file).consume_error();
+
+    print_config(&config);
     //
     // let contents = read_to_string(&mut input).unwrap();
     // let chars = contents.chars().collect::<Vec<_>>();
