@@ -1,7 +1,11 @@
-use std::{error::Error, io::read_to_string, process::exit, io::Write};
+use std::{error::Error, io::read_to_string, io::Write, process::exit};
 
 use assembler::{
-    checker::{check_semantics, CheckedLine, CheckedLineCode}, cmdline_args::Args, config::Config, lexer::Lexer, parser::parse,
+    checker::{check_semantics, CheckedLine, CheckedLineCode},
+    cmdline_args::Args,
+    config::Config,
+    lexer::Lexer,
+    parser::parse,
     resolver::get_resolved_labels,
 };
 use clap::Parser;
@@ -101,7 +105,9 @@ fn output_bytes_as_text(checked_lines: &[CheckedLine], output: &mut Box<dyn Writ
         match &checked_line.code {
             assembler::checker::CheckedLineCode::Byte(bytes) => {
                 for byte in bytes {
-                    output.write_all(format!("{:08b}",byte).as_bytes()).unwrap();
+                    output
+                        .write_all(format!("{:08b}", byte).as_bytes())
+                        .unwrap();
                     output.write_all(&[b'\n']).unwrap();
                 }
             }
@@ -110,10 +116,14 @@ fn output_bytes_as_text(checked_lines: &[CheckedLine], output: &mut Box<dyn Writ
                 operand_codes,
             } => {
                 // TODO: Find a sane way to do that
-                output.write_all(format!("{:08b}", mnemonic_code).as_bytes()).unwrap();
+                output
+                    .write_all(format!("{:08b}", mnemonic_code).as_bytes())
+                    .unwrap();
                 output.write_all(&[b'\n']).unwrap();
                 for operand_code in operand_codes {
-                    output.write_all(format!("{:08b}",operand_code).as_bytes()).unwrap();
+                    output
+                        .write_all(format!("{:08b}", operand_code).as_bytes())
+                        .unwrap();
                     output.write_all(&[b'\n']).unwrap();
                 }
             }
@@ -144,27 +154,29 @@ fn output_to_binary(checked_lines: &[CheckedLine], output: &mut Box<dyn Write>) 
     }
 
     output.write_all(output_string.as_bytes()).unwrap();
-}fn main() -> Result<(), ()> {
+}
+
+fn main() -> Result<(), ()> {
     let args = Args::parse();
     let (mut input, mut output) = Args::get_read_write(&args).consume_error();
     let config_file = args.config_file.unwrap_or("config.cfg".into());
 
     let config = Config::read_from_file(config_file).consume_error();
-
-    let contents = read_to_string(&mut input).unwrap();
-    let chars = contents.chars().collect::<Vec<_>>();
-
-    let tokens = Lexer::new(&chars).collect::<Vec<_>>().consume_errors();
-    let labels = get_resolved_labels(&tokens);
-
-    let lines = parse(&tokens).consume_errors();
-    let checked_lines = check_semantics(lines, &labels, &config).consume_error();
-
-    if args.text {
-        output_bytes_as_text(&checked_lines, &mut output);
-    } else {
-        output_to_binary(&checked_lines, &mut output);
-    }
+    //
+    // let contents = read_to_string(&mut input).unwrap();
+    // let chars = contents.chars().collect::<Vec<_>>();
+    //
+    // let tokens = Lexer::new(&chars).collect::<Vec<_>>().consume_errors();
+    // let labels = get_resolved_labels(&tokens);
+    //
+    // let lines = parse(&tokens).consume_errors();
+    // let checked_lines = check_semantics(lines, &labels, &config).consume_error();
+    //
+    // if args.text {
+    //     output_bytes_as_text(&checked_lines, &mut output);
+    // } else {
+    //     output_to_binary(&checked_lines, &mut output);
+    // }
 
     Ok(())
 }
