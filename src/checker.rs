@@ -153,6 +153,7 @@ pub fn check_semantics<'a>(
     let mut checked_lines: Vec<_> = vec![];
 
     for line in lines {
+        println!("======\n{:?}", line);
         let code = match &line {
             Line::Byte(declared_values) => check_byte(labels, declared_values),
             Line::Instruction { mnemonic, operands } => {

@@ -163,16 +163,14 @@ fn main() -> Result<(), ()> {
 
     let config = Config::read_from_file(config_file).consume_error();
 
-    print_config(&config);
-    //
-    // let contents = read_to_string(&mut input).unwrap();
-    // let chars = contents.chars().collect::<Vec<_>>();
-    //
-    // let tokens = Lexer::new(&chars).collect::<Vec<_>>().consume_errors();
-    // let labels = get_resolved_labels(&tokens);
-    //
-    // let lines = parse(&tokens).consume_errors();
-    // let checked_lines = check_semantics(lines, &labels, &config).consume_error();
+    let contents = read_to_string(&mut input).unwrap();
+    let chars = contents.chars().collect::<Vec<_>>();
+
+    let tokens = Lexer::new(&chars).collect::<Vec<_>>().consume_errors();
+    let labels = get_resolved_labels(&tokens);
+
+    let lines = parse(&tokens).consume_errors();
+    let checked_lines = check_semantics(lines, &labels, &config).consume_error();
     //
     // if args.text {
     //     output_bytes_as_text(&checked_lines, &mut output);
