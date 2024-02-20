@@ -1,0 +1,5128 @@
+{
+  "MOVAB": {
+    "id": 0,
+    "name": "MOVAB",
+    "category": "Move Instructions",
+    "opcode": "0b00000001",
+    "mnemonic": "MOV",
+    "arguments": [
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_B_TO_A",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_B} \\) to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_B} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVATH": {
+    "id": 1,
+    "name": "MOVATH",
+    "category": "Move Instructions",
+    "opcode": "0b00000010",
+    "mnemonic": "MOV",
+    "arguments": [
+      "A",
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_A",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_TMPH} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVATL": {
+    "id": 2,
+    "name": "MOVATL",
+    "category": "Move Instructions",
+    "opcode": "0b00000011",
+    "mnemonic": "MOV",
+    "arguments": [
+      "A",
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TL_TO_A",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_TMPL} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVAF": {
+    "id": 3,
+    "name": "MOVAF",
+    "category": "Move Instructions",
+    "opcode": "0b00000100",
+    "mnemonic": "MOV",
+    "arguments": [
+      "A",
+      "F"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_F_TO_A",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_F} \\) to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVBA": {
+    "id": 4,
+    "name": "MOVBA",
+    "category": "Move Instructions",
+    "opcode": "0b00000101",
+    "mnemonic": "MOV",
+    "arguments": [
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_A_TO_B",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_A} \\) to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_A} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVBTH": {
+    "id": 5,
+    "name": "MOVBTH",
+    "category": "Move Instructions",
+    "opcode": "0b00000110",
+    "mnemonic": "MOV",
+    "arguments": [
+      "B",
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_B",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_TMPH} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVBTL": {
+    "id": 6,
+    "name": "MOVBTL",
+    "category": "Move Instructions",
+    "opcode": "0b00000111",
+    "mnemonic": "MOV",
+    "arguments": [
+      "B",
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TL_TO_B",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_TMPL} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVBF": {
+    "id": 7,
+    "name": "MOVBF",
+    "category": "Move Instructions",
+    "opcode": "0b00001000",
+    "mnemonic": "MOV",
+    "arguments": [
+      "B",
+      "F"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_F_TO_B",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_F} \\) to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVTHA": {
+    "id": 8,
+    "name": "MOVTHA",
+    "category": "Move Instructions",
+    "opcode": "0b00001001",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TH",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_A_TO_TH",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_A} \\) to \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPH} \\leftarrow \\texttt{REG_A} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVTHB": {
+    "id": 9,
+    "name": "MOVTHB",
+    "category": "Move Instructions",
+    "opcode": "0b00001010",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TH",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_B_TO_TH",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_B} \\) to \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPH} \\leftarrow \\texttt{REG_B} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVTHTL": {
+    "id": 10,
+    "name": "MOVTHTL",
+    "category": "Move Instructions",
+    "opcode": "0b00001011",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TH",
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TL_TO_TH",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPH} \\leftarrow \\texttt{REG_TMPL} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVTHF": {
+    "id": 11,
+    "name": "MOVTHF",
+    "category": "Move Instructions",
+    "opcode": "0b00001100",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TH",
+      "F"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_F_TO_TH",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_F} \\) to \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPH} \\leftarrow \\texttt{REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVTLA": {
+    "id": 12,
+    "name": "MOVTLA",
+    "category": "Move Instructions",
+    "opcode": "0b00001101",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TL",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_A_TO_TL",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_A} \\) to \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_A} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVTLB": {
+    "id": 13,
+    "name": "MOVTLB",
+    "category": "Move Instructions",
+    "opcode": "0b00001110",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TL",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_B_TO_TL",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_B} \\) to \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_B} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVTLTH": {
+    "id": 14,
+    "name": "MOVTLTH",
+    "category": "Move Instructions",
+    "opcode": "0b00001111",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TL",
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_TL",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_TMPH} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVTLF": {
+    "id": 15,
+    "name": "MOVTLF",
+    "category": "Move Instructions",
+    "opcode": "0b00010000",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TL",
+      "F"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_F_TO_TL",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_F} \\) to \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "MOVAIMM": {
+    "id": 16,
+    "name": "MOVAIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00010001",
+    "mnemonic": "MOV",
+    "arguments": [
+      "A",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_A_PC++",
+      "RST_MC"
+    ],
+    "description": "Move given constant to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_A} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "MOVBIMM": {
+    "id": 17,
+    "name": "MOVBIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00010010",
+    "mnemonic": "MOV",
+    "arguments": [
+      "B",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_B_PC++",
+      "RST_MC"
+    ],
+    "description": "Move given constant to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_B} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "MOVTHIMM": {
+    "id": 18,
+    "name": "MOVTHIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00010011",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TH",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TH_PC++",
+      "RST_MC"
+    ],
+    "description": "Move given constant to \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "MOVTLIMM": {
+    "id": 19,
+    "name": "MOVTLIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00010100",
+    "mnemonic": "MOV",
+    "arguments": [
+      "TL",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TL_PC++",
+      "RST_MC"
+    ],
+    "description": "Move given constant to \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "MOVAABS": {
+    "id": 20,
+    "name": "MOVAABS",
+    "category": "Move Instructions",
+    "opcode": "0b00010101",
+    "mnemonic": "MOV",
+    "arguments": [
+      "A",
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MEM[MAR]_TO_A",
+      "RST_MC"
+    ],
+    "description": "Move constant from memory at given address to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_A} \\leftarrow \\texttt{MEM[REG_MAR]} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 8,
+    "max-cycles-number": 8,
+    "total-mircocodes-number": "8"
+  },
+  "MOVAABSZP": {
+    "id": 21,
+    "name": "MOVAABSZP",
+    "category": "Move Instructions",
+    "opcode": "0b00010110",
+    "mnemonic": "MOV",
+    "arguments": [
+      "A",
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_ZP_MEM[MAR]_TO_A",
+      "RST_MC"
+    ],
+    "description": "Move constant from zero page memory at given address to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_A} \\leftarrow \\texttt{MEM[REG_MAR]} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "MOVBABS": {
+    "id": 22,
+    "name": "MOVBABS",
+    "category": "Move Instructions",
+    "opcode": "0b00010111",
+    "mnemonic": "MOV",
+    "arguments": [
+      "B",
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MEM[MAR]_TO_B",
+      "RST_MC"
+    ],
+    "description": "Move constant from memory at given address to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_A} \\leftarrow \\texttt{MEM[REG_MAR]} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 8,
+    "max-cycles-number": 8,
+    "total-mircocodes-number": "8"
+  },
+  "MOVBABSZP": {
+    "id": 23,
+    "name": "MOVBABSZP",
+    "category": "Move Instructions",
+    "opcode": "0b00011000",
+    "mnemonic": "MOV",
+    "arguments": [
+      "B",
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_ZP_MEM[MAR]_TO_B",
+      "RST_MC"
+    ],
+    "description": "Move constant from zero page memory at given address to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_B} \\leftarrow \\texttt{MEM[REG_MAR]} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "MOVATABSA": {
+    "id": 24,
+    "name": "MOVATABSA",
+    "category": "Move Instructions",
+    "opcode": "0b00011001",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "MEM16",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR_A_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_A} \\) to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 8,
+    "max-cycles-number": 8,
+    "total-mircocodes-number": "8"
+  },
+  "MOVATABSAZP": {
+    "id": 25,
+    "name": "MOVATABSAZP",
+    "category": "Move Instructions",
+    "opcode": "0b00011010",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "MEM8",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR_A_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_A} \\) to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "MOVATABSB": {
+    "id": 26,
+    "name": "MOVATABSB",
+    "category": "Move Instructions",
+    "opcode": "0b00011011",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "MEM16",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR_B_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_B} \\) to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 8,
+    "max-cycles-number": 8,
+    "total-mircocodes-number": "8"
+  },
+  "MOVATABSBZP": {
+    "id": 27,
+    "name": "MOVATABSBZP",
+    "category": "Move Instructions",
+    "opcode": "0b00011100",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "MEM8",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR_B_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_B} \\) to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "MOVATABSIMM": {
+    "id": 28,
+    "name": "MOVATABSIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00011101",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "MEM16",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_MBR_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move given constant to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 10,
+    "max-cycles-number": 10,
+    "total-mircocodes-number": "10"
+  },
+  "MOVATABSIMMZP": {
+    "id": 29,
+    "name": "MOVATABSIMMZP",
+    "category": "Move Instructions",
+    "opcode": "0b00011110",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "MEM8",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_MBR_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move given constant to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 8,
+    "max-cycles-number": 8,
+    "total-mircocodes-number": "8"
+  },
+  "MOVATTA": {
+    "id": 30,
+    "name": "MOVATTA",
+    "category": "Move Instructions",
+    "opcode": "0b00011111",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "T",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TMP_TO_MAR_A_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_A} \\) to memory at address given by value of \\( \\texttt{REG_TMP} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "MOVATTB": {
+    "id": 31,
+    "name": "MOVATTB",
+    "category": "Move Instructions",
+    "opcode": "0b00100000",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "T",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TMP_TO_MAR_B_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_B} \\) to memory at address given by value of \\( \\texttt{REG_TMP} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "MOVATAB": {
+    "id": 32,
+    "name": "MOVATAB",
+    "category": "Move Instructions",
+    "opcode": "0b00100001",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_A_TO_TMPL",
+      "LOAD_TMP_TO_MAR_B_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_B} \\) to zero page memory at address given by value of \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "MOVATATH": {
+    "id": 33,
+    "name": "MOVATATH",
+    "category": "Move Instructions",
+    "opcode": "0b00100010",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "A",
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_A_TO_TMPL",
+      "LOAD_TMP_TO_MAR_TH_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPH} \\) to zero page memory at address given by value of \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "MOVATATL": {
+    "id": 34,
+    "name": "MOVATATL",
+    "category": "Move Instructions",
+    "opcode": "0b00100011",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "A",
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_A_TO_TMPL",
+      "LOAD_TMP_TO_MAR_TL_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPL} \\) to zero page memory at address given by value of \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "MOVATBA": {
+    "id": 35,
+    "name": "MOVATBA",
+    "category": "Move Instructions",
+    "opcode": "0b00100100",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_B_TO_TMPL",
+      "LOAD_TMP_TO_MAR_A_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_A} \\) to zero page memory at address given by value of \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "MOVATBTH": {
+    "id": 36,
+    "name": "MOVATBTH",
+    "category": "Move Instructions",
+    "opcode": "0b00100101",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "B",
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_B_TO_TMPL",
+      "LOAD_TMP_TO_MAR_TH_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPH} \\) to zero page memory at address given by value of \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "MOVATBTL": {
+    "id": 37,
+    "name": "MOVATBTL",
+    "category": "Move Instructions",
+    "opcode": "0b00100110",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "B",
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_B_TO_TMPL",
+      "LOAD_TMP_TO_MAR_TL_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPL} \\) to zero page memory at address given by value of \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "MOVATTHA": {
+    "id": 38,
+    "name": "MOVATTHA",
+    "category": "Move Instructions",
+    "opcode": "0b00100111",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "TH",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_TMPL",
+      "LOAD_TMP_TO_MAR_A_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_A} \\) to zero page memory at address given by value of \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "MOVATTHB": {
+    "id": 39,
+    "name": "MOVATTHB",
+    "category": "Move Instructions",
+    "opcode": "0b00101000",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "TH",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_TMPL",
+      "LOAD_TMP_TO_MAR_B_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_B} \\) to zero page memory at address given by value of \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "MOVATTHTL": {
+    "id": 40,
+    "name": "MOVATTHTL",
+    "category": "Move Instructions",
+    "opcode": "0b00101001",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "TH",
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_TMPL",
+      "LOAD_TMP_TO_MAR_TL_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPL} \\) to zero page memory at address given by value of \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "MOVATTLA": {
+    "id": 41,
+    "name": "MOVATTLA",
+    "category": "Move Instructions",
+    "opcode": "0b00101010",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "TL",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TMP_TO_MAR_A_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_A} \\) to zero page memory at address given by value of \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "MOVATTLB": {
+    "id": 42,
+    "name": "MOVATTLB",
+    "category": "Move Instructions",
+    "opcode": "0b00101011",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "TL",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TMP_TO_MAR_B_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_B} \\) to zero page memory at address given by value of \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "MOVATTLTH": {
+    "id": 43,
+    "name": "MOVATTLTH",
+    "category": "Move Instructions",
+    "opcode": "0b00101100",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "TL",
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TMP_TO_MAR_TH_TO_MBR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move value from \\( \\texttt{REG_TMPH} \\) to zero page memory at address given by value of \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "MOVATTIMM": {
+    "id": 44,
+    "name": "MOVATTIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00101101",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "T",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_MBR_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move given constant to memory at address given by value of \\( \\texttt{REG_TMP} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "MOVATAIMM": {
+    "id": 45,
+    "name": "MOVATAIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00101110",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "A",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR_A_TO_TMPL",
+      "LOAD_MEM[MAR]_TO_MBR_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move given constant to zero page memory at address given by value of \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\ \\& \\ \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "MOVATBIMM": {
+    "id": 46,
+    "name": "MOVATBIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00101111",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "B",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR_B_TO_TMPL",
+      "LOAD_MEM[MAR]_TO_MBR_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move given constant to zero page memory at address given by value of \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\ \\& \\ \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "MOVATTHIMM": {
+    "id": 47,
+    "name": "MOVATTHIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00110000",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "TH",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR_TH_TO_TMPL",
+      "LOAD_MEM[MAR]_TO_MBR_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move given constant to zero page memory at address given by value of \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\ \\& \\ \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "MOVATTLIMM": {
+    "id": 48,
+    "name": "MOVATTLIMM",
+    "category": "Move Instructions",
+    "opcode": "0b00110001",
+    "mnemonic": "MOVAT",
+    "arguments": [
+      "TL",
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR_TL_TO_TMPL",
+      "LOAD_MEM[MAR]_TO_MBR_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Move given constant to zero page memory at address given by value of \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\ \\& \\ \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "NEGAA": {
+    "id": 49,
+    "name": "NEGAA",
+    "category": "ALU Instructions",
+    "opcode": "0b00110010",
+    "mnemonic": "NEG",
+    "arguments": [
+      "A",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_NEGA_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (-\\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "NEGAB": {
+    "id": 50,
+    "name": "NEGAB",
+    "category": "ALU Instructions",
+    "opcode": "0b00110011",
+    "mnemonic": "NEG",
+    "arguments": [
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_NEGB_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (-\\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "NEGBA": {
+    "id": 51,
+    "name": "NEGBA",
+    "category": "ALU Instructions",
+    "opcode": "0b00110100",
+    "mnemonic": "NEG",
+    "arguments": [
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_NEGA_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (-\\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "NEGBB": {
+    "id": 52,
+    "name": "NEGBB",
+    "category": "ALU Instructions",
+    "opcode": "0b00110101",
+    "mnemonic": "NEG",
+    "arguments": [
+      "B",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_NEGB_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (-\\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "NEGMEMA": {
+    "id": 53,
+    "name": "NEGMEMA",
+    "category": "ALU Instructions",
+    "opcode": "0b00110110",
+    "mnemonic": "NEG",
+    "arguments": [
+      "MEM",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_NEGA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_A} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (-\\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "NEGMEMB": {
+    "id": 54,
+    "name": "NEGMEMB",
+    "category": "ALU Instructions",
+    "opcode": "0b00110111",
+    "mnemonic": "NEG",
+    "arguments": [
+      "MEM",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_NEGB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (-\\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "NEGMEMZPA": {
+    "id": 55,
+    "name": "NEGMEMZPA",
+    "category": "ALU Instructions",
+    "opcode": "0b00111000",
+    "mnemonic": "NEG",
+    "arguments": [
+      "MEMZP",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_NEGA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_A} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (-\\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "NEGMEMZPB": {
+    "id": 56,
+    "name": "NEGMEMZPB",
+    "category": "ALU Instructions",
+    "opcode": "0b00111001",
+    "mnemonic": "NEG",
+    "arguments": [
+      "MEMZP",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_NEGB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (-\\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "NEGSTCA": {
+    "id": 57,
+    "name": "NEGSTCA",
+    "category": "ALU Instructions",
+    "opcode": "0b00111010",
+    "mnemonic": "NEG",
+    "arguments": [
+      "STC",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_NEGA_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_A} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (-\\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "NEGSTCB": {
+    "id": 58,
+    "name": "NEGSTCB",
+    "category": "ALU Instructions",
+    "opcode": "0b00111011",
+    "mnemonic": "NEG",
+    "arguments": [
+      "STC",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_NEGB_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate negation of \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (-\\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "ADDA": {
+    "id": 59,
+    "name": "ADDA",
+    "category": "ALU Instructions",
+    "opcode": "0b00111100",
+    "mnemonic": "ADD",
+    "arguments": [
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_ADD_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate sum of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_A + REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "ADDB": {
+    "id": 60,
+    "name": "ADDB",
+    "category": "ALU Instructions",
+    "opcode": "0b00111101",
+    "mnemonic": "ADD",
+    "arguments": [
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_ADD_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate sum of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_A + REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "ADDMEM": {
+    "id": 61,
+    "name": "ADDMEM",
+    "category": "ALU Instructions",
+    "opcode": "0b00111110",
+    "mnemonic": "ADD",
+    "arguments": [
+      "MEM"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_ADD_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate sum of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A + REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "ADDMEMZP": {
+    "id": 62,
+    "name": "ADDMEMZP",
+    "category": "ALU Instructions",
+    "opcode": "0b00111111",
+    "mnemonic": "ADD",
+    "arguments": [
+      "MEMZP"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_ADD_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate sum of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A + REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "ADDSTC": {
+    "id": 63,
+    "name": "ADDSTC",
+    "category": "ALU Instructions",
+    "opcode": "0b01000000",
+    "mnemonic": "ADD",
+    "arguments": [
+      "STC"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_ADD_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate sum of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A + REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "SUBAAB": {
+    "id": 64,
+    "name": "SUBAAB",
+    "category": "ALU Instructions",
+    "opcode": "0b01000001",
+    "mnemonic": "SUB",
+    "arguments": [
+      "A",
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SUBAB_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_A - REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SUBABA": {
+    "id": 65,
+    "name": "SUBABA",
+    "category": "ALU Instructions",
+    "opcode": "0b01000010",
+    "mnemonic": "SUB",
+    "arguments": [
+      "A",
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SUBBA_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_B} \\) and \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_B - REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SUBBAB": {
+    "id": 66,
+    "name": "SUBBAB",
+    "category": "ALU Instructions",
+    "opcode": "0b01000011",
+    "mnemonic": "SUB",
+    "arguments": [
+      "B",
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SUBAB_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_A - REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SUBBBA": {
+    "id": 67,
+    "name": "SUBBBA",
+    "category": "ALU Instructions",
+    "opcode": "0b01000100",
+    "mnemonic": "SUB",
+    "arguments": [
+      "B",
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SUBBA_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_B} \\) and \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_B - REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SUBMEMAB": {
+    "id": 68,
+    "name": "SUBMEMAB",
+    "category": "ALU Instructions",
+    "opcode": "0b01000101",
+    "mnemonic": "SUB",
+    "arguments": [
+      "MEM",
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SUBAB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A - REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "SUBMEMBA": {
+    "id": 69,
+    "name": "SUBMEMBA",
+    "category": "ALU Instructions",
+    "opcode": "0b01000110",
+    "mnemonic": "SUB",
+    "arguments": [
+      "MEM",
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SUBBA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_B} \\) and \\( \\texttt{REG_A} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B - REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "SUBMEMZPAB": {
+    "id": 70,
+    "name": "SUBMEMZPAB",
+    "category": "ALU Instructions",
+    "opcode": "0b01000111",
+    "mnemonic": "SUB",
+    "arguments": [
+      "MEMZP",
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SUBAB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A - REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "SUBMEMZPBA": {
+    "id": 71,
+    "name": "SUBMEMZPBA",
+    "category": "ALU Instructions",
+    "opcode": "0b01001000",
+    "mnemonic": "SUB",
+    "arguments": [
+      "MEMZP",
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SUBBA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_B} \\) and \\( \\texttt{REG_A} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B - REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "SUBSTCAB": {
+    "id": 72,
+    "name": "SUBSTCAB",
+    "category": "ALU Instructions",
+    "opcode": "0b01001001",
+    "mnemonic": "SUB",
+    "arguments": [
+      "STC",
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SUBAB_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A - REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "SUBSTCBA": {
+    "id": 73,
+    "name": "SUBSTCBA",
+    "category": "ALU Instructions",
+    "opcode": "0b01001010",
+    "mnemonic": "SUB",
+    "arguments": [
+      "STC",
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SUBBA_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate difference of \\( \\texttt{REG_B} \\) and \\( \\texttt{REG_A} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B - REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "DIV2AA": {
+    "id": 74,
+    "name": "DIV2AA",
+    "category": "ALU Instructions",
+    "opcode": "0b01001011",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "A",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_DIV2A_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_A}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "DIV2AB": {
+    "id": 75,
+    "name": "DIV2AB",
+    "category": "ALU Instructions",
+    "opcode": "0b01001100",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_DIV2B_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_B}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "DIV2BA": {
+    "id": 76,
+    "name": "DIV2BA",
+    "category": "ALU Instructions",
+    "opcode": "0b01001101",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_DIV2A_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_A}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "DIV2BB": {
+    "id": 77,
+    "name": "DIV2BB",
+    "category": "ALU Instructions",
+    "opcode": "0b01001110",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "B",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_DIV2B_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_B}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "DIV2MEMA": {
+    "id": 78,
+    "name": "DIV2MEMA",
+    "category": "ALU Instructions",
+    "opcode": "0b01001111",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "MEM",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_DIV2A_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_A} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "DIV2MEMB": {
+    "id": 79,
+    "name": "DIV2MEMB",
+    "category": "ALU Instructions",
+    "opcode": "0b01010000",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "MEM",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_DIV2B_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "DIV2MEMZPA": {
+    "id": 80,
+    "name": "DIV2MEMZPA",
+    "category": "ALU Instructions",
+    "opcode": "0b01010001",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "MEMZP",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_DIV2A_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_A} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "DIV2MEMZPB": {
+    "id": 81,
+    "name": "DIV2MEMZPB",
+    "category": "ALU Instructions",
+    "opcode": "0b01010010",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "MEMZP",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_DIV2B_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "DIV2STCA": {
+    "id": 82,
+    "name": "DIV2STCA",
+    "category": "ALU Instructions",
+    "opcode": "0b01010011",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "STC",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_DIV2A_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_A} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "DIV2STCB": {
+    "id": 83,
+    "name": "DIV2STCB",
+    "category": "ALU Instructions",
+    "opcode": "0b01010100",
+    "mnemonic": "DIV2",
+    "arguments": [
+      "STC",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_DIV2B_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate quotient of \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B}/2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "INVAA": {
+    "id": 84,
+    "name": "INVAA",
+    "category": "ALU Instructions",
+    "opcode": "0b01010101",
+    "mnemonic": "INV",
+    "arguments": [
+      "A",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_INVA_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (not \\  \\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "INVAB": {
+    "id": 85,
+    "name": "INVAB",
+    "category": "ALU Instructions",
+    "opcode": "0b01010110",
+    "mnemonic": "INV",
+    "arguments": [
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_INVB_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (not \\  \\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "INVBA": {
+    "id": 86,
+    "name": "INVBA",
+    "category": "ALU Instructions",
+    "opcode": "0b01010111",
+    "mnemonic": "INV",
+    "arguments": [
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_INVA_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (not \\  \\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "INVBB": {
+    "id": 87,
+    "name": "INVBB",
+    "category": "ALU Instructions",
+    "opcode": "0b01011000",
+    "mnemonic": "INV",
+    "arguments": [
+      "B",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_INVB_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (not \\  \\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "INVMEMA": {
+    "id": 88,
+    "name": "INVMEMA",
+    "category": "ALU Instructions",
+    "opcode": "0b01011001",
+    "mnemonic": "INV",
+    "arguments": [
+      "MEM",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_INVA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_A} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (not \\  \\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "INVMEMB": {
+    "id": 89,
+    "name": "INVMEMB",
+    "category": "ALU Instructions",
+    "opcode": "0b01011010",
+    "mnemonic": "INV",
+    "arguments": [
+      "MEM",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_INVB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (not \\  \\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "INVMEMZPA": {
+    "id": 90,
+    "name": "INVMEMZPA",
+    "category": "ALU Instructions",
+    "opcode": "0b01011011",
+    "mnemonic": "INV",
+    "arguments": [
+      "MEMZP",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_INVA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_A} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (not \\  \\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "INVMEMZPB": {
+    "id": 91,
+    "name": "INVMEMZPB",
+    "category": "ALU Instructions",
+    "opcode": "0b01011100",
+    "mnemonic": "INV",
+    "arguments": [
+      "MEMZP",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_INVB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (not \\  \\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "INVSTCA": {
+    "id": 92,
+    "name": "INVSTCA",
+    "category": "ALU Instructions",
+    "opcode": "0b01011101",
+    "mnemonic": "INV",
+    "arguments": [
+      "STC",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_INVA_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_A} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (not \\  \\texttt{REG_A}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "INVSTCB": {
+    "id": 93,
+    "name": "INVSTCB",
+    "category": "ALU Instructions",
+    "opcode": "0b01011110",
+    "mnemonic": "INV",
+    "arguments": [
+      "STC",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_INVB_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate bit inversion of \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (not \\  \\texttt{REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "ORA": {
+    "id": 94,
+    "name": "ORA",
+    "category": "ALU Instructions",
+    "opcode": "0b01011111",
+    "mnemonic": "OR",
+    "arguments": [
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_OR_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate alternative of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_A or REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "ORB": {
+    "id": 95,
+    "name": "ORB",
+    "category": "ALU Instructions",
+    "opcode": "0b01100000",
+    "mnemonic": "OR",
+    "arguments": [
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_OR_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate alternative of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_A or REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "ORMEM": {
+    "id": 96,
+    "name": "ORMEM",
+    "category": "ALU Instructions",
+    "opcode": "0b01100001",
+    "mnemonic": "OR",
+    "arguments": [
+      "MEM"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_OR_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate alternative of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A or REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "ORMEMZP": {
+    "id": 97,
+    "name": "ORMEMZP",
+    "category": "ALU Instructions",
+    "opcode": "0b01100010",
+    "mnemonic": "OR",
+    "arguments": [
+      "MEMZP"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_OR_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate alternative of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A or REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "ORSTC": {
+    "id": 98,
+    "name": "ORSTC",
+    "category": "ALU Instructions",
+    "opcode": "0b01100011",
+    "mnemonic": "OR",
+    "arguments": [
+      "STC"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_OR_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate alternative of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A or REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "ANDA": {
+    "id": 99,
+    "name": "ANDA",
+    "category": "ALU Instructions",
+    "opcode": "0b01100100",
+    "mnemonic": "AND",
+    "arguments": [
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_AND_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate conjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_A and REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "ANDB": {
+    "id": 100,
+    "name": "ANDB",
+    "category": "ALU Instructions",
+    "opcode": "0b01100101",
+    "mnemonic": "AND",
+    "arguments": [
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_AND_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate conjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_A and REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "ANDMEM": {
+    "id": 101,
+    "name": "ANDMEM",
+    "category": "ALU Instructions",
+    "opcode": "0b01100110",
+    "mnemonic": "AND",
+    "arguments": [
+      "MEM"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_AND_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate conjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A and REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "ANDMEMZP": {
+    "id": 102,
+    "name": "ANDMEMZP",
+    "category": "ALU Instructions",
+    "opcode": "0b01100111",
+    "mnemonic": "AND",
+    "arguments": [
+      "MEMZP"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_AND_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate conjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A and REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "ANDSTC": {
+    "id": 103,
+    "name": "ANDSTC",
+    "category": "ALU Instructions",
+    "opcode": "0b01101000",
+    "mnemonic": "AND",
+    "arguments": [
+      "STC"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_AND_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate conjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A and REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "XORA": {
+    "id": 104,
+    "name": "XORA",
+    "category": "ALU Instructions",
+    "opcode": "0b01101001",
+    "mnemonic": "XOR",
+    "arguments": [
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_XOR_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate exclusive disjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_A xor REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "XORB": {
+    "id": 105,
+    "name": "XORB",
+    "category": "ALU Instructions",
+    "opcode": "0b01101010",
+    "mnemonic": "XOR",
+    "arguments": [
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_XOR_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate exclusive disjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_A xor REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "XORMEM": {
+    "id": 106,
+    "name": "XORMEM",
+    "category": "ALU Instructions",
+    "opcode": "0b01101011",
+    "mnemonic": "XOR",
+    "arguments": [
+      "MEM"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_XOR_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate exclusive disjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A xor REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "XORMEMZP": {
+    "id": 107,
+    "name": "XORMEMZP",
+    "category": "ALU Instructions",
+    "opcode": "0b01101100",
+    "mnemonic": "XOR",
+    "arguments": [
+      "MEMZP"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_XOR_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate exclusive disjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A xor REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "XORSTC": {
+    "id": 108,
+    "name": "XORSTC",
+    "category": "ALU Instructions",
+    "opcode": "0b01101101",
+    "mnemonic": "XOR",
+    "arguments": [
+      "STC"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_XOR_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate exclusive disjunction of \\( \\texttt{REG_A} \\) and \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A xor REG_B}) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "SHRAA": {
+    "id": 109,
+    "name": "SHRAA",
+    "category": "ALU Instructions",
+    "opcode": "0b01101110",
+    "mnemonic": "SHR",
+    "arguments": [
+      "A",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHRA_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_A}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SHRAB": {
+    "id": 110,
+    "name": "SHRAB",
+    "category": "ALU Instructions",
+    "opcode": "0b01101111",
+    "mnemonic": "SHR",
+    "arguments": [
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHRB_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_B}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SHRBA": {
+    "id": 111,
+    "name": "SHRBA",
+    "category": "ALU Instructions",
+    "opcode": "0b01110000",
+    "mnemonic": "SHR",
+    "arguments": [
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHRA_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_A}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SHRBB": {
+    "id": 112,
+    "name": "SHRBB",
+    "category": "ALU Instructions",
+    "opcode": "0b01110001",
+    "mnemonic": "SHR",
+    "arguments": [
+      "B",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHRB_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_B}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SHRMEMA": {
+    "id": 113,
+    "name": "SHRMEMA",
+    "category": "ALU Instructions",
+    "opcode": "0b01110010",
+    "mnemonic": "SHR",
+    "arguments": [
+      "MEM",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SHRA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_A} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "SHRMEMB": {
+    "id": 114,
+    "name": "SHRMEMB",
+    "category": "ALU Instructions",
+    "opcode": "0b01110011",
+    "mnemonic": "SHR",
+    "arguments": [
+      "MEM",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SHRB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "SHRMEMZPA": {
+    "id": 115,
+    "name": "SHRMEMZPA",
+    "category": "ALU Instructions",
+    "opcode": "0b01110100",
+    "mnemonic": "SHR",
+    "arguments": [
+      "MEMZP",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SHRA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_A} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "SHRMEMZPB": {
+    "id": 116,
+    "name": "SHRMEMZPB",
+    "category": "ALU Instructions",
+    "opcode": "0b01110101",
+    "mnemonic": "SHR",
+    "arguments": [
+      "MEMZP",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SHRB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "SHRSTCA": {
+    "id": 117,
+    "name": "SHRSTCA",
+    "category": "ALU Instructions",
+    "opcode": "0b01110110",
+    "mnemonic": "SHR",
+    "arguments": [
+      "STC",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHRA_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_A} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "SHRSTCB": {
+    "id": 118,
+    "name": "SHRSTCB",
+    "category": "ALU Instructions",
+    "opcode": "0b01110111",
+    "mnemonic": "SHR",
+    "arguments": [
+      "STC",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHRB_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate right shift of \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B}>>2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "SHLAA": {
+    "id": 119,
+    "name": "SHLAA",
+    "category": "ALU Instructions",
+    "opcode": "0b01111000",
+    "mnemonic": "SHL",
+    "arguments": [
+      "A",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHLA_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_A}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SHLAB": {
+    "id": 120,
+    "name": "SHLAB",
+    "category": "ALU Instructions",
+    "opcode": "0b01111001",
+    "mnemonic": "SHL",
+    "arguments": [
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHLB_TO_A",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow (\\texttt{REG_B}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SHLBA": {
+    "id": 121,
+    "name": "SHLBA",
+    "category": "ALU Instructions",
+    "opcode": "0b01111010",
+    "mnemonic": "SHL",
+    "arguments": [
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHLA_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_A} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_A}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SHLBB": {
+    "id": 122,
+    "name": "SHLBB",
+    "category": "ALU Instructions",
+    "opcode": "0b01111011",
+    "mnemonic": "SHL",
+    "arguments": [
+      "B",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHLB_TO_B",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_B} \\) and save it to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow (\\texttt{REG_B}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SHLMEMA": {
+    "id": 123,
+    "name": "SHLMEMA",
+    "category": "ALU Instructions",
+    "opcode": "0b01111100",
+    "mnemonic": "SHL",
+    "arguments": [
+      "MEM",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SHLA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_A} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "SHLMEMB": {
+    "id": 124,
+    "name": "SHLMEMB",
+    "category": "ALU Instructions",
+    "opcode": "0b01111101",
+    "mnemonic": "SHL",
+    "arguments": [
+      "MEM",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SHLB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_B} \\) and save it to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 9,
+    "max-cycles-number": 9,
+    "total-mircocodes-number": "9"
+  },
+  "SHLMEMZPA": {
+    "id": 125,
+    "name": "SHLMEMZPA",
+    "category": "ALU Instructions",
+    "opcode": "0b01111110",
+    "mnemonic": "SHL",
+    "arguments": [
+      "MEMZP",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SHLA_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_A} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "SHLMEMZPB": {
+    "id": 126,
+    "name": "SHLMEMZPB",
+    "category": "ALU Instructions",
+    "opcode": "0b01111111",
+    "mnemonic": "SHL",
+    "arguments": [
+      "MEMZP",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_TMP_TO_MAR",
+      "MOV_SHLB_TO_MBR_SAVE_FLAGS",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_B} \\) and save it to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "SHLSTCA": {
+    "id": 127,
+    "name": "SHLSTCA",
+    "category": "ALU Instructions",
+    "opcode": "0b10000000",
+    "mnemonic": "SHL",
+    "arguments": [
+      "STC",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHLA_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_A} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_A}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "SHLSTCB": {
+    "id": 128,
+    "name": "SHLSTCB",
+    "category": "ALU Instructions",
+    "opcode": "0b10000001",
+    "mnemonic": "SHL",
+    "arguments": [
+      "STC",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_SHLB_TO_MBR_SAVE_FLAGS_LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_STC_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Calculate left shift of \\( \\texttt{REG_B} \\) and save it to stack",
+    "microcodes-description": "\\( \\texttt{REG_MBR} \\leftarrow (\\texttt{REG_B}<<2) \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\ \\& \\ \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "CMPAB": {
+    "id": 129,
+    "name": "CMPAB",
+    "category": "ALU Instructions",
+    "opcode": "0b10000010",
+    "mnemonic": "CMP",
+    "arguments": [
+      "A",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "CALCULATE_A-B_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Save flags of operation \\( \\texttt{REG_A} - \\texttt{REG_B} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{calculate REG_A - REG_B} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "CMPBA": {
+    "id": 130,
+    "name": "CMPBA",
+    "category": "ALU Instructions",
+    "opcode": "0b10000011",
+    "mnemonic": "CMP",
+    "arguments": [
+      "B",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "CALCULATE_B-A_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Save flags of operation \\( \\texttt{REG_B} - \\texttt{REG_A} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{calculate REG_B - REG_A} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "CMPTHTL": {
+    "id": 131,
+    "name": "CMPTHTL",
+    "category": "ALU Instructions",
+    "opcode": "0b10000100",
+    "mnemonic": "CMP",
+    "arguments": [
+      "TH",
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_A",
+      "LOAD_TL_TO_B",
+      "CALCULATE_A-B_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{REG_A} \\), \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{REG_B} \\) and save flags of operation \\( \\texttt{REG_A} - \\texttt{REG_B} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{REG_B} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{calculate REG_A - REG_B} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "CMPTLTH": {
+    "id": 132,
+    "name": "CMPTLTH",
+    "category": "ALU Instructions",
+    "opcode": "0b10000101",
+    "mnemonic": "CMP",
+    "arguments": [
+      "TL",
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TL_TO_A",
+      "LOAD_TH_TO_B",
+      "CALCULATE_A-B_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{REG_A} \\), \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{REG_B} \\) and save flags of operation \\( \\texttt{REG_A} - \\texttt{REG_B} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{REG_B} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{calculate REG_A - REG_B} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 5,
+    "max-cycles-number": 5,
+    "total-mircocodes-number": "5"
+  },
+  "CMPTHA": {
+    "id": 133,
+    "name": "CMPTHA",
+    "category": "ALU Instructions",
+    "opcode": "0b10000110",
+    "mnemonic": "CMP",
+    "arguments": [
+      "TH",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_B",
+      "CALCULATE_A-B_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{REG_B} \\) and save flags of operation \\( \\texttt{REG_A} - \\texttt{REG_B} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{calculate REG_A - REG_B} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "CMPATH": {
+    "id": 134,
+    "name": "CMPATH",
+    "category": "ALU Instructions",
+    "opcode": "0b10000111",
+    "mnemonic": "CMP",
+    "arguments": [
+      "A",
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_B",
+      "CALCULATE_B-A_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{REG_B} \\) and save flags of operation \\( \\texttt{REG_B} - \\texttt{REG_A} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{calculate REG_B - REG_A} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "CMPTHB": {
+    "id": 135,
+    "name": "CMPTHB",
+    "category": "ALU Instructions",
+    "opcode": "0b10001000",
+    "mnemonic": "CMP",
+    "arguments": [
+      "TH",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_A",
+      "CALCULATE_A-B_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{REG_A} \\) and save flags of operation \\( \\texttt{REG_A} - \\texttt{REG_B} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{calculate REG_A - REG_B} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "CMPBTH": {
+    "id": 136,
+    "name": "CMPBTH",
+    "category": "ALU Instructions",
+    "opcode": "0b10001001",
+    "mnemonic": "CMP",
+    "arguments": [
+      "B",
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TH_TO_A",
+      "CALCULATE_B-A_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{REG_A} \\) and save flags of operation \\( \\texttt{REG_B} - \\texttt{REG_A} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{calculate REG_B - REG_A} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "CMPTLA": {
+    "id": 137,
+    "name": "CMPTLA",
+    "category": "ALU Instructions",
+    "opcode": "0b10001010",
+    "mnemonic": "CMP",
+    "arguments": [
+      "TL",
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TL_TO_B",
+      "CALCULATE_A-B_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{REG_B} \\) and save flags of operation \\( \\texttt{REG_A} - \\texttt{REG_B} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{calculate REG_A - REG_B} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "CMPATL": {
+    "id": 138,
+    "name": "CMPATL",
+    "category": "ALU Instructions",
+    "opcode": "0b10001011",
+    "mnemonic": "CMP",
+    "arguments": [
+      "A",
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TL_TO_B",
+      "CALCULATE_B-A_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{REG_B} \\) and save flags of operation \\( \\texttt{REG_B} - \\texttt{REG_A} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{calculate REG_B - REG_A} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "CMPTLB": {
+    "id": 139,
+    "name": "CMPTLB",
+    "category": "ALU Instructions",
+    "opcode": "0b10001100",
+    "mnemonic": "CMP",
+    "arguments": [
+      "TL",
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TL_TO_A",
+      "CALCULATE_A-B_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{REG_A} \\) and save flags of operation \\( \\texttt{REG_A} - \\texttt{REG_B} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{calculate REG_A - REG_B} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "CMPBTL": {
+    "id": 140,
+    "name": "CMPBTL",
+    "category": "ALU Instructions",
+    "opcode": "0b10001101",
+    "mnemonic": "CMP",
+    "arguments": [
+      "B",
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_TL_TO_A",
+      "CALCULATE_B-A_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Move \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{REG_A} \\) and save flags of operation \\( \\texttt{REG_B} - \\texttt{REG_A} \\) to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{calculate REG_B - REG_A} \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "CLRA": {
+    "id": 141,
+    "name": "CLRA",
+    "category": "ALU Instructions",
+    "opcode": "0b10001110",
+    "mnemonic": "CLR",
+    "arguments": [
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_0_TO_A",
+      "RST_MC"
+    ],
+    "description": "Set value of \\( \\texttt{REG_A} \\) to \\( \\texttt{0} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{0} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "CLRB": {
+    "id": 142,
+    "name": "CLRB",
+    "category": "ALU Instructions",
+    "opcode": "0b10001111",
+    "mnemonic": "CLR",
+    "arguments": [
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_0_TO_B",
+      "RST_MC"
+    ],
+    "description": "Set value of \\( \\texttt{REG_B} \\) to \\( \\texttt{0} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{0} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "CLRTH": {
+    "id": 143,
+    "name": "CLRTH",
+    "category": "ALU Instructions",
+    "opcode": "0b10010000",
+    "mnemonic": "CLR",
+    "arguments": [
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_0_TO_TH",
+      "RST_MC"
+    ],
+    "description": "Set value of \\( \\texttt{REG_TMPH} \\) to \\( \\texttt{0} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPH} \\leftarrow \\texttt{0} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "CLRTL": {
+    "id": 144,
+    "name": "CLRTL",
+    "category": "ALU Instructions",
+    "opcode": "0b10010001",
+    "mnemonic": "CLR",
+    "arguments": [
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_0_TO_TL",
+      "RST_MC"
+    ],
+    "description": "Set value of \\( \\texttt{REG_TMPL} \\) to \\( \\texttt{0} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPL} \\leftarrow \\texttt{0} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "CLRT": {
+    "id": 145,
+    "name": "CLRT",
+    "category": "ALU Instructions",
+    "opcode": "0b10010010",
+    "mnemonic": "CLR",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_0_TO_TMPH_AND_TMPL",
+      "RST_MC"
+    ],
+    "description": "Set value of \\( \\texttt{REG_TMP} \\) to \\( \\texttt{0} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMPH} \\leftarrow \\texttt{0} \\ \\& \\ \\texttt{REG_TMPL} \\leftarrow \\texttt{0} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "INCA": {
+    "id": 146,
+    "name": "INCA",
+    "category": "ALU Instructions",
+    "opcode": "0b10010011",
+    "mnemonic": "INC",
+    "arguments": [
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_A+1_TOA_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Increment value of \\( \\texttt{REG_A} \\) and save flags to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_A} + 1 \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "INCB": {
+    "id": 147,
+    "name": "INCB",
+    "category": "ALU Instructions",
+    "opcode": "0b10010100",
+    "mnemonic": "INC",
+    "arguments": [
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_B+1_TOB_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Increment value of \\( \\texttt{REG_B} \\) and save flags to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_B} + 1 \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "INCT": {
+    "id": 148,
+    "name": "INCT",
+    "category": "ALU Instructions",
+    "opcode": "0b10010101",
+    "mnemonic": "INC",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_TL+1_TOTL_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Increment value of \\( \\texttt{REG_TMP} \\) and save flags to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMP} \\leftarrow \\texttt{REG_TMP} + 1 \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "DECA": {
+    "id": 149,
+    "name": "DECA",
+    "category": "ALU Instructions",
+    "opcode": "0b10010110",
+    "mnemonic": "DEC",
+    "arguments": [
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_A-1_TOA_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Decrement value of \\( \\texttt{REG_A} \\) and save flags to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_A} \\leftarrow \\texttt{REG_A} - 1 \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "DECB": {
+    "id": 150,
+    "name": "DECB",
+    "category": "ALU Instructions",
+    "opcode": "0b10010111",
+    "mnemonic": "DEC",
+    "arguments": [
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_B-1_TOB_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Decrement value of \\( \\texttt{REG_B} \\) and save flags to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_B} \\leftarrow \\texttt{REG_B} - 1 \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "DECT": {
+    "id": 151,
+    "name": "DECT",
+    "category": "ALU Instructions",
+    "opcode": "0b10011000",
+    "mnemonic": "DEC",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "MOV_TL+1_TOTL_SAVE_FLAGS_TO_REG_F",
+      "RST_MC"
+    ],
+    "description": "Decrement value of \\( \\texttt{REG_TMP} \\) and save flags to \\( \\texttt{REG_F} \\)",
+    "microcodes-description": "\\( \\texttt{REG_TMP} \\leftarrow \\texttt{REG_TMP} - 1 \\) <br> \\( \\ \\& \\ \\texttt{save flags to REG_F} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "JMPIMM": {
+    "id": 152,
+    "name": "JMPIMM",
+    "category": "Jump instructions",
+    "opcode": "0b10011001",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_PC",
+      "RST_MC"
+    ],
+    "description": "Jump to given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{PC} \\leftarrow \\texttt{REG_TMP} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 7,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7"
+  },
+  "JMPIMMS": {
+    "id": 153,
+    "name": "JMPIMMS",
+    "category": "Jump instructions",
+    "opcode": "0b10011010",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if sign flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[0]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "S",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMNS": {
+    "id": 154,
+    "name": "JMPIMMNS",
+    "category": "Jump instructions",
+    "opcode": "0b10011011",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if sign flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[0]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NS",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTS": {
+    "id": 155,
+    "name": "JMPIMMTS",
+    "category": "Jump instructions",
+    "opcode": "0b10011100",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if sign flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[0]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "S",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTNS": {
+    "id": 156,
+    "name": "JMPIMMTNS",
+    "category": "Jump instructions",
+    "opcode": "0b10011101",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if sign flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[0]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NS",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMP": {
+    "id": 157,
+    "name": "JMPIMMP",
+    "category": "Jump instructions",
+    "opcode": "0b10011110",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if parity flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[1]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "P",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMNP": {
+    "id": 158,
+    "name": "JMPIMMNP",
+    "category": "Jump instructions",
+    "opcode": "0b10011111",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if parity flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[1]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NP",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTP": {
+    "id": 159,
+    "name": "JMPIMMTP",
+    "category": "Jump instructions",
+    "opcode": "0b10100000",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if parity flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[1]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "P",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTNP": {
+    "id": 160,
+    "name": "JMPIMMTNP",
+    "category": "Jump instructions",
+    "opcode": "0b10100001",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if parity flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[1]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NP",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMZ": {
+    "id": 161,
+    "name": "JMPIMMZ",
+    "category": "Jump instructions",
+    "opcode": "0b10100010",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if zero flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[2]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "Z",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMNZ": {
+    "id": 162,
+    "name": "JMPIMMNZ",
+    "category": "Jump instructions",
+    "opcode": "0b10100011",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if zero flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[2]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NZ",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTZ": {
+    "id": 163,
+    "name": "JMPIMMTZ",
+    "category": "Jump instructions",
+    "opcode": "0b10100100",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if zero flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[2]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "Z",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTNZ": {
+    "id": 164,
+    "name": "JMPIMMTNZ",
+    "category": "Jump instructions",
+    "opcode": "0b10100101",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if zero flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[2]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NZ",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMC": {
+    "id": 165,
+    "name": "JMPIMMC",
+    "category": "Jump instructions",
+    "opcode": "0b10100110",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if carry flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[3]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "C",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMNC": {
+    "id": 166,
+    "name": "JMPIMMNC",
+    "category": "Jump instructions",
+    "opcode": "0b10100111",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if carry flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[3]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NC",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTC": {
+    "id": 167,
+    "name": "JMPIMMTC",
+    "category": "Jump instructions",
+    "opcode": "0b10101000",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if carry flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[3]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "C",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTNC": {
+    "id": 168,
+    "name": "JMPIMMTNC",
+    "category": "Jump instructions",
+    "opcode": "0b10101001",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if carry flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[3]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NC",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMO": {
+    "id": 169,
+    "name": "JMPIMMO",
+    "category": "Jump instructions",
+    "opcode": "0b10101010",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if overflow flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[4]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "O",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMNO": {
+    "id": 170,
+    "name": "JMPIMMNO",
+    "category": "Jump instructions",
+    "opcode": "0b10101011",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to given address if overflow flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[4]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMM} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NO",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTO": {
+    "id": 171,
+    "name": "JMPIMMTO",
+    "category": "Jump instructions",
+    "opcode": "0b10101100",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if overflow flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[4]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "O",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPIMMTNO": {
+    "id": 172,
+    "name": "JMPIMMTNO",
+    "category": "Jump instructions",
+    "opcode": "0b10101101",
+    "mnemonic": "JMPIMM",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address from \\( \\texttt{REG_TMP} \\) if overflow flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[4]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPIMMT} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP2} \\)",
+    "depend-on-flag": "NO",
+    "min-cycles-number": 4,
+    "max-cycles-number": 7,
+    "total-mircocodes-number": "7 or 4"
+  },
+  "JMPREL": {
+    "id": 173,
+    "name": "JMPREL",
+    "category": "Jump instructions",
+    "opcode": "0b10101110",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_A_LOAD_PC_TO_TMP",
+      "LOAD_TMPL_TO_B",
+      "MOV_A+B_TO_TMPL",
+      "RST_MC"
+    ],
+    "description": "Jump to address with given offset from current address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_A} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{REG_TMP} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_B} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{REG_A} + \\texttt{REG_B} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "JMPRELS": {
+    "id": 174,
+    "name": "JMPRELS",
+    "category": "Jump instructions",
+    "opcode": "0b10101111",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if sign flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[0]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "S",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELNS": {
+    "id": 175,
+    "name": "JMPRELNS",
+    "category": "Jump instructions",
+    "opcode": "0b10110000",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if sign flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[0]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NS",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLS": {
+    "id": 176,
+    "name": "JMPRELTLS",
+    "category": "Jump instructions",
+    "opcode": "0b10110001",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if sign flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[0]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "S",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLNS": {
+    "id": 177,
+    "name": "JMPRELTLNS",
+    "category": "Jump instructions",
+    "opcode": "0b10110010",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if sign flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[0]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NS",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELP": {
+    "id": 178,
+    "name": "JMPRELP",
+    "category": "Jump instructions",
+    "opcode": "0b10110011",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if parity flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[1]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "P",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELNP": {
+    "id": 179,
+    "name": "JMPRELNP",
+    "category": "Jump instructions",
+    "opcode": "0b10110100",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if parity flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[1]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NP",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLP": {
+    "id": 180,
+    "name": "JMPRELTLP",
+    "category": "Jump instructions",
+    "opcode": "0b10110101",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if parity flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[1]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "P",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLNP": {
+    "id": 181,
+    "name": "JMPRELTLNP",
+    "category": "Jump instructions",
+    "opcode": "0b10110110",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if parity flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[1]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NP",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELZ": {
+    "id": 182,
+    "name": "JMPRELZ",
+    "category": "Jump instructions",
+    "opcode": "0b10110111",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if zero flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[2]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "Z",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELNZ": {
+    "id": 183,
+    "name": "JMPRELNZ",
+    "category": "Jump instructions",
+    "opcode": "0b10111000",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if zero flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[2]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NZ",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLZ": {
+    "id": 184,
+    "name": "JMPRELTLZ",
+    "category": "Jump instructions",
+    "opcode": "0b10111001",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if zero flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[2]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "Z",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLNZ": {
+    "id": 185,
+    "name": "JMPRELTLNZ",
+    "category": "Jump instructions",
+    "opcode": "0b10111010",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if zero flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[2]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NZ",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELC": {
+    "id": 186,
+    "name": "JMPRELC",
+    "category": "Jump instructions",
+    "opcode": "0b10111011",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if carry flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[3]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "C",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELNC": {
+    "id": 187,
+    "name": "JMPRELNC",
+    "category": "Jump instructions",
+    "opcode": "0b10111100",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if carry flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[3]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NC",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLC": {
+    "id": 188,
+    "name": "JMPRELTLC",
+    "category": "Jump instructions",
+    "opcode": "0b10111101",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if carry flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[3]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "C",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLNC": {
+    "id": 189,
+    "name": "JMPRELTLNC",
+    "category": "Jump instructions",
+    "opcode": "0b10111110",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if carry flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[3]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NC",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELO": {
+    "id": 190,
+    "name": "JMPRELO",
+    "category": "Jump instructions",
+    "opcode": "0b10111111",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if overflow flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[4]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "O",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELNO": {
+    "id": 191,
+    "name": "JMPRELNO",
+    "category": "Jump instructions",
+    "opcode": "0b11000000",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset if overflow flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[4]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPREL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NO",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLO": {
+    "id": 192,
+    "name": "JMPRELTLO",
+    "category": "Jump instructions",
+    "opcode": "0b11000001",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if overflow flag is set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[4]} \\  \\texttt{is set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "O",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELTLNO": {
+    "id": 193,
+    "name": "JMPRELTLNO",
+    "category": "Jump instructions",
+    "opcode": "0b11000010",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++"
+    ],
+    "description": "Jump to address with given offset from \\( \\texttt{REG_TMPL} \\) if overflow flag is not set",
+    "microcodes-description": "\\( \\texttt{if} \\  \\texttt{REG_F[4]} \\  \\texttt{is not set:} \\) <br> \\( \\  \\  \\texttt{JMPRELTL} \\) <br> \\( \\texttt{else:} \\) <br> \\( \\  \\  \\texttt{SKIP1} \\)",
+    "depend-on-flag": "NO",
+    "min-cycles-number": 3,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6 or 3"
+  },
+  "JMPRELFUN": {
+    "id": 194,
+    "name": "JMPRELFUN",
+    "category": "Jump instructions",
+    "opcode": "0b11000011",
+    "mnemonic": "JMPREL",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_TMP",
+      "LOAD_STC_TO_MAR_LOAD_TMPL_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "LOAD_STC_TO_MAR_LOAD_TMPH_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_PC",
+      "RST_MC"
+    ],
+    "description": "Push \\( \\texttt{PC} \\) to stack and jump to given address",
+    "microcodes-description": "\\( \\texttt{REG_TMP} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{PC} \\leftarrow \\texttt{REG_TMP} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 12,
+    "max-cycles-number": 12,
+    "total-mircocodes-number": "12"
+  },
+  "JMPRELRET": {
+    "id": 195,
+    "name": "JMPRELRET",
+    "category": "Jump instructions",
+    "opcode": "0b11000100",
+    "mnemonic": "JMPREL",
+    "arguments": [],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_STC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_STC++",
+      "LOAD_TMP_TO_PC",
+      "PC++",
+      "RST_MC"
+    ],
+    "description": "Pop address from stack and jump to it",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\) <br> \\( \\texttt{PC} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 8,
+    "max-cycles-number": 8,
+    "total-mircocodes-number": "8"
+  },
+  "PUSHA": {
+    "id": 196,
+    "name": "PUSHA",
+    "category": "Stack Instructions",
+    "opcode": "0b11000101",
+    "mnemonic": "PUSH",
+    "arguments": [
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR_A_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Push value of \\( \\texttt{REG_A} \\) to stack",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_A} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "PUSHB": {
+    "id": 197,
+    "name": "PUSHB",
+    "category": "Stack Instructions",
+    "opcode": "0b11000110",
+    "mnemonic": "PUSH",
+    "arguments": [
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR_B_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Push value of \\( \\texttt{REG_B} \\) to stack",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_B} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "PUSHTH": {
+    "id": 198,
+    "name": "PUSHTH",
+    "category": "Stack Instructions",
+    "opcode": "0b11000111",
+    "mnemonic": "PUSH",
+    "arguments": [
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR_TH_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Push value of \\( \\texttt{REG_TMPH} \\) to stack",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "PUSHTL": {
+    "id": 199,
+    "name": "PUSHTL",
+    "category": "Stack Instructions",
+    "opcode": "0b11001000",
+    "mnemonic": "PUSH",
+    "arguments": [
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR_TL_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Push value of \\( \\texttt{REG_TMPL} \\) to stack",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "PUSHT": {
+    "id": 200,
+    "name": "PUSHT",
+    "category": "Stack Instructions",
+    "opcode": "0b11001001",
+    "mnemonic": "PUSH",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR_TH_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "LOAD_STC_TO_MAR_TL_TO_MBR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Push value of \\( \\texttt{REG_TMP} \\) to stack",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPH} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\ \\& \\ \\texttt{REG_MBR} \\leftarrow \\texttt{REG_TMPL} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "PUSHIMM": {
+    "id": 201,
+    "name": "PUSHIMM",
+    "category": "Stack Instructions",
+    "opcode": "0b11001010",
+    "mnemonic": "PUSH",
+    "arguments": [
+      "CONST"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_MBR_PC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Push given constant to stack",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "PUSHABS": {
+    "id": 202,
+    "name": "PUSHABS",
+    "category": "Stack Instructions",
+    "opcode": "0b11001011",
+    "mnemonic": "PUSH",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MEM[MAR]_TO_MBR",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Push value from given address to stack",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 10,
+    "max-cycles-number": 10,
+    "total-mircocodes-number": "10"
+  },
+  "PUSHABSZP": {
+    "id": 203,
+    "name": "PUSHABSZP",
+    "category": "Stack Instructions",
+    "opcode": "0b11001100",
+    "mnemonic": "PUSH",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MEM[MAR]_TO_MBR",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MBR_TO_MEM[MAR]_STC--",
+      "RST_MC"
+    ],
+    "description": "Push value from given zero page address to stack",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} - 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 8,
+    "max-cycles-number": 8,
+    "total-mircocodes-number": "8"
+  },
+  "POPA": {
+    "id": 204,
+    "name": "POPA",
+    "category": "Stack Instructions",
+    "opcode": "0b11001101",
+    "mnemonic": "POP",
+    "arguments": [
+      "A"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_A_STC++",
+      "RST_MC"
+    ],
+    "description": "Pop value from stack to \\( \\texttt{REG_A} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_A} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "POPB": {
+    "id": 205,
+    "name": "POPB",
+    "category": "Stack Instructions",
+    "opcode": "0b11001110",
+    "mnemonic": "POP",
+    "arguments": [
+      "B"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_B_STC++",
+      "RST_MC"
+    ],
+    "description": "Pop value from stack to \\( \\texttt{REG_B} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_B} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "POPTH": {
+    "id": 206,
+    "name": "POPTH",
+    "category": "Stack Instructions",
+    "opcode": "0b11001111",
+    "mnemonic": "POP",
+    "arguments": [
+      "TH"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TH_STC++",
+      "RST_MC"
+    ],
+    "description": "Pop value from stack to \\( \\texttt{REG_TMPH} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "POPTL": {
+    "id": 207,
+    "name": "POPTL",
+    "category": "Stack Instructions",
+    "opcode": "0b11010000",
+    "mnemonic": "POP",
+    "arguments": [
+      "TL"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TL_STC++",
+      "RST_MC"
+    ],
+    "description": "Pop value from stack to \\( \\texttt{REG_TMPL} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "POPT": {
+    "id": 208,
+    "name": "POPT",
+    "category": "Stack Instructions",
+    "opcode": "0b11010001",
+    "mnemonic": "POP",
+    "arguments": [
+      "T"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TL_STC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TH_STC++",
+      "RST_MC"
+    ],
+    "description": "Pop value from stack to \\( \\texttt{REG_TMP} \\)",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 6,
+    "max-cycles-number": 6,
+    "total-mircocodes-number": "6"
+  },
+  "POPMEM": {
+    "id": 209,
+    "name": "POPMEM",
+    "category": "Stack Instructions",
+    "opcode": "0b11010010",
+    "mnemonic": "POP",
+    "arguments": [
+      "MEM16"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPH_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_MBR_STC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MBR_TO_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Pop value from stack to memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPH} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 10,
+    "max-cycles-number": 10,
+    "total-mircocodes-number": "10"
+  },
+  "POPMEMZP": {
+    "id": 210,
+    "name": "POPMEMZP",
+    "category": "Stack Instructions",
+    "opcode": "0b11010011",
+    "mnemonic": "POP",
+    "arguments": [
+      "MEM8"
+    ],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_TMPL_PC++",
+      "LOAD_STC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_MBR_STC++",
+      "LOAD_TMP_TO_MAR",
+      "LOAD_MBR_TO_ZP_MEM[MAR]",
+      "RST_MC"
+    ],
+    "description": "Pop value from stack to zero page memory at given address",
+    "microcodes-description": "\\( \\texttt{REG_MAR} \\leftarrow \\texttt{PC} \\) <br> \\( \\texttt{REG_TMPL} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{STC} \\) <br> \\( \\texttt{REG_MBR} \\leftarrow \\texttt{MEM[REG_MAR]} \\ \\& \\ \\texttt{STC} \\leftarrow \\texttt{STC} + 1 \\) <br> \\( \\texttt{REG_MAR} \\leftarrow \\texttt{REG_TMP} \\) <br> \\( \\texttt{MEM[REG_MAR]} \\leftarrow \\texttt{REG_MBR} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 8,
+    "max-cycles-number": 8,
+    "total-mircocodes-number": "8"
+  },
+  "NOP": {
+    "id": 211,
+    "name": "NOP",
+    "category": "Other Instructions",
+    "opcode": "0b11010100",
+    "mnemonic": "NOP",
+    "arguments": [],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "DO_NOTHING",
+      "RST_MC"
+    ],
+    "description": "No nothing for one cycle",
+    "microcodes-description": "\\( \\texttt{do nothing} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SKIP": {
+    "id": 212,
+    "name": "SKIP",
+    "category": "Other Instructions",
+    "opcode": "0b11010101",
+    "mnemonic": "SKIP",
+    "arguments": [],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "RST_MC"
+    ],
+    "description": "Skip instruction",
+    "microcodes-description": "",
+    "depend-on-flag": "",
+    "min-cycles-number": 2,
+    "max-cycles-number": 2,
+    "total-mircocodes-number": "2"
+  },
+  "SKIP1": {
+    "id": 213,
+    "name": "SKIP1",
+    "category": "Other Instructions",
+    "opcode": "0b11010110",
+    "mnemonic": "SKIP1",
+    "arguments": [],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "PC++",
+      "RST_MC"
+    ],
+    "description": "Skip next program line",
+    "microcodes-description": "\\( \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 3,
+    "max-cycles-number": 3,
+    "total-mircocodes-number": "3"
+  },
+  "SKIP2": {
+    "id": 214,
+    "name": "SKIP2",
+    "category": "Other Instructions",
+    "opcode": "0b11010111",
+    "mnemonic": "SKIP2",
+    "arguments": [],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "PC++",
+      "PC++",
+      "RST_MC"
+    ],
+    "description": "Skip next two program lines",
+    "microcodes-description": "\\( \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\) <br> \\( \\texttt{PC} \\leftarrow \\texttt{PC} + 1 \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 4,
+    "max-cycles-number": 4,
+    "total-mircocodes-number": "4"
+  },
+  "HALT": {
+    "id": 215,
+    "name": "HALT",
+    "category": "Other Instructions",
+    "opcode": "0b11011000",
+    "mnemonic": "HALT",
+    "arguments": [],
+    "microcodes": [
+      "LOAD_PC_TO_MAR",
+      "LOAD_MEM[MAR]_TO_IR_PC++",
+      "HALT"
+    ],
+    "description": "Stop executing program",
+    "microcodes-description": "\\( \\texttt{HALT} \\)",
+    "depend-on-flag": "",
+    "min-cycles-number": 2,
+    "max-cycles-number": 2,
+    "total-mircocodes-number": "2"
+  }
+}

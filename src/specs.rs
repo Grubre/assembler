@@ -5,6 +5,7 @@ pub enum Operand {
     Register(Register),
     Mem,
     Const,
+    Stc,
 }
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
@@ -12,25 +13,38 @@ pub enum Register {
     A,
     B,
     F,
+    T,
+    TL,
+    TH,
 }
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 pub enum Mnemonic {
     Mov,
-    Push,
-    Pop,
-    Jmp,
-    Add,
-    Sub,
-    Or,
-    And,
-    Neg,
-    Inv,
-    Shr,
-    Shl,
-    Cmp,
     Halt,
+    Movat,
+    And,
+    Or,
+    Skip1,
+    Inv,
+    Xor,
+    Cmp,
+    Shl,
     Nop,
+    Add,
+    Skip,
+    Jmpimm,
+    Jmprel,
+    Pop,
+    Push,
+    Neg,
+    Sub,
+    Shr,
+    Inc,
+    Skip2,
+    Clr,
+    Dec,
+    Div2,
 }
 
 impl FromStr for Operand {
@@ -45,8 +59,12 @@ impl FromStr for Operand {
         if s == "CONST" {
             return Ok(Self::Const);
         }
-        if s == "MEM" {
+        // FIXME: Parsing MEM8, MEM16 and MEMZP as MEM is a temporary hack
+        if s == "MEM" || s == "MEM8" || s == "MEM16" || s == "MEMZP" {
             return Ok(Self::Mem);
+        }
+        if s == "STC" {
+            return Ok(Self::Stc);
         }
 
         Err(())
@@ -61,6 +79,9 @@ impl FromStr for Register {
             "A" => Ok(Register::A),
             "B" => Ok(Register::B),
             "F" => Ok(Register::F),
+            "T" => Ok(Register::T),
+            "TL" => Ok(Register::TL),
+            "TH" => Ok(Register::TH),
             _ => Err(()),
         }
     }
@@ -72,20 +93,30 @@ impl FromStr for Mnemonic {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "MOV" => Ok(Mnemonic::Mov),
-            "PUSH" => Ok(Mnemonic::Push),
-            "POP" => Ok(Mnemonic::Pop),
-            "JMP" => Ok(Mnemonic::Jmp),
-            "ADD" => Ok(Mnemonic::Add),
-            "SUB" => Ok(Mnemonic::Sub),
-            "OR" => Ok(Mnemonic::Or),
-            "AND" => Ok(Mnemonic::And),
-            "NEG" => Ok(Mnemonic::Neg),
-            "INV" => Ok(Mnemonic::Inv),
-            "SHR" => Ok(Mnemonic::Shr),
-            "SHL" => Ok(Mnemonic::Shl),
-            "CMP" => Ok(Mnemonic::Cmp),
             "HALT" => Ok(Mnemonic::Halt),
+            "MOVAT" => Ok(Mnemonic::Movat),
+            "AND" => Ok(Mnemonic::And),
+            "OR" => Ok(Mnemonic::Or),
+            "SKIP1" => Ok(Mnemonic::Skip1),
+            "INV" => Ok(Mnemonic::Inv),
+            "XOR" => Ok(Mnemonic::Xor),
+            "CMP" => Ok(Mnemonic::Cmp),
+            "SHL" => Ok(Mnemonic::Shl),
             "NOP" => Ok(Mnemonic::Nop),
+            "ADD" => Ok(Mnemonic::Add),
+            "SKIP" => Ok(Mnemonic::Skip),
+            "JMPIMM" => Ok(Mnemonic::Jmpimm),
+            "JMPREL" => Ok(Mnemonic::Jmprel),
+            "POP" => Ok(Mnemonic::Pop),
+            "PUSH" => Ok(Mnemonic::Push),
+            "NEG" => Ok(Mnemonic::Neg),
+            "SUB" => Ok(Mnemonic::Sub),
+            "SHR" => Ok(Mnemonic::Shr),
+            "INC" => Ok(Mnemonic::Inc),
+            "SKIP2" => Ok(Mnemonic::Skip2),
+            "CLR" => Ok(Mnemonic::Clr),
+            "DEC" => Ok(Mnemonic::Dec),
+            "DIV2" => Ok(Mnemonic::Div2),
             _ => Err(()),
         }
     }

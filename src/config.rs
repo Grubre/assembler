@@ -14,10 +14,10 @@ fn get_config_parse_prefix(line_nr: usize) -> String {
 pub enum ConfigError {
     #[error("{0}.")]
     ReadFileError(io::Error),
-    #[error("{}Each the row of config should have three comma separated values.", get_config_parse_prefix(*.0))]
-    NotEnoughColumns(usize),
-    #[error("{}{}", get_config_parse_prefix(*.0), .1)]
-    ParseInstructionError(usize, String),
+    #[error("Unknown mnemonic '{0}'.")]
+    UnknownMnemonic(String),
+    #[error("Unknown operand '{0}'.")]
+    UnknownOperand(String),
 }
 
 fn print_config_helper(prefix: String, node: &ConfigNode) {
@@ -61,6 +61,7 @@ pub struct Config {
 struct InstructionJsonObj {
     mnemonic: String,
     arguments: Vec<String>,
+    opcode: String,
 }
 
 impl Config {
@@ -94,8 +95,34 @@ impl Config {
             .iter()
             .map(|(_, v)| serde_json::from_value(v.clone()).unwrap())
             .collect();
+        //
+        // let mut unique_mnemonics = HashMap::new();
+        // for instruction in &instructions {
+        //     unique_mnemonics.insert(instruction.mnemonic.clone(), instruction.mnemonic.clone());
+        // }
+        //
+        // // print keys
+        // for key in unique_mnemonics.keys() {
+        //     println!("{}", key);
+        // }
 
-        println!("{:?}", instructions);
+        for instruction in &instructions {
+            let mnemonic = Mnemonic::from_str(&instruction.mnemonic)
+                .map_err(|_| ConfigError::UnknownMnemonic(instruction.mnemonic.clone()))?;
+
+            let operands = instruction
+                .arguments
+                .iter()
+                .map(|operand| {
+                    Operand::from_str(operand)
+                        .map_err(|_| ConfigError::UnknownOperand(operand.clone()))
+                })
+                .collect::<Result<Vec<Operand>, ConfigError>>()?;
+
+            println!("{:?} {:?}", mnemonic, operands);
+        }
+
+        // println!("{:?}", instructions);
 
         // let lines = content
         //     .lines()
