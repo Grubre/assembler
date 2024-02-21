@@ -3,7 +3,8 @@ use std::str::FromStr;
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 pub enum Operand {
     Register(Register),
-    Mem,
+    Mem8,
+    Mem16,
     Const,
     Stc,
 }
@@ -59,10 +60,13 @@ impl FromStr for Operand {
         if s == "CONST" {
             return Ok(Self::Const);
         }
-        // FIXME: Parsing MEM8, MEM16 and MEMZP as MEM is a temporary hack
-        if s == "MEM" || s == "MEM8" || s == "MEM16" || s == "MEMZP" {
-            return Ok(Self::Mem);
+        if s == "MEM8" || s == "MEMZP" {
+            return Ok(Self::Mem8);
         }
+        if s == "MEM" || s == "MEM16" {
+            return Ok(Self::Mem16);
+        }
+
         if s == "STC" {
             return Ok(Self::Stc);
         }
