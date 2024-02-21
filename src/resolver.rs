@@ -8,12 +8,15 @@ pub fn get_resolved_labels(tokens: &[Token]) -> HashMap<&str, usize> {
 
     for token in tokens {
         match &token.token_type {
-            TokenType::Mnemonic(_) | TokenType::Number(_) | TokenType::LabelRef(_) => {
-                memory_pointer += 1
-            }
+            TokenType::Mnemonic(_) | TokenType::Number(_) => {
+                memory_pointer += 1;
+            },
+            TokenType::LabelRef(_) => {
+                memory_pointer += 2;
+            },
             TokenType::Label(label) => {
                 labels.insert(label, memory_pointer);
-            }
+            },
             _ => {}
         }
     }

@@ -4,5 +4,7 @@ start:  MOV A 42
         JMPIMM #start
         a: SUB [0x2A] A B
         b: SUB [#b] B A
+        ADD [#hehe]
         HALT
 
+hehe: byte 0x05

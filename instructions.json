@@ -3755,7 +3755,7 @@
     "opcode": "0b10011001",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -3781,7 +3781,7 @@
     "opcode": "0b10011010",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -3801,7 +3801,7 @@
     "opcode": "0b10011011",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -3861,7 +3861,7 @@
     "opcode": "0b10011110",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -3881,7 +3881,7 @@
     "opcode": "0b10011111",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -3941,7 +3941,7 @@
     "opcode": "0b10100010",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -3961,7 +3961,7 @@
     "opcode": "0b10100011",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -4021,7 +4021,7 @@
     "opcode": "0b10100110",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -4041,7 +4041,7 @@
     "opcode": "0b10100111",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -4101,7 +4101,7 @@
     "opcode": "0b10101010",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",
@@ -4121,7 +4121,7 @@
     "opcode": "0b10101011",
     "mnemonic": "JMPIMM",
     "arguments": [
-      "CONST"
+      "MEM16"
     ],
     "microcodes": [
       "LOAD_PC_TO_MAR",

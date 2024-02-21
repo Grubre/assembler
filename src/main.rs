@@ -171,12 +171,12 @@ fn main() -> Result<(), ()> {
 
     let lines = parse(&tokens).consume_errors();
     let checked_lines = check_semantics(lines, &labels, &config).consume_error();
-    //
-    // if args.text {
-    //     output_bytes_as_text(&checked_lines, &mut output);
-    // } else {
-    //     output_to_binary(&checked_lines, &mut output);
-    // }
+    
+    if args.text {
+        output_bytes_as_text(&checked_lines, &mut output);
+    } else {
+        output_to_binary(&checked_lines, &mut output);
+    }
 
     Ok(())
 }

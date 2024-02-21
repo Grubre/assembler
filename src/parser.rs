@@ -179,7 +179,7 @@ impl<'a> Parser<'a> {
                 ))
             }
         };
-        Ok((Operand::Const, token))
+        Ok((Operand::Mem16, token))
     }
 
     fn memref(&mut self) -> Result<(Operand, &'a Token), ParserErr<'a>> {
@@ -200,7 +200,7 @@ impl<'a> Parser<'a> {
 
         let right_bracket = self.chop().ok_or(ParserErr::EOF("]".to_string()))?;
         match right_bracket.token_type {
-            TokenType::RightSquareBracket => Ok((Operand::Mem, token)),
+            TokenType::RightSquareBracket => Ok((Operand::Mem16, token)),
             _ => Err(ParserErr::UnexpectedToken(
                 "]",
                 &right_bracket.content,
