@@ -132,28 +132,28 @@ fn output_bytes_as_text(checked_lines: &[CheckedLine], output: &mut Box<dyn Writ
 }
 
 fn output_to_binary(checked_lines: &[CheckedLine], output: &mut Box<dyn Write>) {
-    let mut output_string = String::new();
+    let mut output_bytes = Vec::new();
 
     for checked_line in checked_lines {
         match &checked_line.code {
             CheckedLineCode::Byte(bytes) => {
                 for byte in bytes {
-                    output_string.push(*byte as char);
+                    output_bytes.push(*byte);
                 }
             }
             CheckedLineCode::Instruction {
                 mnemonic_code,
                 operand_codes,
             } => {
-                output_string.push(*mnemonic_code as char);
+                output_bytes.push(*mnemonic_code);
                 for operand_code in operand_codes {
-                    output_string.push(*operand_code as char);
+                    output_bytes.push(*operand_code);
                 }
             }
         }
     }
 
-    output.write_all(output_string.as_bytes()).unwrap();
+    output.write_all(&output_bytes).unwrap();
 }
 
 fn main() -> Result<(), ()> {
