@@ -58,31 +58,33 @@ pub struct Config {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
 struct InstructionJsonObj {
     mnemonic: String,
     arguments: Vec<String>,
     opcode: String,
+    depend_on_flag: String,
 }
 
 impl Config {
-    fn parse_instruction(instruction: &str) -> Result<Vec<NodeType>, String> {
-        let mut iter = instruction.split_whitespace();
-        let mut nodes: Vec<NodeType> = vec![];
+    // fn parse_instruction(instruction: &str) -> Result<Vec<NodeType>, String> {
+    //     let mut iter = instruction.split_whitespace();
+    //     let mut nodes: Vec<NodeType> = vec![];
 
-        let mnemonic = iter.next().ok_or("Empty instruction.")?;
-        let mnemonic = Mnemonic::from_str(mnemonic)
-            .map_err(|_| format!("Unknown mnemonic '{}'.", mnemonic))?;
+    //     let mnemonic = iter.next().ok_or("Empty instruction.")?;
+    //     let mnemonic = Mnemonic::from_str(mnemonic)
+    //         .map_err(|_| format!("Unknown mnemonic '{}'.", mnemonic))?;
 
-        nodes.push(NodeType::Mnemonic(mnemonic));
+    //     nodes.push(NodeType::Mnemonic(mnemonic));
 
-        for operand in iter {
-            let operand = Operand::from_str(operand)
-                .map_err(|_| format!("Unknown operand '{}'.", operand))?;
-            nodes.push(NodeType::Operand(operand));
-        }
+    //     for operand in iter {
+    //         let operand = Operand::from_str(operand)
+    //             .map_err(|_| format!("Unknown operand '{}'.", operand))?;
+    //         nodes.push(NodeType::Operand(operand));
+    //     }
 
-        Ok(nodes)
-    }
+    //     Ok(nodes)
+    // }
 
     pub fn read_from_file(file_path: impl AsRef<Path>) -> Result<Self, ConfigError> {
         let mut automaton = HashMap::new();
@@ -97,8 +99,10 @@ impl Config {
             .collect();
 
         for instruction in &instructions {
-            let mnemonic = Mnemonic::from_str(&instruction.mnemonic)
-                .map_err(|_| ConfigError::UnknownMnemonic(instruction.mnemonic.clone()))?;
+            let mnemonic = Mnemonic::new(format!(
+                "{}{}",
+                instruction.mnemonic, instruction.depend_on_flag
+            ));
 
             let operands = instruction
                 .arguments
@@ -124,10 +128,12 @@ impl Config {
                 }
             }
 
-            current.insert(
+            let prev = current.insert(
                 NodeType::MachineCode,
                 ConfigNode::Leaf(instruction.opcode.clone()),
             );
+
+            assert!(prev.is_none());
         }
 
         Ok(Self { automaton })

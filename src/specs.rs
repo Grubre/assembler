@@ -19,33 +19,15 @@ pub enum Register {
     TH,
 }
 
-#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
-pub enum Mnemonic {
-    Mov,
-    Halt,
-    Movat,
-    And,
-    Or,
-    Skip1,
-    Inv,
-    Xor,
-    Cmp,
-    Shl,
-    Nop,
-    Add,
-    Skip,
-    Jmpimm,
-    Jmprel,
-    Pop,
-    Push,
-    Neg,
-    Sub,
-    Shr,
-    Inc,
-    Skip2,
-    Clr,
-    Dec,
-    Div2,
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
+pub struct Mnemonic {
+    name: String,
+}
+
+impl Mnemonic {
+    pub fn new(name: String) -> Self {
+        Self { name }
+    }
 }
 
 impl FromStr for Operand {
@@ -86,41 +68,6 @@ impl FromStr for Register {
             "T" => Ok(Register::T),
             "TL" => Ok(Register::TL),
             "TH" => Ok(Register::TH),
-            _ => Err(()),
-        }
-    }
-}
-
-impl FromStr for Mnemonic {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "MOV" => Ok(Mnemonic::Mov),
-            "HALT" => Ok(Mnemonic::Halt),
-            "MOVAT" => Ok(Mnemonic::Movat),
-            "AND" => Ok(Mnemonic::And),
-            "OR" => Ok(Mnemonic::Or),
-            "SKIP1" => Ok(Mnemonic::Skip1),
-            "INV" => Ok(Mnemonic::Inv),
-            "XOR" => Ok(Mnemonic::Xor),
-            "CMP" => Ok(Mnemonic::Cmp),
-            "SHL" => Ok(Mnemonic::Shl),
-            "NOP" => Ok(Mnemonic::Nop),
-            "ADD" => Ok(Mnemonic::Add),
-            "SKIP" => Ok(Mnemonic::Skip),
-            "JMPIMM" => Ok(Mnemonic::Jmpimm),
-            "JMPREL" => Ok(Mnemonic::Jmprel),
-            "POP" => Ok(Mnemonic::Pop),
-            "PUSH" => Ok(Mnemonic::Push),
-            "NEG" => Ok(Mnemonic::Neg),
-            "SUB" => Ok(Mnemonic::Sub),
-            "SHR" => Ok(Mnemonic::Shr),
-            "INC" => Ok(Mnemonic::Inc),
-            "SKIP2" => Ok(Mnemonic::Skip2),
-            "CLR" => Ok(Mnemonic::Clr),
-            "DEC" => Ok(Mnemonic::Dec),
-            "DIV2" => Ok(Mnemonic::Div2),
             _ => Err(()),
         }
     }

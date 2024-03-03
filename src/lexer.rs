@@ -166,15 +166,6 @@ impl<'a> Lexer<'a> {
                 return Some(self.parse_label(start, str));
             }
 
-            if let Ok(mnemonic) = Mnemonic::from_str(&str) {
-                return Some(Ok(Token::new(
-                    TokenType::Mnemonic(mnemonic),
-                    str,
-                    self.current_line,
-                    start..self.current_char,
-                )));
-            }
-
             if let Ok(register) = Register::from_str(&str) {
                 return Some(Ok(Token::new(
                     TokenType::Register(register),
@@ -183,6 +174,13 @@ impl<'a> Lexer<'a> {
                     start..self.current_char,
                 )));
             }
+
+            return Some(Ok(Token::new(
+                TokenType::Mnemonic(Mnemonic::new(str.clone())),
+                str,
+                self.current_line,
+                start..self.current_char,
+            )));
         }
 
         let character = match self.content[0] {

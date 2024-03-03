@@ -49,17 +49,25 @@ fn check_instruction<'a>(
 
     let mut current_node = config
         .automaton
-        .get(&NodeType::Mnemonic(*mnemonic))
+        .get(&NodeType::Mnemonic(mnemonic.clone()))
         .unwrap();
 
     let mut operand_binary_codes = vec![];
 
     for operand in operands {
-        let parsed_operand = parse_value(labels, operand.1);
-        if let Some(operand_code) = parsed_operand {
-            let operand_code = operand_code?;
-            operand_binary_codes.push(operand_code)
-        };
+        match operand.0 {
+            Operand::Mem8 | Operand::Const => {
+                let parsed_operand = parse_value(labels, operand.1)?;
+                operand_binary_codes.push(parsed_operand);
+            },
+            Operand::Mem16 => {
+                let parsed_operand = parse_wide_value(labels, operand.1)?;
+                let [higher, lower] = parsed_operand.to_be_bytes();
+                operand_binary_codes.push(higher);
+                operand_binary_codes.push(lower);
+            },
+            _ => {}
+        }
         match current_node {
             crate::config::ConfigNode::Branch(children) => {
                 match children.get(&NodeType::Operand(operand.0)) {
@@ -123,11 +131,40 @@ fn parse_labelref<'a>(
 fn parse_value<'a>(
     labels: &'a HashMap<&'a str, usize>,
     value: &Token,
-) -> Option<Result<u8, WriterErr>> {
+) -> Result<u8, WriterErr> {
     match &value.token_type {
-        TokenType::Number(number) => Some(parse_num(*number)),
-        TokenType::LabelRef(label_ref) => Some(parse_labelref(labels, label_ref)),
-        _ => None,
+        TokenType::Number(number) => parse_num(*number),
+        TokenType::LabelRef(label_ref) => parse_labelref(labels, label_ref),
+        _ => unreachable!(),
+    }
+}
+
+fn parse_wide_num(number: i64) -> Result<u16, WriterErr> {
+    if !(-32_768..=65_535).contains(&number) {
+        return Err(WriterErr::NumberOutOfRange(number));
+    }
+
+    Ok(number as u16)
+}
+
+fn parse_wide_labelref<'a>(
+    labels: &'a HashMap<&'a str, usize>,
+    label: &str,
+) -> Result<u16, WriterErr> {
+    let label = labels
+        .get(label)
+        .ok_or(WriterErr::UnknownLabel(label.to_string()))?;
+    Ok(*label as u16)
+}
+
+fn parse_wide_value<'a>(
+    labels: &'a HashMap<&'a str, usize>,
+    value: &Token,
+) -> Result<u16, WriterErr> {
+    match &value.token_type {
+        TokenType::Number(number) => parse_wide_num(*number),
+        TokenType::LabelRef(label_ref) => parse_wide_labelref(labels, label_ref),
+        _ => unreachable!(),
     }
 }
 
@@ -138,9 +175,7 @@ fn check_byte<'a>(
     let mut parsed_values = vec![];
     for value in declared_values {
         let parsed_value = parse_value(labels, value);
-        if let Some(parsed_value_result) = parsed_value {
-            parsed_values.push(parsed_value_result?)
-        };
+        parsed_values.push(parsed_value?);
     }
     Ok(CheckedLineCode::Byte(parsed_values))
 }
