@@ -62,7 +62,7 @@ fn check_instruction<'a>(
             },
             Operand::Mem16 => {
                 let parsed_operand = parse_wide_value(labels, operand.1)?;
-                let [higher, lower] = parsed_operand.to_be_bytes();
+                let [higher, lower] = parsed_operand.to_le_bytes();
                 operand_binary_codes.push(higher);
                 operand_binary_codes.push(lower);
             },
